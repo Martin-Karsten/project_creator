@@ -1,0 +1,92 @@
+import 'dotenv'
+import  nodeExternals from 'webpack-node-externals'
+
+const polyfills = [
+  'Promise',
+  'Object.assign',
+  'Object.values',
+  'Array.prototype.find',
+  'Array.prototype.findIndex',
+  'Array.prototype.includes',
+  'String.prototype.includes',
+  'String.prototype.startsWith',
+  'String.prototype.endsWith'
+]
+
+module.exports = {
+  // mode: 'spa',
+
+  srcDir: __dirname,
+
+  env: {
+    apiUrl: process.env.APP_URL || 'http://localhost:8000/',
+    appName: process.env.APP_NAME || 'Laravel-Nuxt',
+    appLocale: process.env.APP_LOCALE || 'en',
+    githubAuth: !!process.env.GITHUB_CLIENT_ID
+  },
+
+  head: {
+    title: process.env.APP_NAME,
+    titleTemplate: '%s - ' + process.env.APP_NAME,
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+    ],
+    script: [
+      { src: `https://cdn.polyfill.io/v2/polyfill.min.js?features=${polyfills.join(',')}` }
+    ]
+  },
+
+  loading: { color: '#007bff' },
+
+  router: {
+    middleware: ['locale', 'check-auth']
+  },
+
+  css: [
+    { src: '~assets/sass/app.scss', lang: 'scss' },
+    'quill/dist/quill.snow.css',
+    'quill/dist/quill.bubble.css',
+    'quill/dist/quill.core.css'
+  ],
+
+  plugins: [
+    '~components/global',
+    '~plugins/i18n',
+    '~plugins/vform',
+    '~plugins/axios',
+    '~plugins/fontawesome',
+    '~plugins/eCharts',
+    {src: '~plugins/interact', ssr: false},
+    // '~plugins/nuxt-client-init',
+    {src: '~/plugins/vue-grid', ssr: false},
+    { src: '~plugins/quill', ssr: false }
+  ],
+
+  modules: [
+    '@nuxtjs/router',
+    '~/modules/spa',
+    '@nuxtjs/bulma',
+    'vue-scrollto/nuxt',
+  ],
+
+  build: {
+    transpile: ['vue-echarts', 'resize-detector'],
+    extend (config, { isServer }) {
+      // ...
+      if (isServer) {
+        config.externals = [
+          nodeExternals({
+            // default value for `whitelist` is
+            // [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
+            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i, /^vue-echarts/]
+          })
+        ]
+      }
+    }
+  }
+}
