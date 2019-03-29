@@ -52,9 +52,9 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', '192.168.99.100'),
 
-    'client_url' => env('CLIENT_URL', 'http://localhost:3000'),
+    'client_url' => env('CLIENT_URL', '192.168.99.100:3000'),
 
     /*
     |--------------------------------------------------------------------------

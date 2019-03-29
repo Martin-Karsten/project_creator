@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import Scroll from '/home/martin/nuxt/larvel-nuxt/client/components/customDirective/scroll.js'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
 import SidebarHeader from './SidebarHeader'

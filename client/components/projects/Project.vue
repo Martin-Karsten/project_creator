@@ -35,12 +35,9 @@
 </template>
 
 <script>
-import twice from '/home/martin/nuxt/larvel-nuxt/client/Images/twice.jpg'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
 import draggable from 'vuedraggable'
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
-import interact from 'interactjs';
 import Editor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
 import ProjectImage from './project_image/Image'
@@ -55,12 +52,9 @@ export default {
         'vue-draggable-resizable': VueDraggableResizable,
         Editor,
         TableEditor,
-        'project-image' : ProjectImage,
-        'interactPanel': InteractPanel,
     },
     data () {
         return {
-            image: twice,
             dragging: false,
         }
     },

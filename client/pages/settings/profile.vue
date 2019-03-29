@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import  Modal from '/home/martin/nuxt/larvel-nuxt/client/components/global/Modal.vue'
+import  Modal from '../../components/global/Modal.vue'
 import Form from 'vform'
 import { mapGetters } from 'vuex'
 

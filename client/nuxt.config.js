@@ -49,9 +49,6 @@ module.exports = {
 
   css: [
     { src: '~assets/sass/app.scss', lang: 'scss' },
-    'quill/dist/quill.snow.css',
-    'quill/dist/quill.bubble.css',
-    'quill/dist/quill.core.css'
   ],
 
   plugins: [
@@ -61,10 +58,7 @@ module.exports = {
     '~plugins/axios',
     '~plugins/fontawesome',
     '~plugins/eCharts',
-    {src: '~plugins/interact', ssr: false},
     // '~plugins/nuxt-client-init',
-    {src: '~/plugins/vue-grid', ssr: false},
-    { src: '~plugins/quill', ssr: false }
   ],
 
   modules: [

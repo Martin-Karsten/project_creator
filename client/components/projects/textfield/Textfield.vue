@@ -1,23 +1,20 @@
 <template>
-    <interact-panel class="textfield"
+    <div class="textfield"
     :drag="true"
     :isSnappable="false"
     >
-        <!-- <textarea name="Text1" class="textfield interact" cols="40" rows="5"></textarea> -->
+        <!-- <textarea name="Text1" class="textfield" cols="40" rows="5"></textarea> -->
         <textarea v-for="text in textfields[index]" :key="text[index]" 
-         v-bind:id="text.id" v-bind:dim="index" name="Text1" class="textfield interact" cols="40" rows="5" @click="selectTextfield"
+         v-bind:id="text.id" v-bind:dim="index" name="Text1" class="textfield" cols="40" rows="5" @click="selectTextfield"
          :value="text.text" @change="updateText" ></textarea>
-    </interact-panel>
+    </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
-import interact from 'interactjs';
 export default {
   components: {
-      'interactPanel': InteractPanel,
   },
   props: ['index'],
   data(){

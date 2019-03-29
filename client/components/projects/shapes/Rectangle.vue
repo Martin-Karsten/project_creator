@@ -1,18 +1,12 @@
 <template>
-    <interact-panel class="interact"
-    :drag="true"
-    :isSnappable="false"
-    >
-    <svg class="item-svg-container"></svg>
+  <div class="rectangle">
     
-    </interact-panel>
+  </div>
 </template>
 
 <script>
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
 export default {
   components: {
-      'interactPanel': InteractPanel
   },
   data(){
       return{

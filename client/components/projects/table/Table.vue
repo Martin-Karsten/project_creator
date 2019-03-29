@@ -1,6 +1,6 @@
 <template>
-  <interact-panel 
-   class="table-content editor interact"
+  <div
+   class="table-content editor"
   :drag="true"
   :isSnappable="false"
   >
@@ -41,7 +41,7 @@
     <!-- <div>
       <pre><code>{{ html }}</code></pre>
     </div> -->
-  </interact-panel>
+  </div>
 </template>
 
 <script>
@@ -61,15 +61,12 @@ import {
 } from 'tiptap-extensions'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
-import interact from 'interactjs';
 
 export default {
   props: ['content'],
   components: {
     EditorMenuBar,
     EditorContent,
-    'interactPanel': InteractPanel,
   },
   data() {
     return {
