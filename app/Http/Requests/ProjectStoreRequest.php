@@ -25,8 +25,8 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             //TODO: make string longer than 225?
-                'projectName' => 'required|max:255',
-                'userId' => 'required',
+                'project_name' => 'required|max:255',
+                'user_id' => 'required',
                 'private' => 'required',
         ];
     }

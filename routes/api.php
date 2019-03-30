@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('logout', 'Auth\LoginController@logout');
 
+    //User Settings
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -23,7 +24,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/profile', 'Settings\ProfileController@update');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
+    //Project Settings
+    Route::get('/user/projects', function (Request $request) {
+        $user = $request->user();
+        return $user::find($user->id)->projects;
+    });
+
     Route::post('user/project/create', 'Project\ProjectController@create');
+
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

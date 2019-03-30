@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar is-fixed-top component-navigation" role="navigation" aria-label="component navigation">
+        <nav class="navbar component-navigation" role="navigation" aria-label="component navigation">
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">

@@ -45,7 +45,7 @@
   <!-- Right side -->
   <div class="level-right">
     <div class="level-item">
-      <p class="subtitle is-5"><strong>{{user.name}}</strong></p>
+      <p class="subtitle is-5"><strong>{{user.first_name}} {{user.last_name}}</strong></p>
     </div>
     <div class="level-item">
       <div class="field has-addons">
@@ -155,7 +155,7 @@
 </template>
 
 <script>
-import  Modal from '/home/martin/nuxt/larvel-nuxt/client/components/global/Modal.vue'
+import  Modal from '../../components/global/Modal.vue'
 import Form from 'vform'
 import { mapGetters } from 'vuex'
 

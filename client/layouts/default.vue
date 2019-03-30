@@ -1,7 +1,6 @@
 <template>
   <div class="layout">
     <navbar/>
-    <project-navbar/>
     <div class="container is-fluid">
       <nuxt/>
     </div>

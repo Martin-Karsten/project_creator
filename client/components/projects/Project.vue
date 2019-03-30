@@ -2,6 +2,7 @@
     <div class="colums grid">
         <div class="column is-12 grid-items">
             <draggable
+                :disabled="true"
                 :list="layout"
                 class="item-group"
                 ghost-class="ghost"
@@ -13,20 +14,40 @@
                 v-bind:id="'item' + element.id"
                 >
               <div class="item-container">
-                <vue-draggable-resizable :w="100" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
-                    {{layout}}
+                    <div class="columns toolbox" v-show="isEmpty">
+                        <div class="column tip" data-tooltip="Text" @click="toTextfield" >
+                            <span class="tooltiptext">Text</span>
+                            <fa icon="font"/>
+                        </div>
+                        <div class="column tip" data-tooltip="Chart" @click="toChart" >
+                            <span class="tooltiptext">Chart</span>
+                            <fa icon="chart-bar"/>
+                        </div>
+                        <div class="column tip" data-tooltip="Image" @click="toImage" >
+                            <span class="tooltiptext">Image</span>
+                            <fa icon="image"/>
+                        </div>  
+                        <div class="column tip" data-tooltip="Table" @click="toTable" >
+                            <span class="tooltiptext">Table</span>
+                            <fa icon="table" />
+                        </div>  
+                    </div>
+                <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
+                :w="150" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                <no-ssr>
+                    <editor :content="content"/>
+                </no-ssr>
                 </vue-draggable-resizable>
-                <vue-draggable-resizable :w="100" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :lock-aspect-ratio="false">
-                    <img v-bind:src="image" />
+
+                <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
+                :w="480" :h="275" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                    <img :src="image">
                 </vue-draggable-resizable>
-            </div>
-    
-                    <!-- <div class="panel-container"> -->
-                        <!-- <editor v-for="text in textfields[data.i]" :key="text[data.i]" :content="text.text"/> -->
-                        <!-- <table-editor /> -->
-                        <!-- <project-image /> -->
-                        <!-- <button class="button">button</button> -->
-                    <!-- </div> -->
+
+                <!-- <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
+                :w="150" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                </vue-draggable-resizable> -->
+                </div>
                 </div>
             </draggable>
         </div>
@@ -39,8 +60,6 @@ import twice from '/home/martin/nuxt/larvel-nuxt/client/Images/twice.jpg'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
 import draggable from 'vuedraggable'
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
-import interact from 'interactjs';
 import Editor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
 import ProjectImage from './project_image/Image'
@@ -55,13 +74,17 @@ export default {
         'vue-draggable-resizable': VueDraggableResizable,
         Editor,
         TableEditor,
-        'project-image' : ProjectImage,
-        'interactPanel': InteractPanel,
     },
     data () {
         return {
+            isEmpty: true,
             image: twice,
             dragging: false,
+            container: [0,1,2],
+            textfields: [],
+            images:[],
+            tables:[],
+            content: 'hallo'
         }
     },
     computed: {
@@ -79,6 +102,18 @@ export default {
         onDrag: function (x, y) {
             this.x = x
             this.y = y
+        },
+        toChart() {
+
+        },
+        toImage() {
+
+        },
+        toTable() {
+
+        },
+        toTextfield() {
+
         },
         addItem() {
             let payload = {name: '', id: this.layout.length}
@@ -112,6 +147,48 @@ div.item-container {
 .ghost {
   opacity: 0.5;
   background: #c8ebfb;
+}
+
+
+
+div.toolbox {
+    border-color: #000000;
+    border: 1px solid;
+    border-radius: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    width: 14%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.tip .tooltiptext {
+  visibility: hidden;
+  opacity: 0;
+  width: 5rem;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  transition: opacity 0.25s;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  margin-bottom: 20px;
+  width: 120px;
+  bottom: 100%;
+  left: 50%; 
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.tip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }
 
 .new-page-chevron {

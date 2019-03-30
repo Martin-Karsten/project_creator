@@ -3,59 +3,63 @@ import axios from 'axios'
 
 // state
 export const state = () => ({
-  user: null,
-  project: {name: '', user_id: ''}
+  projects: []
 })
 
 // getters
 export const getters = {
-  user: state => state.user,
+  getProjects: state => state.projects,
 
 }
 
 // mutations
 export const mutations = {
-  LOGOUT (state) {
-    state.user = null
-    state.token = null
+
+  CREATE_PROJECT (state, payload) {
+    state.projects.push({project_name: payload.project_name, user_id: payload.user_id, private: payload.private})
   },
 
-  SET_PROJECT (state, payload) {
-    state.project.name = payload.projectName
-    state.project.user_id = payload.userId
-  }
+  FETCH_PROJECTS_SUCCESS (state, projects) {
+    state.projects = projects
+  },
+
+  FETCH_PROJECTS_FAILURE (state) {
+    state.projects = null
+  },
 
 }
 
 // actions
 export const actions = {
 
-  async createProjejct({ commit}, payload){
-    commit('SET_PROJECT', payload)
-    
+  async fetchProjects({commit}){
     try {
-      await axios.post('user/project/create')
-    } catch (e) {}
+      const { data } = await axios.get('/user/projects')
+      commit('FETCH_PROJECTS_SUCCESS', data)
+    } catch (e) {
+
+      commit('FETCH_PROJECTS_FAILURE')
+    }
   },
 
-  saveToken ({ commit, dispatch }, { token, remember }) {
-    commit('SET_TOKEN', token)
+  // async fetchProject ({ commit }) {
+  //   try {
+  //     const { data } = await axios.get('/user')
 
-    Cookies.set('token', token, { expires: remember ? 365 : null })
+  //     commit('FETCH_USER_SUCCESS', data)
+  //   } catch (e) {
+  //     Cookies.remove('token')
+
+  //     commit('FETCH_USER_FAILURE')
+  //   }
+  // },
+
+  async createProject({ commit}, payload){
+    commit('CREATE_PROJECT', payload)
   },
 
-  updateUser ({ commit }, payload) {
-    commit('UPDATE_USER', payload)
-  },
-
-  async logout ({ commit }) {
-    try {
-      await axios.post('/logout')
-    } catch (e) { }
-
-    Cookies.remove('token')
-
-    commit('LOGOUT')
+  updateProject ({ commit }, payload) {
+    commit('UPDATE_PROJECT', payload)
   },
 
 }

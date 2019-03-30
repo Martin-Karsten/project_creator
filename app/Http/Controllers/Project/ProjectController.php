@@ -13,10 +13,9 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        
         return Project::create([
-            'project_name' => $request->projectName,
-            'user_id' => $request->userId,
+            'project_name' => $request->project_name,
+            'user_id' => $request->user_id,
             'private' => $request->private
         ]);
     }

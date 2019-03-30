@@ -1,8 +1,6 @@
 <template>
-  <interact-panel 
-   class="textfield-content editor interact"
-  :drag="true"
-  :isSnappable="false"
+  <div
+   class="textfield-content editor"
   >
     <editor-menu-bar :editor="editor">
       <div
@@ -112,9 +110,9 @@
     <editor-content class="textfield editor__content" :editor="editor"/>
 
     <div>
-      <pre><code>{{ html }}</code></pre>
+      <!-- <pre><code>{{ html }}</code></pre> -->
     </div>
-  </interact-panel>
+  </div>
 </template>
 
 <script>
@@ -139,15 +137,12 @@ import {
 } from 'tiptap-extensions'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
-import InteractPanel from '/home/martin/nuxt/larvel-nuxt/client/components/projects/interactPanel/InteractPanel.vue'
-import interact from 'interactjs';
 
 export default {
   props: ['content'],
   components: {
     EditorMenuBar,
     EditorContent,
-    'interactPanel': InteractPanel,
   },
   data() {
     return {
@@ -179,12 +174,11 @@ export default {
           this.$store.commit('Textfield/UPDATE_TEXT', this.html)  
         },
       }),
-      json: content,
-      html: content,
+      json: this.content,
+      html: this.content,
     }
   },
   mounted() {
-    // this.content
     this.json = this.content
   },
   beforeDestroy() {
@@ -204,23 +198,24 @@ export default {
 </script>
 
 <style>
-.textfield-content {
-  width: 25%;
-  height: 20%px;
-  position: absolute;
+
+textfield-content {
+  padding: 0;
+}
+/* .textfield{
+  width: 100%;
+  height: 100%;
   pointer-events: auto;
   resize: none;
   background: transparent;
   overflow: hidden;
+} */
+
+.editor__content {
+  width: 100%;
+  height: 100%;
 }
 
-textarea.textfield {
-    pointer-events: auto;
-    resize: none;
-    background: transparent;
-    position: absolute;
-    overflow: hidden;
-}
 
 
 

@@ -21,7 +21,7 @@
             <slot name="footer">
             <footer class="modal-card-foot">
             <button class="button is-success" @click="$emit('close')">Save changes</button>
-            <button class="button is-danger" @click="$emit('close')">Cancel</button>
+            <button class="button is-danger" @click="$emit('close')">{{ $t('cancel') }}</button>
             </footer>
             </slot>
 

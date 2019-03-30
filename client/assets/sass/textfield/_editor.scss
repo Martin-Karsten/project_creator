@@ -1,6 +1,5 @@
 .editor {
     position: relative;
-    max-width: 30rem;
     margin: 0 auto 5rem auto;
   
     &__content {
@@ -13,7 +12,6 @@
   
       pre {
         padding: 0.7rem 1rem;
-        border-radius: 5px;
         background: $color-black;
         color: $color-white;
         font-size: 0.8rem;
@@ -27,7 +25,6 @@
       p code {
         display: inline-block;
         padding: 0 0.4rem;
-        border-radius: 5px;
         font-size: 0.8rem;
         font-weight: bold;
         background: rgba($color-black, 0.1);

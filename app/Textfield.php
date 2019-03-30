@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Textfield extends Model
 {
  /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'project_name', 'user_id', 'private'
+        'name', 'project_id', 'text'
     ];
 
     /**
@@ -26,10 +26,6 @@ class Project extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
-    }
-
-    public function textfields() {
-        return $this->hasMany('App\Textfield');
+        return $this->belongsTo('App\Project');
     }
 }

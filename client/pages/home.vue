@@ -1,28 +1,39 @@
 <template>
 <div>
   <div class="home-card">
-{{projectDropdownisActive}}
-  <router-link :to="{ name: 'project.create' }">
-     <v-button @click="showProjectNameInput">{{ $t('create_project') }}</v-button>
-  </router-link>
-              <a href="project/create">
-<v-button @click="showProjectNameInput">{{ $t('create_project') }}</v-button>
-              </a>
 
-       <button class="button" @click="createProject">Create Project!!</button>
-  <div>
-    <h1 class="title is-1" v-if="projects.length <= 1">Looks like you haven't created any Projects yet</h1>
-    <h1 class="title is-1" v-else>{{ $t("your_projects") }}</h1>
-  </div>
+  <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
+  <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1>
   </div>
     <div class="columns  is-multiline project-list" >
+
+      <div class="column is-3" v-show="projects.length >= 1">
+        <div class="project-item  project-empty has-text-centered is-vertical-center">
+            <div class="column is-11 project-name ">
+              <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
+              <button class="button is-success" @click="createProject">{{ $t('create_project') }}</button>
+              <button class="button is-danger" @click="cancelProject">{{ $t('cancel') }}</button>
+            </div>
+        </div>
+      </div>
+
+      <div class="column is-3" v-show="projects.length < 1">
+        <div class="project-item  project-empty has-text-centered is-vertical-center">
+            <div class="column is-11 project-name ">
+              <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
+              <button class="button is-success" @click="createProject"> Create </button>
+              <button class="button is-danger" @click="cancelProject">Cancel</button>
+            </div>
+        </div>
+      </div>
+      
       <div v-for="project in projects" v-bind:key="project" v-bind:class="inputName" v-if="project == null ">
         <div class="project-item  project-empty has-text-centered is-vertical-center">
           <fa class="plus-icon" icon="plus" @click="showProjectNameInput" v-if="iconAcitvated" />
           <transition name="fade">
             <div class="column is-11 project-name ">
                 <div class="field" v-show="inputActivated">
-                  <input class="input title is-3" type="text" placeholder="Project Name..." v-model="projectName" @blur="changeProjectName">
+                  <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
                 </div>
                 <div class="field" v-show="inputActivated">
                   <a href="project/create">
@@ -71,21 +82,25 @@ export default {
     return { title: this.$t('home') }
   },
   data: () => ({
-      projects: [null,{name:1, isActive: false},{name: 2, isActive: false}],
-      projectName: '',
+      // projects: [null,{name:1, isActive: false},{name: 2, isActive: false}],
+      projectsExist: false,
       iconAcitvated: true,
       inputActivated: false,
       inputName: 'column is-2 input-big has-text-centered is-3 project-container',
-      project: new Form({
-            projectName: '',
-            userId: '',
+      form: new Form({
+            project_name: '',
+            user_id: '',
             private: true
           }),
   }),
     computed: {
     ...mapGetters({
         user: 'auth/user',
-    })
+        projects: 'project/getProjects',
+    }),
+  },
+  async mounted() {
+    await this.$store.dispatch('project/fetchProjects')
   },
   methods:{
     showProjectNameInput(){
@@ -95,19 +110,26 @@ export default {
       this.inputActivated = true
     },
     async createProject () {
-      this.project.userId = this.user.id
-      this.project.projectName = this.projectName
-      //await this.$store.dispatch('project/createProjejct', this.project)
-      //this.projects.splice(1,0, this.projectName)
-      this.projectName = ''
+      this.form.user_id = this.user.id
+      console.log(this.form)
+      const { data } = await this.form.post('user/project/create')
+      console.log(data)
+      this.$store.dispatch('project/createProject', {
+        project_name: data.project_name,
+        user_id : data.user_id,
+        private : data.private
+      })
+
+      // // Fetch the project.
+      // await this.$store.dispatch('auth/fetchProject')
+
+      // Redirect to project creation.
+      this.$router.push({ name: 'project.create' })
     },
     changeProjectName() {
-    //  this.projects[0] = this.projectName
-    //  this.projects.splice(1, 0, this.projectName);
     },
     cancelProject() {
-      this.projectName = ''
-      this.projects[0] = null
+      this.form.project_name = ''
       this.inputActivated = false
       this.iconAcitvated = true
       this.inputName = 'column has-text-centered is-3 project-container'
@@ -117,6 +139,10 @@ export default {
 </script>
 
 <style>
+
+h1.home-title {
+  margin-bottom: 0.5rem;
+}
 
 .is-vertical-center {
 display: flex;
