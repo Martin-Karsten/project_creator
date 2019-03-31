@@ -99,6 +99,7 @@ export default {
 
   methods: {
     async register () {
+      console.log(this.form)
       // Register the user.
       const { data } = await this.form.post('/register')
 

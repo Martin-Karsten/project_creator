@@ -7,7 +7,7 @@
   </div>
     <div class="columns  is-multiline project-list" >
 
-      <div class="column is-3" v-show="projects.length >= 1">
+      <div class="column is-3" >
         <div class="project-item  project-empty has-text-centered is-vertical-center">
             <div class="column is-11 project-name ">
               <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
@@ -17,57 +17,19 @@
         </div>
       </div>
 
-      <div class="column is-3" v-show="projects.length < 1">
+      <div class="column is-3"  v-for="project in projects" :key="project.id">
         <div class="project-item  project-empty has-text-centered is-vertical-center">
             <div class="column is-11 project-name ">
-              <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
-              <button class="button is-success" @click="createProject"> Create </button>
-              <button class="button is-danger" @click="cancelProject">Cancel</button>
+              <input class="input title is-3" type="text" v-bind:placeholder="project.project_name" v-model="form.project_name">
+              <router-link :to="{name: 'project.view', params: { id: project.id }}">
+                <button class="button" @click="viewProject">View</button>
+                </router-link>
+                
             </div>
-        </div>
-      </div>
-      
-      <div v-for="project in projects" v-bind:key="project" v-bind:class="inputName" v-if="project == null ">
-        <div class="project-item  project-empty has-text-centered is-vertical-center">
-          <fa class="plus-icon" icon="plus" @click="showProjectNameInput" v-if="iconAcitvated" />
-          <transition name="fade">
-            <div class="column is-11 project-name ">
-                <div class="field" v-show="inputActivated">
-                  <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
-                </div>
-                <div class="field" v-show="inputActivated">
-                  <a href="project/create">
-                    <button class="button is-success" @click="createProject"> Create </button>
-                  </a>
-                <button class="button is-danger" @click="cancelProject">Cancel</button>
-                </div>
-            </div>
-          </transition>
         </div>
       </div>
 
-      <div class="column is-3 project-container" v-else>
-        <div class="dropdown is-right project-dropdown" :class="{ 'is-active': project.isActive}" >
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="project.isActive = !project.isActive">
-              <span class="icon is-small">
-                <fa icon="ellipsis-h"/>
-              </span>
-            </button>
-          </div>
-          <div class="dropdown-menu" role="menu">
-            <ul class="box dropdown-items">
-              <li class="dropdown-item">Rename</li>
-              <li class="dropdown-item">Download</li>
-              <li class="dropdown-item">Delete</li>
-            </ul>
-          </div>
-        </div>
-        <div class="project-item project-empty has-text-centered is-vertical-center">
-          {{project.name}}
-        </div>
-      </div>
-    </div>
+</div>
 </div>
 </template>
 
@@ -125,6 +87,8 @@ export default {
 
       // Redirect to project creation.
       this.$router.push({ name: 'project.create' })
+    },
+    viewProject() {
     },
     changeProjectName() {
     },

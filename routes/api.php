@@ -25,12 +25,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
     //Project Settings
-    Route::get('/user/projects', function (Request $request) {
-        $user = $request->user();
-        return $user::find($user->id)->projects;
-    });
+    Route::get('/user/projects', 'Project\ProjectsController@index');
 
-    Route::post('user/project/create', 'Project\ProjectController@create');
+    Route::get('user/projects/{id}', 'Project\ProjectsController@show');
+    Route::post('user/project/create', 'Project\ProjectsController@create');
 
 });
 
