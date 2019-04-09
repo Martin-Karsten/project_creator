@@ -1,12 +1,21 @@
 <template>
-<div>
-  <div class="home-card">
+<div class="home">
 
   <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
   <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1>
-  </div>
-    <div class="columns  is-multiline project-list" >
 
+<div class="columns">
+
+  <home-sidebar class="column is-1">
+      <li>
+        <fa class="show-scroller-chevron" icon="chevron-right" />
+      </li>
+      <li>
+          <div></div>
+      </li>
+  </home-sidebar>
+  
+    <div class="column is-11 columns  is-multiline project-list" >
       <div class="column is-3" >
         <div class="project-item  project-empty has-text-centered is-vertical-center">
             <div class="column is-11 project-name ">
@@ -16,19 +25,40 @@
             </div>
         </div>
       </div>
-
-      <div class="column is-3"  v-for="project in projects" :key="project.id">
+      
+      <div class="column is-3" v-show="ready" v-for="project in projectsClicked" :key="project.id">
         <div class="project-item  project-empty has-text-centered is-vertical-center">
+        <div class="dropdown is-right project-dropdown" :class="{ 'is-active': project.clicked}" >
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="project.clicked = !project.clicked">
+              <span class="icon is-small">
+                <fa icon="ellipsis-h"/>
+              </span>
+            </button>
+          </div>
+          <!-- <checkbox @click="project.clicked = !project.clicked" ></checkbox> -->
+          <div class="dropdown-menu" role="menu">
+            <ul class="box dropdown-items">
+              <li class="dropdown-item">Rename</li>
+              <li class="dropdown-item">Download</li>
+              <li class="dropdown-item" @click="deleteProject(project.id)">Delete</li>
+            </ul>
+          </div>
+        </div>
             <div class="column is-11 project-name ">
               <input class="input title is-3" type="text" v-bind:placeholder="project.project_name" v-model="form.project_name">
-              <router-link :to="{name: 'project.view', params: { id: project.id }}">
-                <button class="button" @click="viewProject">View</button>
-                </router-link>
-                
+              <!-- <router-link :to="{name: 'project.view', params: { id: project.id }}"> -->
+                <p>{{ $t('created_at') }}</p>
+                <b>
+                  <p>{{project.created_at}}</p>
+                </b>
+                <button class="button" @click="viewProject(project.id)">View</button>
+              <!-- </router-link> -->
             </div>
         </div>
       </div>
 
+  </div>
 </div>
 </div>
 </template>
@@ -36,33 +66,54 @@
 <script>
 import { mapGetters } from 'vuex'
 import Form from 'vform'
+import HomeSidebar from '../components/home/HomeSidebar'
+import Checkbox from '../components/global/Checkbox'
 export default {
   layout:'default',
   middleware: 'auth',
+
+  components: {
+    HomeSidebar,
+    Checkbox
+  },
 
   head () {
     return { title: this.$t('home') }
   },
   data: () => ({
-      // projects: [null,{name:1, isActive: false},{name: 2, isActive: false}],
       projectsExist: false,
-      iconAcitvated: true,
       inputActivated: false,
+      projectsClicked: [],
       inputName: 'column is-2 input-big has-text-centered is-3 project-container',
+      id: '',
+      ready: false,
       form: new Form({
             project_name: '',
             user_id: '',
-            private: true
+            private: true,
           }),
+      deleteForm: new Form({
+        id: ''
+    }),
   }),
     computed: {
     ...mapGetters({
         user: 'auth/user',
         projects: 'project/getProjects',
-    }),
+    }), 
   },
   async mounted() {
     await this.$store.dispatch('project/fetchProjects')
+    //copy array and add clicked in order to loop through and set clicked value individualy
+    this.projectsClicked = this.projects.map(function (project) {
+      return {id:project.id, project_name:project.project_name, created_at:project.created_at, clicked:false}
+    });
+    this.ready = true
+  },
+  watch: {
+    projects: function(newValue, oldValue) {
+      this.projectsClicked = [...newValue]
+    }
   },
   methods:{
     showProjectNameInput(){
@@ -73,24 +124,33 @@ export default {
     },
     async createProject () {
       this.form.user_id = this.user.id
-      console.log(this.form)
       const { data } = await this.form.post('user/project/create')
-      console.log(data)
       this.$store.dispatch('project/createProject', {
         project_name: data.project_name,
         user_id : data.user_id,
         private : data.private
       })
 
-      // // Fetch the project.
-      // await this.$store.dispatch('auth/fetchProject')
+      this.$store.commit('Layout/CREATE_LAYOUT')
 
       // Redirect to project creation.
-      this.$router.push({ name: 'project.create' })
+      this.$router.push({ name: 'project.create', params: data })
     },
-    viewProject() {
+    async viewProject(id) {
+      // Redirect to project
+      this.$router.push({name: 'project.view', params: { id: id }})
     },
     changeProjectName() {
+    },
+    async deleteProject(id) {
+      this.deleteForm.id = id
+      try{
+      await this.deleteForm.delete(`user/project/${id}/delete`, id)      
+      }
+      catch(e){
+        console.log(e)
+      }
+      this.$store.commit('project/DELETE_PROJECT',id)
     },
     cancelProject() {
       this.form.project_name = ''
@@ -120,6 +180,7 @@ div.project-container{
 }
 
 div.project-item{
+  position: relative;
   border-style: solid;
   border-radius: 4px;
   min-height: 20rem;

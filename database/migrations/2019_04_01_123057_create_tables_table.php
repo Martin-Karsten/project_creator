@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProjectTextboxTable extends Migration
+class CreateTablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,18 @@ class CreateProjectTextboxTable extends Migration
      */
     public function up()
     {
-        Schema::create('project_textbox', function (Blueprint $table) {
+        Schema::create('tables', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('project_id');
+            $table->unsignedTinyInteger('rows')->default(2);
+            $table->unsignedTinyInteger('columns')->default(3);
             $table->text('text');
             $table->timestamps();
+
+            $table->foreign('project_id')
+            ->references('id')
+            ->on('projects')
+            ->onDelete('cascade');
         });
     }
 
@@ -27,6 +35,6 @@ class CreateProjectTextboxTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('project_textbox');
+        Schema::dropIfExists('tables');
     }
 }

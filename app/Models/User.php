@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -89,6 +89,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function projects()
     {
-        return $this->hasMany('App\Project');
+        return $this->hasMany('App\Models\Project');
     }
 }

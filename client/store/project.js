@@ -16,7 +16,7 @@ export const getters = {
 export const mutations = {
 
   CREATE_PROJECT (state, payload) {
-    state.projects.push({project_name: payload.project_name, user_id: payload.user_id, private: payload.private})
+    state.projects.push(payload.id, {project_name: payload.project_name, user_id: payload.user_id, private: payload.private, textfields: [], images: [], tables: [], charts: [], shapes: []})
   },
 
   FETCH_PROJECTS_SUCCESS (state, projects) {
@@ -27,9 +27,16 @@ export const mutations = {
     state.projects = null
   },
 
+  DELETE_PROJECT (state, payload) {
+    for( let i = 0; i < state.projects.length; i++){ 
+      if ( state.projects[i].id === payload) {
+        state.projects.splice(i, 1); 
+      }
+   }
+  }
+
 }
 
-// actions
 export const actions = {
 
   async fetchProjects({commit}){
@@ -42,18 +49,6 @@ export const actions = {
     }
   },
 
-  // async fetchProject ({ commit }) {
-  //   try {
-  //     const { data } = await axios.get('/user')
-
-  //     commit('FETCH_USER_SUCCESS', data)
-  //   } catch (e) {
-  //     Cookies.remove('token')
-
-  //     commit('FETCH_USER_FAILURE')
-  //   }
-  // },
-
   async createProject({ commit}, payload){
     commit('CREATE_PROJECT', payload)
   },
@@ -62,4 +57,16 @@ export const actions = {
     commit('UPDATE_PROJECT', payload)
   },
 
+  async fetchTextfields({commit}, payload){
+    try {
+      const { data } = await axios.get(`/user/project/${payload.id}/textfields`)
+      commit('FETCH_TEXTFIELDS_SUCCESS', data)
+    } catch (e) {
+      commit('FETCH_TEXTFIELDS_FAILURE')
+    }
+  },
+
+  saveToDB() {
+    axios.post('')
+  }
 }

@@ -1,6 +1,8 @@
 <template>
   <div
    class="textfield-content editor"
+  :drag="true"
+  :isSnappable="false"
   >
     <editor-menu-bar :editor="editor">
       <div
@@ -38,21 +40,18 @@
           @click="commands.strike"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.code() }"
           @click="commands.code"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.paragraph() }"
           @click="commands.paragraph"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 1 }) }"
@@ -60,7 +59,6 @@
         >
           H1
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 2 }) }"
@@ -68,7 +66,6 @@
         >
           H2
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.heading({ level: 3 }) }"
@@ -76,28 +73,24 @@
         >
           H3
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.bullet_list() }"
           @click="commands.bullet_list"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.ordered_list() }"
           @click="commands.ordered_list"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.blockquote() }"
           @click="commands.blockquote"
         >
         </button>
-
         <button
           class="button menubar__button"
           :class="{ 'is-active': isActive.code_block() }"
@@ -107,11 +100,8 @@
 
       </div>
     </editor-menu-bar>
-    <editor-content class="textfield editor__content" :editor="editor"/>
+    <editor-content :id="'textfield-'+id" class="textfield editor__content" :editor="editor"/>
 
-    <div>
-      <!-- <pre><code>{{ html }}</code></pre> -->
-    </div>
   </div>
 </template>
 
@@ -137,9 +127,8 @@ import {
 } from 'tiptap-extensions'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
-
 export default {
-  props: ['content'],
+  props: ['id','text'],
   components: {
     EditorMenuBar,
     EditorContent,
@@ -165,7 +154,7 @@ export default {
           new Underline(),
           new History(),
         ],
-        content: this.content,
+        content: this.text,
         onUpdate: ({ getJSON, getHTML }) => {
           this.json = getJSON()
           this.html = getHTML()
@@ -174,11 +163,12 @@ export default {
           this.$store.commit('Textfield/UPDATE_TEXT', this.html)  
         },
       }),
-      json: this.content,
-      html: this.content,
+      json: this.text,
+      html: this.text,
     }
   },
   mounted() {
+    // this.content
     this.json = this.content
   },
   beforeDestroy() {
@@ -198,25 +188,20 @@ export default {
 </script>
 
 <style>
-
-textfield-content {
-  padding: 0;
-}
-/* .textfield{
+.textfield-content {
   width: 100%;
   height: 100%;
+  position: absolute;
   pointer-events: auto;
   resize: none;
   background: transparent;
-  overflow: hidden;
-} */
-
-.editor__content {
-  width: 100%;
-  height: 100%;
+  /* overflow: hidden; */
 }
-
-
-
-
+textarea.textfield {
+    pointer-events: auto;
+    resize: none;
+    background: transparent;
+    position: absolute;
+    overflow: hidden;
+}
 </style>

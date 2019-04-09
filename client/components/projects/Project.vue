@@ -11,11 +11,10 @@
                 v-for="element in layout"
                 :key="element.name"
                 class="item"
-                v-bind:id="'item' + element.id"
                 >
               <div class="item-container">
                     <div class="columns toolbox" v-show="isEmpty">
-                        <div class="column tip" data-tooltip="Text" @click="toTextfield" >
+                        <div class="column tip" :id="element.id" data-tooltip="Text" @click="toTextfield" >
                             <span class="tooltiptext">Text</span>
                             <fa icon="font"/>
                         </div>
@@ -32,17 +31,20 @@
                             <fa icon="table" />
                         </div>  
                     </div>
-                <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
-                :w="150" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                <vue-draggable-resizable  v-for="textfield in element.textfields" :key="textfield.id"
+                :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
+                :parent="true" :grid="[2,2]"
+                :style="{}">
                 <no-ssr>
-                    <editor :content="content"/>
+                    <!-- {{textfield}} -->
+                    <editor :id="textfield.id" :text="textfield.text"/>
                 </no-ssr>
                 </vue-draggable-resizable>
 
-                <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
-                :w="480" :h="275" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                <!-- <vue-draggable-resizable 
+                :w="480" :h="275" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[2,2]" :lock-aspect-ratio="true">
                     <img :src="image">
-                </vue-draggable-resizable>
+                </vue-draggable-resizable> -->
 
                 <!-- <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
                 :w="150" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
@@ -80,29 +82,19 @@ export default {
             isEmpty: true,
             image: twice,
             dragging: false,
-            container: [0,1,2],
-            textfields: [],
-            images:[],
-            tables:[],
-            content: 'hallo'
         }
     },
     computed: {
         ...mapGetters({
-            layout: 'Layout/getLayout'
+            layout: 'Layout/getLayout',
+            textfields: 'Textfield/getTextfields'
         })
     },
+    beforeDestroy(){
+        this.$store.dispatch('Layout/resetLayout')
+    },
     methods: {
-        onResize: function (x, y, width, height) {
-            this.x = x
-            this.y = y
-            this.width = width
-            this.height = height
-        },
-        onDrag: function (x, y) {
-            this.x = x
-            this.y = y
-        },
+
         toChart() {
 
         },
@@ -112,8 +104,9 @@ export default {
         toTable() {
 
         },
-        toTextfield() {
-
+        toTextfield(event) {
+            this.isEmpty = false
+            this.$store.commit('Layout/ADD_TEXTFIELD', event.currentTarget.id)
         },
         addItem() {
             let payload = {name: '', id: this.layout.length}

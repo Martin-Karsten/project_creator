@@ -76,7 +76,6 @@ export default {
       // Submit the form.
       const { data } = await this.form.post('/login')
 
-      console.log(data)
       // Save the token.
       this.$store.dispatch('auth/saveToken', {
         token: data.token,

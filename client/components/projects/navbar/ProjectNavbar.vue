@@ -4,6 +4,7 @@
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
+                <locale-dropdown/>
                 <a class="navbar-item" @click="saveProject">
                     SAVE
                 </a>
@@ -38,9 +39,30 @@
                 </div>
                 </div>
 
-                <div class="navbar-end">
+    <div class="navbar-end">
+      <!-- Authenticated -->
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          <img :src="user.photo_url" class="rounded-circle profile-photo-nav">
+            {{ user.first_name }}
+        </a>
 
-                </div>
+        <div class="navbar-dropdown is-right">
+            <router-link :to="{ name: 'settings.project.projects' }" class="navbar-item">
+              Projects
+            </router-link>
+            <router-link :to="{ name: 'settings.profile' }" class="navbar-item">
+              <fa icon="cogs" fixed-width/>
+              {{ $t('settings') }}
+            </router-link>
+          <hr class="navbar-divider">
+          <a class="navbar-item" @click.prevent="logout">
+            <fa icon="sign-out-alt" fixed-width/>
+            {{ $t('logout') }}
+          </a>
+        </div>
+      </div>
+    </div>
             </div>
         </nav>
         <start-menu v-show="showStartMenu"></start-menu>
@@ -49,16 +71,25 @@
 
 
 <script>
+import { mapGetters } from 'vuex'
+import LocaleDropdown from '../../LocaleDropdown'
 import StartMenu from './StartMenu'
 export default {
     components: {
+        LocaleDropdown,
         'startMenu' : StartMenu
     },
     data(){
         return{
+            appName: process.env.appName,
             showStartMenu: true
         }
     },
+
+    computed: mapGetters({
+        user: 'auth/user'
+    }),
+    
     methods: {
         activateStartMenu(){
             if(this.showStartMenu)
@@ -74,8 +105,15 @@ export default {
 </script>
 
 <style>
+.profile-photo-nav {
+  width: 2rem;
+  height: 2.5rem;
+  border-radius: 15px;
+  margin-right: 0.5rem;
+}
+
 nav.component-navigation{
-    /* margin-bottom: 20px; */
-    z-index: 30;
+    margin-bottom: 0.75em;
+    z-index: 20;
 }
 </style>

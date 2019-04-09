@@ -27,8 +27,14 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Project Settings
     Route::get('/user/projects', 'Project\ProjectsController@index');
 
-    Route::get('user/projects/{id}', 'Project\ProjectsController@show');
+    Route::get('user/project/{id}', 'Project\ProjectsController@show');
     Route::post('user/project/create', 'Project\ProjectsController@create');
+    Route::patch('user/project/{id}/update', 'Project\ProjectsController@update');
+    Route::delete('user/project/{id}/delete', 'Project\ProjectsController@delete');
+
+    //Project Components
+        //Textfields
+        Route::get('/user/project/{id}/textfields', 'Project\TextfieldsController@index');
 
 });
 

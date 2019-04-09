@@ -1,16 +1,16 @@
 <template>
-  <div class="custom-control custom-checkbox d-flex">
-    <input
-      :name="name"
-      :checked="internalValue"
-      :id="id || name"
-      type="checkbox"
-      class="custom-control-input"
-      @click="handleClick">
-    <label :for="id || name" class="custom-control-label my-auto">
-      <slot/>
-    </label>
-  </div>
+
+    <div class="global-checkbox">
+        <input value="1" 
+        :name="name"
+        :checked="internalValue"
+        :id="id || name"
+        type="checkbox"
+        class="custom-control-input"
+        @click="handleClick"
+         />
+        <label :for="id || name"></label>
+    </div>
 </template>
 
 <script>
@@ -59,7 +59,13 @@ export default {
       if (!e.isPropagationStopped) {
         this.internalValue = e.target.checked
       }
+
+      console.log(this.checked)
     }
   }
 }
 </script>
+
+<style>
+
+</style>

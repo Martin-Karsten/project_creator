@@ -58,7 +58,7 @@ abstract class TestCase extends FoundationTestCase
     /**
      * Return the default user to authenticate.
      *
-     * @return \App\User|int|null
+     * @return \App\Models\User|int|null
      * @throws \Exception
      */
     protected function user()

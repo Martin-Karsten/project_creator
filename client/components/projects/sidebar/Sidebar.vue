@@ -5,17 +5,17 @@
     <ul class="menu-list">
       <li>
         <fa class="show-scroller-chevron" icon="chevron-right" @click="showScroller" />
-        <a href="#" class="">
-          <span class="icon"><i class="fa fa-home"></i></span> Home
+        <a >
+          <span class="icon"><i class="fa fa-home" @click="save"></i></span> Save
         </a>
       </li>
       <li>
-        <a href="#" class="is-active">
+        <a>
           <span class="icon"><i class="fa fa-table"></i></span> Links
         </a>
       </li>
       <li>
-        <a href="#" class="">
+        <a>
           <span class="icon"><i class="fa fa-info"></i></span> About
         </a>
       </li>
@@ -64,6 +64,9 @@ methods: {
       this.scrollerActivated = !this.scrollerActivated
       this.$emit('clicked', this.scrollerActivated)
     },
+    save() {
+      this.$store.dispatch('project/saveToDB');
+    }
   },
 }
 </script>

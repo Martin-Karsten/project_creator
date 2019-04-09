@@ -44,6 +44,12 @@ export default {
         }
         },
     },
+    async mounted() {
+    // if(this.$route.params != null){
+        await this.$store.dispatch('Layout/initialize', this.$route.params)
+    // }
+    // await this.$store.dispatch('Textfield/fetchTextfields', this.$route.params)
+    },
     methods: {
 
     } 

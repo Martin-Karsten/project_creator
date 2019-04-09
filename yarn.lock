@@ -657,16 +657,6 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@ckeditor/ckeditor5-build-classic@^12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-build-classic/-/ckeditor5-build-classic-12.0.0.tgz#0a738809ee5d45be7bf18a474b73cb15902ba871"
-  integrity sha512-BdD7+u3obrWuPC2kxG/JBXBrtohfPbCzLrNOYE0ITe7qokqmzvfY4WAMwPuI2wBwbuHzuPeGJCnWvjQZgtRZoQ==
-
-"@ckeditor/ckeditor5-vue@^1.0.0-beta.1":
-  version "1.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@ckeditor/ckeditor5-vue/-/ckeditor5-vue-1.0.0-beta.1.tgz#976bf7b00bd5f9d99637bfa8279e35f2e899c334"
-  integrity sha512-CTNyEdofAfmhVomkft6kYEmbh6yRvZMzkvCC4bHZ8LOBHBY7QWkWXP3gbs19SvimUV7PfnsrsDE093aI0SyXqQ==
-
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
@@ -1688,11 +1678,6 @@ base@^0.11.1:
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
 
-batch-processor@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/batch-processor/-/batch-processor-1.0.0.tgz#75c95c32b748e0850d10c2b168f6bdbe9891ace8"
-  integrity sha1-dclcMrdI4IUNEMKxaPa9vpiRrOg=
-
 batch@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/batch/-/batch-0.6.1.tgz#dc34314f4e679318093fc760272525f94bf25c16"
@@ -1965,6 +1950,11 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
   integrity sha1-hZgoeOIbmOHGZCXgPQF0eI9Wnug=
+
+bulma-checkradio@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/bulma-checkradio/-/bulma-checkradio-2.1.0.tgz#494ab05b0245a41a0083bbd08436fafbde4b3814"
+  integrity sha512-u/EBioHqmeMaUyVc+P9ellOldIVER4SSzkCYo7+KOBAIZuRm6zRWKste8DAFfsk8sq2xrX16gKXr7vCy7NC0zw==
 
 bulma@0.7.2, bulma@^0.7.2:
   version "0.7.2"
@@ -2302,11 +2292,6 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
 
-clone@^2.1.1:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
-  integrity sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=
-
 co@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/co/-/co-4.6.0.tgz#6ea6bdf3d853ae54ccb8e47bfa0bf3f9031fb184"
@@ -2527,6 +2512,11 @@ cookie@0.3.1, cookie@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.3.1.tgz#e7e0a1f9ef43b4c8ba925c5c5a96e806d16873bb"
   integrity sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
+
+cool-checkboxes-for-bulma.io@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cool-checkboxes-for-bulma.io/-/cool-checkboxes-for-bulma.io-1.1.0.tgz#4715f5144b952b9c9d19eab5315d738359fae833"
+  integrity sha512-RDEXOeS9COGTbQjlwRQzPRwOA8ycP4azc/GDVF5qYSOs4tYk6dc9SWNOj7Bb/NvhVUsb+H95pNtGgOBwCENBQg==
 
 copy-concurrently@^1.0.0:
   version "1.0.5"
@@ -3290,13 +3280,6 @@ electron-to-chromium@^1.3.103, electron-to-chromium@^1.3.47:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.103.tgz#a695777efdbc419cad6cbb0e58458251302cd52f"
   integrity sha512-tObPqGmY9X8MUM8i3MEimYmbnLLf05/QV5gPlkR8MQ3Uj8G8B2govE1U4cQcBYtv3ymck9Y8cIOu4waoiykMZQ==
 
-element-resize-detector@^1.1.10:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/element-resize-detector/-/element-resize-detector-1.2.0.tgz#63344fd6f4e5ecff6f018d027e17b281fd4fa338"
-  integrity sha512-UmhNB8sIJVZeg56gEjgmMd6p37sCg8j8trVW0LZM7Wzv+kxQ5CnRHcgRKBTB/kFUSn3e7UP59kl2V2U8Du1hmg==
-  dependencies:
-    batch-processor "1.0.0"
-
 elliptic@^6.0.0:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.1.tgz#c2d0b7776911b86722c632c3c06c60f2f819939a"
@@ -3680,11 +3663,6 @@ event-pubsub@4.3.0:
   resolved "https://registry.yarnpkg.com/event-pubsub/-/event-pubsub-4.3.0.tgz#f68d816bc29f1ec02c539dc58c8dd40ce72cb36e"
   integrity sha512-z7IyloorXvKbFx9Bpie2+vMJKKx1fH1EN5yiTfp8CiLOTptSYy1g8H4yDpGlEdshL1PBiFtBHepF2cNsqeEeFQ==
 
-eventemitter3@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.3.tgz#b5e1079b59fb5e1ba2771c0a993be060a58c99ba"
-  integrity sha1-teEHm1n7XhuidxwKmTvgYKWMmbo=
-
 eventemitter3@^3.0.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
@@ -3826,7 +3804,7 @@ extend-shallow@^3.0.0, extend-shallow@^3.0.2:
     assign-symbols "^1.0.0"
     is-extendable "^1.0.1"
 
-extend@^3.0.1, extend@^3.0.2, extend@~3.0.2:
+extend@~3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/extend/-/extend-3.0.2.tgz#f8b1136b4071fbd8eb140aff858b1019ec2915fa"
   integrity sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
@@ -3873,11 +3851,6 @@ fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
   integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
-
-fast-diff@1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
-  integrity sha512-KaJUt+M9t1qaIteSvjc6P3RbMdXsNhK61GRftR6SNxqmhthcd9MGIi4T+o0jD8LUSpSnSKXE20nLtJ3fOHxQig==
 
 fast-glob@^2.0.2:
   version "2.2.6"
@@ -6528,11 +6501,6 @@ param-case@2.1.x:
   dependencies:
     no-case "^2.2.0"
 
-parchment@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/parchment/-/parchment-1.1.4.tgz#aeded7ab938fe921d4c34bc339ce1168bc2ffde5"
-  integrity sha512-J5FBQt/pM2inLzg4hEWmzQx/8h8D0CiDxaG3vyp9rKrQRSDgBlhjdP5jQGgosEajXPSQouXGHOmVdgo7QmJuOg==
-
 parse-asn1@^5.0.0:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/parse-asn1/-/parse-asn1-5.1.3.tgz#1600c6cc0727365d68b97f3aa78939e735a75204"
@@ -7654,27 +7622,6 @@ querystringify@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.1.0.tgz#7ded8dfbf7879dcc60d0a644ac6754b283ad17ef"
   integrity sha512-sluvZZ1YiTLD5jsqZcDmFyV2EwToyXZBfpoVOmktMmW+VEnhgakFHnasVph65fOjGPTWN0Nw3+XQaSeMayr0kg==
-
-quill-delta@^3.6.2:
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/quill-delta/-/quill-delta-3.6.3.tgz#b19fd2b89412301c60e1ff213d8d860eac0f1032"
-  integrity sha512-wdIGBlcX13tCHOXGMVnnTVFtGRLoP0imqxM696fIPwIf5ODIYUHIvHbZcyvGlZFiFhK5XzDC2lpjbxRhnM05Tg==
-  dependencies:
-    deep-equal "^1.0.1"
-    extend "^3.0.2"
-    fast-diff "1.1.2"
-
-quill@^1.3.4:
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/quill/-/quill-1.3.6.tgz#99f4de1fee85925a0d7d4163b6d8328f23317a4d"
-  integrity sha512-K0mvhimWZN6s+9OQ249CH2IEPZ9JmkFuCQeHAOQax3EZ2nDJ3wfGh59mnlQaZV2i7u8eFarx6wAtvQKgShojug==
-  dependencies:
-    clone "^2.1.1"
-    deep-equal "^1.0.1"
-    eventemitter3 "^2.0.3"
-    extend "^3.0.1"
-    parchment "^1.1.4"
-    quill-delta "^3.6.2"
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5:
   version "2.0.6"
@@ -9445,11 +9392,6 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
-vue-drag-resize@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/vue-drag-resize/-/vue-drag-resize-1.3.2.tgz#99132a99746c878e4596fad08d36c98f604930a3"
-  integrity sha512-XiSEep3PPh9IPQqa4vIy/YENBpYch2SIPNipcPAEGhaSa0V8A8gSq9s7JQ66p/hiINdnR7f5ZqAkOdm6zU/4Gw==
-
 vue-draggable-resizable@^2.0.0-rc1:
   version "2.0.0-rc1"
   resolved "https://registry.yarnpkg.com/vue-draggable-resizable/-/vue-draggable-resizable-2.0.0-rc1.tgz#e07fd12102d092d3731732d02cb60d879618917c"
@@ -9474,21 +9416,6 @@ vue-eslint-parser@^2.0.3:
     espree "^3.5.2"
     esquery "^1.0.0"
     lodash "^4.17.4"
-
-"vue-grid-layout-edit@https://github.com/Martin-Karsten/vue-grid-layout/tarball/2.4.0_beta":
-  version "2.4.0"
-  resolved "https://github.com/Martin-Karsten/vue-grid-layout/tarball/2.4.0_beta#c9c1b0ba31d82dfca3bcbfbcdc6095b8b5c3f195"
-  dependencies:
-    element-resize-detector "^1.1.10"
-    interactjs "^1.3.4"
-
-vue-grid-layout@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/vue-grid-layout/-/vue-grid-layout-2.3.3.tgz#1552beac5e06867d52f2dbe73753bec25063c8a1"
-  integrity sha512-czzQ7TpetYziKb9cfnhxumaP6AVKfx4Jevymy/FdzmZ15HWKSGVVcWSNe1HBrtDE6DywewuO3KcFrCc0OehqYQ==
-  dependencies:
-    element-resize-detector "^1.1.10"
-    interactjs "^1.3.4"
 
 vue-hot-reload-api@^2.3.0:
   version "2.3.1"
@@ -9530,14 +9457,6 @@ vue-no-ssr@^1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/vue-no-ssr/-/vue-no-ssr-1.1.1.tgz#875f3be6fb0ae41568a837f3ac1a80eaa137b998"
   integrity sha512-ZMjqRpWabMPqPc7gIrG0Nw6vRf1+itwf0Itft7LbMXs2g3Zs/NFmevjZGN1x7K3Q95GmIjWbQZTVerxiBxI+0g==
-
-vue-quill-editor@^3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/vue-quill-editor/-/vue-quill-editor-3.0.6.tgz#1f85646211d68a31a80a72cb7f45bb2f119bc8fb"
-  integrity sha512-g20oSZNWg8Hbu41Kinjd55e235qVWPLfg4NvsLW6d+DhgBTFbEuMpcWlUdrD6qT3+Noim6DRu18VLM9lVShXOQ==
-  dependencies:
-    object-assign "^4.1.1"
-    quill "^1.3.4"
 
 vue-router@^3.0.2:
   version "3.0.2"

@@ -19,6 +19,7 @@ import ComponentScroller from '../../components/projects/sidebar/ComponentScroll
 
 export default {
     layout: 'project/project-default',
+    middleware: 'auth',
 
     components: {
     'project': Project,
