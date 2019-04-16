@@ -5,8 +5,8 @@
     <ul class="menu-list">
       <li>
         <fa class="show-scroller-chevron" icon="chevron-right" @click="showScroller" />
-        <a >
-          <span class="icon"><i class="fa fa-home" @click="save"></i></span> Save
+        <a @click="save">
+          <span class="icon"><i class="fa fa-home"></i></span> Save
         </a>
       </li>
       <li>
@@ -65,7 +65,7 @@ methods: {
       this.$emit('clicked', this.scrollerActivated)
     },
     save() {
-      this.$store.dispatch('project/saveToDB');
+      this.$store.dispatch('Layout/saveToDB', this.$route.params);
     }
   },
 }

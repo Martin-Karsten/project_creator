@@ -129,7 +129,7 @@ export async function setContext(app, context) {
       payload: context.payload,
       error: context.error,
       base: '/',
-      env: {"apiUrl":"http://localhost:8000/","appName":"Laravel-Nuxt","appLocale":"en","githubAuth":false}
+      env: {"apiUrl":"http://localhost:8000","appName":"Laravel-Nuxt","appLocale":"en","unsplashApplicationId":"0e6fb958d59760bc606fdb08d6f5ee9936203aa26cf7f9ba47a1380adc44a03d","unsplashSecret":"05e0b36ff66aa670e542c3add98313480711d40e1c0264f35534c8c92e1f9dd0","githubAuth":false}
     }
     // Only set once
     if (context.req) app.context.req = context.req

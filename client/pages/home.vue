@@ -1,10 +1,10 @@
 <template>
 <div class="home">
 
-  <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
-  <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1>
+  <!-- <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
+  <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1> -->
 
-<div class="columns">
+<div class="columns is-multiline">
 
   <home-sidebar class="column is-1">
       <li>
@@ -16,21 +16,21 @@
   </home-sidebar>
   
     <div class="column is-11 columns  is-multiline project-list" >
-      <div class="column is-3" >
+      <div class="column is-2" >
         <div class="project-item  project-empty has-text-centered is-vertical-center">
             <div class="column is-11 project-name ">
-              <input class="input title is-3" type="text" placeholder="Project Name..." v-model="form.project_name">
+              <input class="input title is-5 project-name-input" type="text" placeholder="Project Name..." v-model="form.project_name">
               <button class="button is-success" @click="createProject">{{ $t('create_project') }}</button>
               <button class="button is-danger" @click="cancelProject">{{ $t('cancel') }}</button>
             </div>
         </div>
       </div>
       
-      <div class="column is-3" v-show="ready" v-for="project in projectsClicked" :key="project.id">
+      <div class="column is-2" v-show="ready" v-for="project in projects" :key="project.id">
         <div class="project-item  project-empty has-text-centered is-vertical-center">
         <div class="dropdown is-right project-dropdown" :class="{ 'is-active': project.clicked}" >
           <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="project.clicked = !project.clicked">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="selectProject(project.id)">
               <span class="icon is-small">
                 <fa icon="ellipsis-h"/>
               </span>
@@ -46,9 +46,9 @@
           </div>
         </div>
             <div class="column is-11 project-name ">
-              <input class="input title is-3" type="text" v-bind:placeholder="project.project_name" v-model="form.project_name">
+              <input class="input title is-5 project-name-input" type="text" v-bind:placeholder="project.project_name" v-model="form.project_name">
               <!-- <router-link :to="{name: 'project.view', params: { id: project.id }}"> -->
-                <p>{{ $t('created_at') }}</p>
+                <!-- <p>{{ $t('created_at') }}</p> -->
                 <b>
                   <p>{{project.created_at}}</p>
                 </b>
@@ -59,33 +59,41 @@
       </div>
 
   </div>
+
+  <div class="colum ">
+    <pagination :pagination="pagination" :offset="3" @paginate="changeNumber()"></pagination>
+  </div>
 </div>
+  
 </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import axios from 'axios'
 import Form from 'vform'
 import HomeSidebar from '../components/home/HomeSidebar'
 import Checkbox from '../components/global/Checkbox'
+import Pagination from '../components/global/Pagination'
 export default {
   layout:'default',
   middleware: 'auth',
 
   components: {
     HomeSidebar,
-    Checkbox
+    Checkbox,
+    Pagination
   },
 
   head () {
     return { title: this.$t('home') }
   },
   data: () => ({
-      projectsExist: false,
-      inputActivated: false,
       projectsClicked: [],
+        pagination: {
+            'current_page': 1
+        },
       inputName: 'column is-2 input-big has-text-centered is-3 project-container',
-      id: '',
       ready: false,
       form: new Form({
             project_name: '',
@@ -104,16 +112,8 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch('project/fetchProjects')
-    //copy array and add clicked in order to loop through and set clicked value individualy
-    this.projectsClicked = this.projects.map(function (project) {
-      return {id:project.id, project_name:project.project_name, created_at:project.created_at, clicked:false}
-    });
+
     this.ready = true
-  },
-  watch: {
-    projects: function(newValue, oldValue) {
-      this.projectsClicked = [...newValue]
-    }
   },
   methods:{
     showProjectNameInput(){
@@ -122,16 +122,31 @@ export default {
       this.iconAcitvated = false;
       this.inputActivated = true
     },
+    selectProject(id) {
+      this.$store.commit('project/SELECT_PROJECT', id)
+    },
+    async changeNumber() {
+    axios.get('user/projects?page=' + this.pagination.current_page)
+    .then(response => {
+        this.$store.dispatch('project/changeNumber', response)
+        this.pagination = response.data.pagination;
+    })
+    .catch(error => {
+      console.log(error.response.data)
+    });
+
+    },
     async createProject () {
       this.form.user_id = this.user.id
       const { data } = await this.form.post('user/project/create')
+
+      this.$store.commit('Layout/CREATE_LAYOUT')
       this.$store.dispatch('project/createProject', {
+        project_id: data.id,
         project_name: data.project_name,
         user_id : data.user_id,
         private : data.private
       })
-
-      this.$store.commit('Layout/CREATE_LAYOUT')
 
       // Redirect to project creation.
       this.$router.push({ name: 'project.create', params: data })
@@ -176,14 +191,24 @@ align-items: center;
 
 div.project-container{
   position: relative;
-  min-width: 22rem;
+  min-width: 10rem;
+}
+
+div.project-list {
+  margin-top: 1rem;
+  padding-bottom: 0;
+  min-height: 83.5vh;
+}
+
+input.project-name-input {
+  margin-bottom: 0!important;
 }
 
 div.project-item{
   position: relative;
   border-style: solid;
   border-radius: 4px;
-  min-height: 20rem;
+  min-height: 13rem;
 }
 
 div.project-empty{
@@ -196,8 +221,8 @@ div.project-empy:hover{
 
 .project-dropdown{
   position: absolute;
-  top: 24px;
-  right: 32px;
+  top: 14px;
+  right: 22px;
   font-size: 18px;
   cursor: pointer;
 }

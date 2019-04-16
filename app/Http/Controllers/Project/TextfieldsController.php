@@ -41,9 +41,24 @@ class TextfieldsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $textfields = $request->data;
+        foreach($textfields as $field){
+            foreach($field as $f){
+                   Textfield::updateOrCreate([
+                    'name' => $f['name'],
+                    'project_id' => $f['project_id'],
+                    'text' => $f['text'],
+                    'row' => $f['row'],
+                    'font_size' => $f['font_size'],
+                    'color' => $f['color'],
+                    'top' => $f['top'],
+                    'left' => $f['left'],
+                    'width' => $f['width'],
+                    'height' => $f['height']
+                ]);
+            }
+        }
     }
-
     /**
      * Display the specified resource.
      *

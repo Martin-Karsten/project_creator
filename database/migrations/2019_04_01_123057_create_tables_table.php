@@ -16,9 +16,15 @@ class CreateTablesTable extends Migration
         Schema::create('tables', function (Blueprint $table) {
             $table->increments('id');
             $table->string('project_id');
+            $table->unsignedTinyInteger('row')->default(1);
             $table->unsignedTinyInteger('rows')->default(2);
             $table->unsignedTinyInteger('columns')->default(3);
             $table->text('text');
+            $table->unsignedSmallInteger('top')->default(0);
+            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('width')->default(150);
+            $table->unsignedSmallInteger('height')->default(100);
+            $table->unsignedSmallInteger('z_index')->default(0);
             $table->timestamps();
 
             $table->foreign('project_id')

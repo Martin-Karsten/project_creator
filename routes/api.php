@@ -35,7 +35,15 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Project Components
         //Textfields
         Route::get('/user/project/{id}/textfields', 'Project\TextfieldsController@index');
+        Route::put('user/project/{id}/textfields', 'Project\TextfieldsController@store');
 
+        //Images
+        Route::get('/user/project/{id}/images', 'Project\ImagesController@index');
+        Route::put('user/project/{id}/images', 'Project\ImagesController@store');
+
+        //WebImages
+        Route::get('/user/project/{id}/web-images', 'Project\WebImagesController@index');
+        Route::put('/user/project/{id}/web-images, Project\WebImagesController@store');
 });
 
 Route::group(['middleware' => 'guest:api'], function () {

@@ -3,12 +3,6 @@ import NuxtLoading from './components/nuxt-loading.vue'
 
 import '../client/assets/sass/app.scss'
 
-import '../node_modules/quill/dist/quill.snow.css'
-
-import '../node_modules/quill/dist/quill.bubble.css'
-
-import '../node_modules/quill/dist/quill.core.css'
-
 import '../node_modules/bulma/css/bulma.css'
 
 import _6f6c098b from '../client/layouts/default.vue'
@@ -19,7 +13,7 @@ import _ee7125b0 from '../client/layouts/simple.vue'
 const layouts = { "_default": _6f6c098b,"_project/project-default": _29dc203e,"_settings": _a59e1bce,"_simple": _ee7125b0 }
 
 export default {
-  head: {"titleTemplate":"%s - undefined","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"script":[{"src":"https:\u002F\u002Fcdn.polyfill.io\u002Fv2\u002Fpolyfill.min.js?features=Promise,Object.assign,Object.values,Array.prototype.find,Array.prototype.findIndex,Array.prototype.includes,String.prototype.includes,String.prototype.startsWith,String.prototype.endsWith"}],"style":[]},
+  head: {"title":"TITLE","titleTemplate":"%s - undefined","meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Nuxt.js project"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"script":[{"src":"https:\u002F\u002Fcdn.polyfill.io\u002Fv2\u002Fpolyfill.min.js?features=Promise,Object.assign,Object.values,Array.prototype.find,Array.prototype.findIndex,Array.prototype.includes,String.prototype.includes,String.prototype.startsWith,String.prototype.endsWith"}],"style":[]},
 
   render(h, props) {
     const loadingEl = h('nuxt-loading', { ref: 'loading' })

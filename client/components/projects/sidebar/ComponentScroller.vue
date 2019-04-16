@@ -11,7 +11,6 @@
                 :href="'#item' + element.id"
                 class="scroll-item"
                 >
-                {{layout[element.id].id}}
                 <div class="scroll-handle" />
                 </a>
             </draggable>

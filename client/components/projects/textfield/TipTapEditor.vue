@@ -1,15 +1,7 @@
 <template>
-  <div
-   class="textfield-content editor"
-  :drag="true"
-  :isSnappable="false"
-  >
-    <editor-menu-bar :editor="editor">
-      <div
-        class="menubar is-hide"
-        :class="{ 'is-focused': focused }"
-        slot-scope="{ commands, isActive, focused }"
-      >
+  <div>
+    <editor-menu-bar ref="editor" :editor="editor">
+      <div class="" slot-scope="{ commands, isActive }">
         <button
           class="button is-small menubar__button"
           :class="{ 'is-active': isActive.bold() }"
@@ -100,7 +92,7 @@
 
       </div>
     </editor-menu-bar>
-    <editor-content :id="'textfield-'+id" class="textfield editor__content" :editor="editor"/>
+    <editor-content ref="editorContent" :id="'textfield-'+id" class="textfield editor__content" :editor="editor"/>
 
   </div>
 </template>
@@ -160,7 +152,7 @@ export default {
           this.html = getHTML()
         },
         onBlur: () => {
-          this.$store.commit('Textfield/UPDATE_TEXT', this.html)  
+          // this.$store.commit('Textfield/UPDATE_TEXT', this.html)  
         },
       }),
       json: this.text,
@@ -170,11 +162,15 @@ export default {
   mounted() {
     // this.content
     this.json = this.content
+    this.test = this.editor
   },
   beforeDestroy() {
     this.editor.destroy()
   },
   methods: {
+    sendEditor() {
+      this.$store.commit('Layout/SET_EDITOR', this.editor)
+    },
     clearContent() {
       this.editor.clearContent(true)
       this.editor.focus()

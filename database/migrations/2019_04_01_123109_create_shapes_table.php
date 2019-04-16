@@ -16,6 +16,12 @@ class CreateShapesTable extends Migration
         Schema::create('shapes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('project_id');
+            $table->unsignedTinyInteger('row')->default(1);
+            $table->unsignedSmallInteger('top')->default(0);
+            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('width')->default(150);
+            $table->unsignedSmallInteger('height')->default(100);
+            $table->unsignedSmallInteger('z_index')->default(0);
             $table->timestamps();
 
             $table->foreign('project_id')

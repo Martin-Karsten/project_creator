@@ -1,4 +1,4 @@
-import 'dotenv'
+require('dotenv').config();
 import  nodeExternals from 'webpack-node-externals'
 
 const polyfills = [
@@ -20,14 +20,16 @@ module.exports = {
 
   env: {
     apiUrl: process.env.APP_URL || 'http://localhost:8000/',
-    appName: process.env.APP_NAME || 'Laravel-Nuxt',
+    appName: process.env.VUE_APP_NAME || 'Laravel-Nuxt',
     appLocale: process.env.APP_LOCALE || 'en',
+    unsplashApplicationId: process.env.VUE_APP_UNSPLASH_ACCESS_KEY,
+    unsplashSecret: process.env.VUE_APP_UNSPLASH_SECRET_KEY,
     githubAuth: !!process.env.GITHUB_CLIENT_ID
   },
 
   head: {
-    title: process.env.APP_NAME,
-    titleTemplate: '%s - ' + process.env.APP_NAME,
+    title: process.env.VUE_APP_NAME || 'TITLE',
+    titleTemplate: '%s - ' + process.env.VUE_APP_NAME || 'TITLE TEMPLATE',    
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

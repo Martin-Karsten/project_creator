@@ -19,6 +19,11 @@ class CreateProjectsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedTinyInteger('rows')->default(1);
             $table->boolean('private')->default(true);
+            $table->unsignedSmallInteger('top')->default(0);
+            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('width')->default(150);
+            $table->unsignedSmallInteger('height')->default(100);
+            $table->unsignedSmallInteger('z_index')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id')

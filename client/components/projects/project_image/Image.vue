@@ -1,20 +1,28 @@
 <template>
-  <div
-  >
-        <img v-bind:src="image" />
+  <div>
+    <img :src="imageData" />
   </div>
 </template>
 
 <script>
-import twice from '/home/martin/nuxt/larvel-nuxt/client/Images/twice.jpg'
+// import twice from '/home/martin/nuxt/larvel-nuxt/client/Images/twice.jpg'
+import twice from '/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg'
+import { mapGetters } from 'vuex'
 export default {
-    components: {
-    },
-    data() {
-        return {
-            image: twice
-        }
+  props:['id', 'url', 'imageData'],
+  components: {
+  },
+  data() {
+      return {
+          image: twice
+      }
+},
+
+  methods: {
+    showImage(){
+
     }
+  }
 }
 </script>
 

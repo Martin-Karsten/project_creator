@@ -2,11 +2,11 @@
   <div class="columns is-multiline start-menu">
       <div class="column is-1 menu-section first-menu-section">
         <div class="columns is-multiline">
-          <div class="column is-4"> <fa class="component-icon" icon="image"/> </div>
-          <div class="column is-4"> <fa class="component-icon" icon="font" @click="activateTextfieldCreator" v-bind:class="[creatorActivated ? menuItemActivated : '']"/> </div>
-          <div class="column is-4"> <fa class="component-icon" icon="table"/> </div>
-          <div class="column is-4"> <fa class="component-icon" icon="chart-bar"/> </div>
-          <div class="column is-4"> <fa class="component-icon" icon="shapes" @click="fieldActivated = true"/> </div>
+          <div class="column is-4"> <fa id="menu-icon-0" class="component-icon" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/> </div>
+          <div class="column is-4"> <fa id="menu-icon-1" class="component-icon" icon="image" @click="activateImageIcon" /> </div>          
+          <div class="column is-4"> <fa id="menu-icon-2" class="component-icon" icon="table" @click="activateTableIcon" /> </div>
+          <div class="column is-4"> <fa id="menu-icon-3" class="component-icon" icon="chart-bar" @click="activateChartIcon" /> </div>
+          <div class="column is-4"> <fa id="menu-icon-4" class="component-icon" icon="shapes" @click="fieldActivated = true"/> </div>
           <div v-show="fieldActivated">
             <div class="box">
               <div class="columns">
@@ -30,6 +30,44 @@
           <div class="column is-2"> <fa class="component-icon" icon="underline"/> </div>
         </div>
       </div>
+
+      <div class="column is-2 menu-section second-menu-section">
+        <div class="columns is-multiline is-gapless">
+<editor-menu-bar :editor="editor">
+      <div
+        class="menubar is-hide"
+        :class="{ 'is-focused': focused }"
+        slot-scope="{ commands, isActive, focused }"
+      >
+        <button
+          class="button is-small menubar__button"
+          :class="{ 'is-active': isActive.bold() }"
+          @click="commands.bold"
+        >
+          <fa class="component-icon" icon="bold"/>
+        </button>
+
+        <button
+          class="button is-small menubar__button"
+          :class="{ 'is-active': isActive.italic() }"
+          @click="commands.italic"
+        >
+          <fa class="component-icon" icon="italic"/>
+        </button>
+
+        <button
+          class="button is-small menubar__button"
+          :class="{ 'is-active': isActive.underline() }"
+          @click="commands.underline"
+        >
+          <fa class="component-icon" icon="underline"/>
+        </button>
+
+      </div>
+    </editor-menu-bar>
+        </div>
+      </div>
+
     </div>  
 </template>
 
@@ -37,6 +75,7 @@
 import { Editor, EditorMenuBar, EditorContent } from 'tiptap'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
+import UrlInput from './general/UrlInput'
 import {
   Blockquote,
   CodeBlock,
@@ -59,6 +98,7 @@ export default {
     components: {
       EditorContent,
       EditorMenuBar,
+      UrlInput
     },
     data(){
       return{
@@ -97,9 +137,25 @@ export default {
     this.test()
   },
     methods: {
-      activateTextfieldCreator(){
+      activateTextfieldIcon(){
         this.creatorActivated = true
-        this.$store.commit('LayoutItem/SET_ITEM_CREATOR', true)
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
+      },
+      activateImageIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 1)
+      },
+      activateTableIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 2)
+      },
+      activateChartIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 3)
+      },
+      activateShapeIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
       },
       test() {
 this.editor = new Editor({

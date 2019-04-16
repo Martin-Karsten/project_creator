@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Textfield extends Model
 {
-    //
+    protected $fillable = [
+        'name', 'project_id', 'text', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
+    ];
 
     public function project()
     {

@@ -53,4 +53,13 @@ class Project extends Model
     public function textfields() {
         return $this->hasMany('App\Models\Textfield');
     }
+    public function images() {
+        return $this->hasMany('App\Models\Image');
+    }
+    public function webImages() {
+        return $this->hasMany('App\Models\WebImage');
+    }
+    public function webVideos() {
+        return $this->hasMany('App\Models\WebVideo');
+    }
 }

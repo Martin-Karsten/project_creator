@@ -3,8 +3,13 @@
     margin-bottom: 0.5rem;
     transition: visibility 0.2s 0.4s, opacity 0.2s 0.4s;
   
-    &.is-hide {
-      position: fixed;
+    // &.is-hide {
+    //   position: fixed;
+    //   visibility: hidden;
+    //   opacity: 0;
+    // }
+
+    &.is-hidden {
       visibility: hidden;
       opacity: 0;
     }

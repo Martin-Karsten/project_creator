@@ -15,23 +15,29 @@ class ProjectsController extends Controller
 {
     protected function index(){
 
-        return Auth::user()->projects;
+        $projects = Auth::user()->projects()->latest('updated_at')->paginate(17);
+
+        $response = [
+            'pagination' => [
+                'total' => $projects->total(),
+                'per_page' => $projects->perPage(),
+                'current_page' => $projects->currentPage(),
+                'last_page' => $projects->lastPage(),
+                'from' => $projects->firstItem(),
+                'to' => $projects->lastItem()
+            ],
+            'data' => $projects
+        ];
+        return response()->json($response);
     }
     protected function show($id)
     {
-        $project = DB::table('projects')
-        ->where('projects.id', $id)
-        ->join('textfields', 'projects.id', '=', 'textfields.project_id')
-        ->join('images', 'projects.id', '=', 'images.project_id')
-        ->join('charts', 'projects.id', '=', 'charts.project_id')
-        ->join('tables', 'projects.id', '=', 'tables.project_id')
-        ->join('shapes', 'projects.id', '=', 'shapes.project_id')
-        ->get();
+        return Project::where([['user_id', '=', 1], ['id', '=', $id]])->with('textfields')->with('webImages')->with('images')->with('webVideos')->get();
         
-        return DB::table('projects')->where('projects.id', $id)->join('textfields', 'projects.id', '=', 'textfields.project_id')->get();
+        // return DB::table('projects')
+        // ->where('projects.id', $id)
+        // ->get();
         
-        // return $project;
-        // return Auth::user()->projects->where('id', $id)->first();
     }
     protected function create(ProjectStoreRequest $request)
     {
@@ -50,6 +56,5 @@ class ProjectsController extends Controller
 
     protected function delete($id) {
         Project::destroy($id);
-        // return Auth::user()->projects->where('id', $id)->delete();
     }
 }

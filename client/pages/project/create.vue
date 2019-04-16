@@ -1,40 +1,51 @@
 <template>
-    <div class="columns container-fluid create-project">
-    
+    <div class="container-fluid create-project">
+        <div class="columns">
             <sidebar class="column side is-2" @clicked="activateScroller"/>
             <transition name="fade-enter" mode="out-in">
             <div class="column is-1 scroller"  v-show="activated">
                 <component-scroller></component-scroller>
             </div>
             </transition>
-            <project class="column"/>
-
+            <project class="column" />
+            
+        </div>
+            <edit-container v-show="editContainer.activated" ></edit-container>
     </div> 
 </template>
 
 <script>
 import Project from '../../components/projects/Project'
+import EditContainer from '../../components/projects/edit_menu/EditContainer'
 import Sidebar from '../../components/projects/sidebar/Sidebar'
 import ComponentScroller from '../../components/projects/sidebar/ComponentScroller'
+
+import { mapGetters } from 'vuex'
 
 export default {
     layout: 'project/project-default',
     middleware: 'auth',
 
     components: {
-    'project': Project,
-    'sidebar': Sidebar,
-    ComponentScroller
+    Project,
+    Sidebar,
+    ComponentScroller,
+    EditContainer
     },
     data(){
         return {
             activated : false,
         }
     },
+    computed: {
+        ...mapGetters({
+            editContainer: 'EditContainer/getEditContainer',
+        })
+    },
     methods: {
         activateScroller(value) {
             this.activated = value
-        }
+        },
     }
 }
 </script>
