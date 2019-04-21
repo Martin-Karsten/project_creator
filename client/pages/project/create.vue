@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid create-project">
+    <div class="container-fluid create-project" @click="closeContextMenu">
         <div class="columns">
             <sidebar class="column side is-2" @clicked="activateScroller"/>
             <transition name="fade-enter" mode="out-in">
@@ -11,6 +11,7 @@
             
         </div>
             <edit-container v-show="editContainer.activated" ></edit-container>
+
     </div> 
 </template>
 
@@ -30,7 +31,7 @@ export default {
     Project,
     Sidebar,
     ComponentScroller,
-    EditContainer
+    EditContainer,
     },
     data(){
         return {
@@ -43,6 +44,9 @@ export default {
         })
     },
     methods: {
+        closeContextMenu(){
+            this.$store.dispatch('Contextmenus/ContextMenu/closeContextMenu')
+        },
         activateScroller(value) {
             this.activated = value
         },

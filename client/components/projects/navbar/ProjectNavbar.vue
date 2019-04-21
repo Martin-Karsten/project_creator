@@ -8,12 +8,12 @@
                 <a class="navbar-item" @click="saveProject">
                     SAVE
                 </a>
-                <a class="navbar-item">
+                <a class="navbar-item" @click="toStartMenu">
                     START
                 </a>
 
-                <a class="navbar-item">
-                    Documentation
+                <a class="navbar-item" @click="toStartMenuAnimations">
+                    ANIMATIONS
                 </a>
 
                 <div class="navbar-item has-dropdown is-hoverable">
@@ -65,7 +65,8 @@
     </div>
             </div>
         </nav>
-        <start-menu v-show="showStartMenu"></start-menu>
+        <!-- <start-menu v-show="showStartMenu"></start-menu> -->
+        <start-menu-container></start-menu-container>
     </div>
 </template>
 
@@ -73,11 +74,12 @@
 <script>
 import { mapGetters } from 'vuex'
 import LocaleDropdown from '../../LocaleDropdown'
-import StartMenu from './StartMenu'
+import StartMenuContainer from './StartMenuContainer'
+import StartMenuAnimations from './StartMenuAnimations'
 export default {
     components: {
         LocaleDropdown,
-        'startMenu' : StartMenu
+        StartMenuContainer
     },
     data(){
         return{
@@ -99,7 +101,15 @@ export default {
         },
         saveProject(){
 
-        }
+        },
+        toStartMenu(){
+            let payload = {name: 'StartMenuDefault'}
+            this.$store.dispatch('StartMenus/StartMenu/openStartMenu', payload)
+        },
+        toStartMenuAnimations(){
+            let payload = {name: 'StartMenuAnimations'}
+            this.$store.dispatch('StartMenus/StartMenu/openStartMenu',  payload)
+        },
     }
 }
 </script>

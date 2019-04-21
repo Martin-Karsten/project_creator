@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <editor-menu-bar ref="editor" :editor="editor">
+  <div @contextmenu="openContextMenu">
+    <editor-menu-bar ref="editor" :editor="editor" @contextmenu="openContextMenu">
       <div class="" slot-scope="{ commands, isActive }">
         <button
           class="button is-small menubar__button"
@@ -92,7 +92,7 @@
 
       </div>
     </editor-menu-bar>
-    <editor-content ref="editorContent" :id="'textfield-'+id" class="textfield editor__content" :editor="editor"/>
+    <editor-content ref="editorContent" :id="'textfield-'+id" class="textfield editor__content" :editor="editor" @contextmenu="openContextMenu"/>
 
   </div>
 </template>
@@ -168,6 +168,9 @@ export default {
     this.editor.destroy()
   },
   methods: {
+    openContextMenu(){
+      console.log('dsfd')
+    },
     sendEditor() {
       this.$store.commit('Layout/SET_EDITOR', this.editor)
     },

@@ -1,4 +1,3 @@
-import axios from 'axios'
 
 export const state = () => ({
     editContainer: {activated: false, row: 0}

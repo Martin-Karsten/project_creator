@@ -1,5 +1,10 @@
 <template>
     <div class="colums grid">
+          <h1  
+          :class="{'bounceIn animated': animated}">
+            Animate Test
+        </h1>
+        <button class="button" @click="activatePresentationMode">Presentation Mode</button>
         <div class="column is-12 grid-items">
             <draggable
                 :disabled="true"
@@ -46,7 +51,7 @@
                
                 <vue-draggable-resizable  v-for="textfield in element.textfields" :key="textfield.id"
                     :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
-                    :parent="true" :grid="[2,2]"
+                    :parent="true" :grid="[2,2]" :class = "{'wobble animated': animated}"
                 >
                 <no-ssr>
                     <editor :id="textfield.id" :text="textfield.text"/>
@@ -60,11 +65,11 @@
                     <project-image :id="image.id" :imageData="imageData" />
                 </vue-draggable-resizable>
 
-                <vue-draggable-resizable v-for="web_image in element.web_images" :key="web_image.id"
+                <vue-draggable-resizable v-for="(web_image, index) in element.web_images" :key="index"
                     :w="web_image.width" :h="web_image.height" :x="web_image.left" :y="web_image.top" :z="web_image.z_index"
                     :parent="true" :grid="[2,2]" :lock-aspect-ratio="true"
                 >
-                    <web-image :id="web_image.id" :url="web_image.url" />
+                    <web-image :id="web_image.id" :url="web_image.url" :row="index"/>
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable v-for="web_video in element.web_videos" :key="web_video.id"
@@ -81,8 +86,11 @@
                 </div>
                 </div>
             </draggable>
+            <context-menu></context-menu>
         </div>
+
         <fa class="new-page-chevron" icon="chevron-down" @click="addItem"/>
+
     </div>
 </template>
 
@@ -97,6 +105,7 @@ import WebImage from './project_image/WebImage'
 import WebVideo from './video/WebVideo'
 //General
 import UrlInput from './general/UrlInput'
+import ContextMenu from '../../components/projects/context_menu/ContextMenu'
 //Draggables
 import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
@@ -114,13 +123,15 @@ export default {
         ProjectImage,
         WebImage,
         WebVideo,
-        UrlInput
+        UrlInput,
+        ContextMenu
     },
     data () {
         return {
             isEmpty: true,
             dragging: false,
             imageData: '',
+            animated: false
         }
     },
     computed: {
@@ -130,10 +141,21 @@ export default {
             startMenuIcons: "StartMenu/getStartMenuIcons",
         })
     },
+    mounted(){
+        this.$store.dispatch('StartMenus/StartMenu/initialize', this.$route.params)
+    },
     beforeDestroy(){
         this.$store.dispatch('Layout/resetLayout')
     },
     methods: {
+        animate(){
+        var self = this;
+        self.animated = true;
+        setTimeout(function(){ self.animated = false; }, 1000);
+        },
+        activatePresentationMode(event){
+            console.log(event.keyCode)
+        },
         layoutItemClicked(row){
         for( let i = 0; i < this.startMenuIcons.length; i++){ 
         if ( this.startMenuIcons[i].activated === true && i === 0) {
@@ -142,11 +164,19 @@ export default {
             return
             }
         else if (this.startMenuIcons[i].activated === true && i === 1){
-            this.$store.commit('Layout/ADD_WEB_IMAGE', {row: row, icon: i})
+            this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', row)
+            // this.$store.commit('Layout/ADD_WEB_IMAGE', {row: row, icon: i})
             this.$store.commit('StartMenu/SET_ICON_TO_FALSE',{row: row, icon: i})
             return
             }
             }
+        },
+        openContextMenu(row){
+            let payload = {x: event.pageX + 'px',
+                       y: event.pageY + 'px',
+                       row: row}
+            this.$store.commit('ContextMenu/OPEN_CONTEXT_MENU', payload)
         },
         toTextfield(row){
             this.$store.commit('Layout/ADD_TEXTFIELD', row)
@@ -197,6 +227,8 @@ export default {
 </script>
 
 <style>
+@import '/home/martin/nuxt/larvel-nuxt/client/assets/sass/_animations.scss';
+
 div.gird {
     background: lightgrey;
 }
@@ -279,4 +311,6 @@ div.toolbox {
     padding: 0;
     cursor: pointer;
 }
+
+
 </style>

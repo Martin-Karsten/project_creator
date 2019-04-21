@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @contextmenu.prevent="openContextMenu">
     <img :src="url"/>
   </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  props:['id', 'url'],
+  props:['id', 'url', 'row'],
   components: {
   },
   data() {
@@ -17,6 +17,15 @@ export default {
 },
 
   methods: {
+    openContextMenu(){
+                  let payload = {
+                      name: 'WebImageContextMenu',
+                      x: event.pageX + 'px',
+                      y: event.pageY + 'px',
+                      row: this.row}
+            // this.$store.commit('Contextmenus/WebImageContextMenu/OPEN_CONTEXT_MENU', payload)
+            this.$store.dispatch('Contextmenus/ContextMenu/openContextMenu', payload)
+    }
   }
 }
 </script>
