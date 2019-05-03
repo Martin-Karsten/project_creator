@@ -9,7 +9,6 @@ export const getters = {
 
 export const mutations = {
     OPEN_START_MENU (state, payload) {
-        console.log(payload)
         state.startMenu = payload
     },
     CLOSE_START_MENU (state, payload) {
@@ -26,11 +25,9 @@ export const actions = {
             case 'StartMenuDefault':
                 commit('StartMenus/StartMenuDefault/OPEN_START_MENU', payload, {root: true})
                 let p1 = rootGetters['StartMenus/StartMenuDefault/getStartMenu']
-                console.log(p1)
                 commit('OPEN_START_MENU', p1)
                 break;
             case 'StartMenuAnimations':
-            console.log('Animations')
                 commit('StartMenus/StartMenuAnimations/OPEN_START_MENU', payload, {root: true})
                 let p2 = rootGetters['StartMenus/StartMenuAnimations/getStartMenu']
                 commit('OPEN_START_MENU', p2)

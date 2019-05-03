@@ -1,5 +1,5 @@
 <template>
-   <component :is="startMenu.name"></component> 
+   <component :is="startMenu.name" v-show="true"></component> 
 </template>
 
 <script>

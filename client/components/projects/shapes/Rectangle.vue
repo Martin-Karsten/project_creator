@@ -1,17 +1,37 @@
 <template>
-    <div class="rec"
-    :drag="true"
-    :isSnappable="false"
-    >
-    <svg class="item-svg-container"></svg>
-    
-    </div>
+<svg xmlns="http://www.w3.org/2000/svg" width="255" height="255" viewBox="0 0 255 255">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        stroke: #707070;
+      }
+
+      .cls-2 {
+        stroke: none;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <g id="Rectangle_1" data-name="Rectangle 1" class="cls-1">
+    <rect class="cls-2" width="width" height="height"/>
+    <rect class="cls-3" x="0.5" y="0.5" width="width" height="height"/>
+  </g>
+</svg>
 </template>
 
 <script>
+import Rectangle from './Rectangle.svg'
+import Triangle from './Triangle.svg'
+import Ellipse from './Ellipse.svg'
+
 export default {
   components: {
   },
+  props:['width', 'height'],
   data(){
       return{
           shapes: [1,2,3]
@@ -24,16 +44,11 @@ export default {
 </script>
 
 <style>
-svg.item-svg-container {
-  width: 100%;
-  height: 240px;
-  background-color: #2e9;
-  
-  -ms-touch-action: none;
-      touch-action: none;
+div.rectangle {
+    pointer-events: auto;
 }
-.edit-rectangle {
-  fill: #92e;
-  stroke: #fff;
+
+div.box {
+    position: absolute;
 }
 </style>

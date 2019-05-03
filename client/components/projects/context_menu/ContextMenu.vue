@@ -41,5 +41,13 @@ aside.context-menu{
     border-radius: 5px;
     text-align: center;
     z-index: 11; /* 1px higher than the overlay layer */
+    background-color: white;
+    border: black solid 1px;
+}
+
+ul.context-menu-list{
+    border: black solid 1px !important;
+    margin: 0 !important;
+    margin: 0 !important;
 }
 </style>

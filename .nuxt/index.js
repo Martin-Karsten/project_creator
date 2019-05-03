@@ -19,6 +19,7 @@ import nuxt_plugin_vform_f95cee7a from 'nuxt_plugin_vform_f95cee7a' // Source: .
 import nuxt_plugin_axios_fb9c9a02 from 'nuxt_plugin_axios_fb9c9a02' // Source: ../client/plugins/axios
 import nuxt_plugin_fontawesome_773d88fd from 'nuxt_plugin_fontawesome_773d88fd' // Source: ../client/plugins/fontawesome
 import nuxt_plugin_eCharts_35a49963 from 'nuxt_plugin_eCharts_35a49963' // Source: ../client/plugins/eCharts
+import nuxt_plugin_colorpicker_dc745d86 from 'nuxt_plugin_colorpicker_dc745d86' // Source: ../client/plugins/color-picker (ssr: false)
 
 // Component: <no-ssr>
 Vue.component(NoSSR.name, NoSSR)
@@ -166,6 +167,7 @@ async function createApp(ssrContext) {
 
   if (process.client) {
     if (typeof nuxt_plugin_vuescrollto_392955dc === 'function') await nuxt_plugin_vuescrollto_392955dc(app.context, inject)
+    if (typeof nuxt_plugin_colorpicker_dc745d86 === 'function') await nuxt_plugin_colorpicker_dc745d86(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

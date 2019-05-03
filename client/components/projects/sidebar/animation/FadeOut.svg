@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="492" height="447" viewBox="0 0 492 447">
+  <g id="FadeOut" transform="translate(-1153 -239)">
+    <g id="Rectangle_4" data-name="Rectangle 4" transform="translate(1153 239)" fill="#fff" stroke="#707070" stroke-width="20">
+      <rect width="375" height="325" rx="29" stroke="none"/>
+      <rect x="10" y="10" width="355" height="305" rx="19" fill="none"/>
+    </g>
+    <g id="Rectangle_5" data-name="Rectangle 5" transform="translate(1270 361)" fill="#fff" stroke="#707070" stroke-width="20">
+      <rect width="375" height="325" rx="35" stroke="none"/>
+      <rect x="10" y="10" width="355" height="305" rx="25" fill="none"/>
+    </g>
+    <line id="Line_6" data-name="Line 6" x1="68" y2="58" transform="translate(1169.5 253.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <path id="Path_6" data-name="Path 6" d="M135.662,0,44.514,72.227,0,107.5" transform="translate(1169.5 253.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <path id="Path_7" data-name="Path 7" d="M192.824,0,63.27,99.854,0,148.621" transform="translate(1169.5 261.65)" fill="none" stroke="#707070" stroke-width="20"/>
+    <path id="Path_8" data-name="Path 8" d="M257.131,0,84.371,131.539,0,195.779" transform="translate(1169.5 261.65)" fill="none" stroke="#707070" stroke-width="20"/>
+    <line id="Line_7" data-name="Line 7" x1="142" y2="107" transform="translate(1349.5 261.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <line id="Line_8" data-name="Line 8" x1="110" y2="84" transform="translate(1169.5 424.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <line id="Line_9" data-name="Line 9" x1="101" y2="77" transform="translate(1412.5 291.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <line id="Line_10" data-name="Line 10" x1="103" y2="81" transform="translate(1176.5 466.5)" fill="none" stroke="#707070" stroke-width="20"/>
+    <path id="Path_9" data-name="Path 9" d="M42.329,0l-16.7,15.454L0,39.169" transform="translate(1237.5 508.331)" fill="none" stroke="#707070" stroke-width="20"/>
+    <g id="Rectangle_6" data-name="Rectangle 6" transform="translate(1270 361)" fill="#fff" stroke="#707070" stroke-width="20">
+      <rect width="375" height="325" rx="35" stroke="none"/>
+      <rect x="10" y="10" width="355" height="305" rx="25" fill="none"/>
+    </g>
+    <path id="Path_10" data-name="Path 10" d="M51,0,30.879,16.768,0,42.5" transform="translate(1466.5 326)" fill="none" stroke="#707070" stroke-width="20"/>
+  </g>
+</svg>

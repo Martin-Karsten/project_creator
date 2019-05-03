@@ -2,7 +2,7 @@
   <div class="columns is-multiline start-menu">
       <div class="column is-1 menu-section first-menu-section">
         <div class="columns is-multiline">
-          <div class="column is-4"> <fa id="menu-icon-0" class="component-icon" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/> </div>
+          <div class="column is-4 "> <fa id="menu-icon-0" class="component-icon start-menu-button" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/> </div>
           <div class="column is-4"> <fa id="menu-icon-1" class="component-icon" icon="image" @click="activateImageIcon" /> </div>          
           <div class="column is-4"> <fa id="menu-icon-2" class="component-icon" icon="table" @click="activateTableIcon" /> </div>
           <div class="column is-4"> <fa id="menu-icon-3" class="component-icon" icon="chart-bar" @click="activateChartIcon" /> </div>
@@ -20,22 +20,16 @@
       </div>
       <div class="column is-2 menu-section second-menu-section">
         <div class="columns is-multiline is-gapless">
-          <div class="column is-6 font-type-input"> <input type="text" class="input font-type-input" v-model.lazy="fontType" > </div>
-          <div class="column is-0 font-size-input"> <input type="number" class="input" v-model.lazy="fontSize"> </div>
-          <div class="column is-1"> <fa class="component-icon font-size-input-icon" icon="font"/> </div>
-          <div class="column is-1"> <fa class="component-icon font-size-input-icon" icon="font"/> </div>
-          <div class="column is-1"> <fa class="component-icon font-size-input-icon" icon="font"/> </div>
-          <div class="column is-2"> <fa class="component-icon" icon="bold"/> </div>
-          <div class="column is-2"> <fa class="component-icon" icon="italic"/> </div>
-          <div class="column is-2"> <fa class="component-icon" icon="underline"/> </div>
+          <table-size-picker v-show="tableSizePickerActivated" />
         </div>
       </div>
 
       <div class="column is-2 menu-section second-menu-section">
         <div class="columns is-multiline is-gapless">
-<editor-menu-bar :editor="editor">
+
+    <editor-menu-bar :editor="editor"> 
       <div
-        class="menubar is-hide"
+        class="menubar"
         :class="{ 'is-focused': focused }"
         slot-scope="{ commands, isActive, focused }"
       >
@@ -75,6 +69,7 @@
 import { Editor, EditorMenuBar, EditorContent } from 'tiptap'
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
+import TableSizePicker from './table/TableSizePicker'
 import UrlInput from './general/UrlInput'
 import {
   Blockquote,
@@ -98,6 +93,7 @@ export default {
     components: {
       EditorContent,
       EditorMenuBar,
+      TableSizePicker,
       UrlInput
     },
     data(){
@@ -106,6 +102,7 @@ export default {
         menuItemActivated: 'menu-section-activated',
         creatorActivated: false,
         fieldActivated: false,
+        tableSizePickerActivated: false,
       }
     },
     computed: {
@@ -134,7 +131,6 @@ export default {
   },
 
   mounted() {
-    this.test()
   },
     methods: {
       activateTextfieldIcon(){
@@ -146,6 +142,7 @@ export default {
         this.$store.commit('StartMenu/ACTIVATE_ICON', 1)
       },
       activateTableIcon(){
+        this.tableSizePickerActivated = !this.tableSizePickerActivated
         this.creatorActivated = true
         this.$store.commit('StartMenu/ACTIVATE_ICON', 2)
       },

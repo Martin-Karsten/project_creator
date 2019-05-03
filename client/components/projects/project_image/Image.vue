@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// import twice from '/home/martin/nuxt/larvel-nuxt/client/Images/twice.jpg'
 import twice from '/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg'
 import { mapGetters } from 'vuex'
 export default {

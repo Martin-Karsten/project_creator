@@ -6,14 +6,14 @@
 
 <div class="columns is-multiline">
 
-  <home-sidebar class="column is-1">
+  <!-- <home-sidebar class="column is-1">
       <li>
         <fa class="show-scroller-chevron" icon="chevron-right" />
       </li>
       <li>
           <div></div>
       </li>
-  </home-sidebar>
+  </home-sidebar> -->
   
     <div class="column is-11 columns  is-multiline project-list" >
       <div class="column is-2" >
@@ -60,7 +60,7 @@
 
   </div>
 
-  <div class="colum ">
+  <div class="column is-half is-offset-one-quarter">
     <pagination :pagination="pagination" :offset="3" @paginate="changeNumber()"></pagination>
   </div>
 </div>
@@ -72,7 +72,7 @@
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import Form from 'vform'
-import HomeSidebar from '../components/home/HomeSidebar'
+// import HomeSidebar from '../components/home/HomeSidebar'
 import Checkbox from '../components/global/Checkbox'
 import Pagination from '../components/global/Pagination'
 export default {
@@ -80,7 +80,7 @@ export default {
   middleware: 'auth',
 
   components: {
-    HomeSidebar,
+    // HomeSidebar,
     Checkbox,
     Pagination
   },
@@ -179,6 +179,9 @@ export default {
 
 <style>
 
+div.home{
+}
+
 h1.home-title {
   margin-bottom: 0.5rem;
 }
@@ -197,7 +200,7 @@ div.project-container{
 div.project-list {
   margin-top: 1rem;
   padding-bottom: 0;
-  min-height: 83.5vh;
+  min-height: 82vh;
 }
 
 input.project-name-input {

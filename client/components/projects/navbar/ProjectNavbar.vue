@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar component-navigation" role="navigation" aria-label="component navigation">
+        <nav class="navbar component-navigation" role="navigation" aria-label="component navigation" v-show="true">
 
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
@@ -89,7 +89,8 @@ export default {
     },
 
     computed: mapGetters({
-        user: 'auth/user'
+        user: 'auth/user',
+        currentMode: 'PresentationMode/getCurrentMode'
     }),
     
     methods: {

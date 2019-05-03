@@ -62,4 +62,7 @@ class Project extends Model
     public function webVideos() {
         return $this->hasMany('App\Models\WebVideo');
     }
+    public function tables() {
+        return $this->hasMany('App\Models\Table');
+    }
 }

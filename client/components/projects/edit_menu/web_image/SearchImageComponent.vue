@@ -1,7 +1,7 @@
 <template>
     <div>
         <form class="form-input" @submit.prevent="searchImage">
-            <input type="text" class="input" placeholder="Search for by Keyword" v-model="searchInput">
+            <input type="text" class="input" placeholder="Search for Image by Keyword" v-model="searchInput">
         </form>
 
         <div class="columns web-images-search-columns is-multiline">

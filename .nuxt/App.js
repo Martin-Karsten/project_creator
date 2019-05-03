@@ -3,8 +3,6 @@ import NuxtLoading from './components/nuxt-loading.vue'
 
 import '../client/assets/sass/app.scss'
 
-import '../node_modules/bulma/css/bulma.css'
-
 import _6f6c098b from '../client/layouts/default.vue'
 import _29dc203e from '../client/layouts/project/project-default.vue'
 import _a59e1bce from '../client/layouts/settings.vue'

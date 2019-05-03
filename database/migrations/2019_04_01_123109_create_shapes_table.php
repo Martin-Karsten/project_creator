@@ -14,14 +14,24 @@ class CreateShapesTable extends Migration
     public function up()
     {
         Schema::create('shapes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('project_id');
-            $table->unsignedTinyInteger('row')->default(1);
+            $table->string('shape_name', 100)->nullable();
+            $table->string('animation_name', 25)->nullable();
+            $table->boolean('animated')->default(false);
+            $table->unsignedTinyInteger('row')->default(0);
             $table->unsignedSmallInteger('top')->default(0);
             $table->unsignedSmallInteger('left')->default(0);
             $table->unsignedSmallInteger('width')->default(150);
             $table->unsignedSmallInteger('height')->default(100);
             $table->unsignedSmallInteger('z_index')->default(0);
+            $table->string('background_image')->nullable();
+            $table->string('background_color',100)->default('none');
+            $table->string('border_color',100)->default('black');
+            $table->string('border_style',100)->default('solid');
+            $table->unsignedTinyInteger('border_width')->default(1);
+            $table->unsignedTinyInteger('border_radius')->default(0);
+            $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
             $table->foreign('project_id')

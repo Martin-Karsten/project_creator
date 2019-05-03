@@ -1,83 +1,51 @@
 <template>
-  <!-- Side navigation -->
-<div>
-    <aside class="is-fullheight is-hidden-mobile sidebar">
-    <ul class="menu-list">
-      <li>
-        <fa class="show-scroller-chevron" icon="chevron-right" @click="showScroller" />
-        <a @click="save">
-          <span class="icon"><i class="fa fa-home"></i></span> Save
-        </a>
-      </li>
-      <li>
-        <a>
-          <span class="icon"><i class="fa fa-table"></i></span> Links
-        </a>
-      </li>
-      <li>
-        <a>
-          <span class="icon"><i class="fa fa-info"></i></span> About
-        </a>
-      </li>
-    </ul>
-  </aside>
-</div>
+  <div>
+    <sidebar-container></sidebar-container>
+    <a class="clickable-border" @click="showAnimationList"/>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
-import SidebarHeader from './SidebarHeader'
-import SidebarDefault from './SidebarDefault'
-import SidebarTextfield from './SidebarTextfield'
-import SidebarImage from './SidebarImage'
-import SidebarCharts from './SidebarCharts'
-import SidebarTables from './SidebarTables'
-import SidebarLayouts from './SidebarLayouts'
-import ComponentScroller from './ComponentScroller'
+import SidebarContainer from './SidebarContainer'
+
 export default {
   components: {
-    'sidebarHeader' : SidebarHeader,
-    'sidebarDefault' : SidebarDefault,
-    'sidebarTextfield' : SidebarTextfield,
-    'sidebarImage' : SidebarImage,
-    'sidebarCharts' : SidebarCharts,
-    'sidebarTables' : SidebarTables,
-    'sidebarLayouts' : SidebarLayouts,
-    'componentScroller' : ComponentScroller,
+    SidebarContainer,
+
   },
   data: function(){
     return{
         scrollerActivated: false,
-
+        animationListActivated: false,
     }
   },
   computed: {
     ...mapGetters({
-
+        currentMode: 'PresentationMode/getCurrentMode'
     }),
 
   },
 
 methods: {
-    showScroller() {
-      this.scrollerActivated = !this.scrollerActivated
-      this.$emit('clicked', this.scrollerActivated)
+    showAnimationList(){
+      this.animationListActivated = !this.animationListActivated
+      this.$emit('clicked', this.animationListActivated)
     },
-    save() {
-      this.$store.dispatch('Layout/saveToDB', this.$route.params);
-    }
   },
 }
 </script>
 
 <style>
-
-aside.sidebar{
-  padding: 1.5rem 1.5rem;
-  height: 100%;
-  width: 310px;
-  transition: 0.3s;
+a.clickable-border{
+  height: 50%;
+  position: absolute;
+  right: 0;
+  border: black 2px solid;
+  width: 1px;
+  background-color: black;
+  box-shadow: 0px 0px 5px 3px grey;
+  cursor: pointer;
 }
-
 </style>

@@ -32,7 +32,9 @@ class ProjectsController extends Controller
     }
     protected function show($id)
     {
-        return Project::where([['user_id', '=', 1], ['id', '=', $id]])->with('textfields')->with('webImages')->with('images')->with('webVideos')->get();
+        return Project::where([['user_id', '=', 1], ['id', '=', $id]])
+        ->with(['textfields', 'textfields.animations'])->with(['webImages', 'webImages.animations'])->with(['images', 'images.animations'])
+        ->with(['tables', 'tables.animations'])->with(['webVideos', 'webVideos.animations'])->get();
         
         // return DB::table('projects')
         // ->where('projects.id', $id)

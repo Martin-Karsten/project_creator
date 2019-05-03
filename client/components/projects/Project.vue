@@ -1,10 +1,5 @@
 <template>
     <div class="colums grid">
-          <h1  
-          :class="{'bounceIn animated': animated}">
-            Animate Test
-        </h1>
-        <button class="button" @click="activatePresentationMode">Presentation Mode</button>
         <div class="column is-12 grid-items">
             <draggable
                 :disabled="true"
@@ -16,9 +11,9 @@
                 v-for="(element, index) in layout"
                 :key="index"
                 class="item"
-                @click="layoutItemClicked(index)"
+                
                 >
-              <div class="item-container">
+              <div class="item-container" @click.self="layoutItemClicked(index)">
                     <div class="columns is-multiline toolbox" v-show="toolboxes[index].isEmpty">
                         <div class="column tip"  data-tooltip="Text" @click="toTextfield(index)">
                             <span class="tooltiptext">Text</span>
@@ -48,41 +43,76 @@
                     </div>
 
                     <url-input v-show="toolboxes[index].urlInputActivated" :index="index"></url-input>
+
                
-                <vue-draggable-resizable  v-for="textfield in element.textfields" :key="textfield.id"
+                <vue-draggable-resizable
+                    v-for="(textfield, textfieldIndex) in element.textfields" :key="textfieldIndex+'t'"
                     :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
-                    :parent="true" :grid="[2,2]" :class = "{'wobble animated': animated}"
+                    :parent="true" :grid="[5,5]"
+                    class-name="project-textfield-container"
+                    :class="{'bounce animated': textfield.animated}" 
+                    :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
+                    borderRadius: textfield.border_radius + 'px', backgroundColor: textfield.background_color}"
                 >
+                <div class="animation-number">{{}}</div>
                 <no-ssr>
-                    <editor :id="textfield.id" :text="textfield.text"/>
+                    <editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex"/>
                 </no-ssr>
                 </vue-draggable-resizable>
 
-                <vue-draggable-resizable v-for="image in element.images" :key="image.name"
+                <vue-draggable-resizable
+                    v-for="image in element.images" :key="image.name"
                     :w="image.width" :h="image.height" :x="image.left" :y="image.top" :z="image.z_index"
-                    :parent="true" :grid="[2,2]" :lock-aspect-ratio="true"
+                    :parent="true" :grid="[5,5]" :lock-aspect-ratio="true" 
+                    class-name-active="selected" :class="[image.animation_name, 'animated']"
+                    :style="{borderStyle: image.border_style, borderColor: image.border_color, borderWidth: image.border_width + 'px', borderRadius: image.border_radius + 'px'}"
                 >
                     <project-image :id="image.id" :imageData="imageData" />
                 </vue-draggable-resizable>
 
-                <vue-draggable-resizable v-for="(web_image, index) in element.web_images" :key="index"
+                <vue-draggable-resizable
+                    v-for="(web_image, webImageIndex) in element.web_images" :key="webImageIndex+'wE'"
                     :w="web_image.width" :h="web_image.height" :x="web_image.left" :y="web_image.top" :z="web_image.z_index"
-                    :parent="true" :grid="[2,2]" :lock-aspect-ratio="true"
+                    :parent="true" :grid="[5,5]"
+                    class-name=project-web-image-container 
+                    class-name-active="selected" :class="{'animated':web_image.animated,[web_image.animation_name]:web_image.animation_name}"
+                    :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px', borderRadius: web_image.border_radius + 'px'}"
                 >
-                    <web-image :id="web_image.id" :url="web_image.url" :row="index"/>
+                <div class="animation-number"></div>
+                    <web-image :id="web_image.id" :url="web_image.url" :radius="web_image.border_radius" :opacity="web_image.opacity" :layoutRow="index" :row="webImageIndex"/>
                 </vue-draggable-resizable>
 
-                <vue-draggable-resizable v-for="web_video in element.web_videos" :key="web_video.id"
+                <vue-draggable-resizable
+                    class-name="project-table-container"
+                    v-for="(table, tableIndex) in element.tables" :key="tableIndex+'table'"
+                    :w="table.width" :h="table.height" :x="table.left + 100" :y="table.top + 100" :z="table.z_index"
+                    :parent="true" :grid="[5,5]" 
+                    class-name-active="selected" :class="[{'animated': table.animated}, table.animation_name]"
+                    :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
+                     borderRadius: table.border_radius + 'px', backgroundColor: table.background_color}"
+                >
+                        <table-editor></table-editor>
+                </vue-draggable-resizable>
+
+                <vue-draggable-resizable
+                    v-for="web_video in element.web_videos" :key="web_video.id"
                     :w="web_video.width" :h="web_video.height" :x="web_video.left" :y="web_video.top" :z="web_video.z_index"
-                    :parent="true" :grid="[2,2]" :lock-aspect-ratio="true"
+                    :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
+                    class-name-active="selected" :class="{'wobble animated': web_video.animated}"
                 >
                     <web-video :videoId="web_video.video_id"></web-video>
                 </vue-draggable-resizable>
-                <!-- <web-video :videoId="web_video.videoId"></web-video> -->
 
-                <!-- <vue-draggable-resizable v-for="cont in container" v-bind:key="cont"
-                :w="150" :h="100" @dragging="onDrag" @resizing="onResize" :parent="true" :grid="[1,1]">
+                <!-- <vue-draggable-resizable
+                    v-for="(web_image, index) in element.web_images" :key="index+'shape'"
+                    :w="web_image.width" :h="web_image.height" :x="web_image.left + 100" :y="web_image.top + 100" :z="web_image.z_index"
+                    :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
+                    class-name-active="selected" :class="[{'animated': web_image.animated}, web_image.animation_name]"
+                >
+                    <shapes :width="web_image.width" :height="web_image.height"></shapes>
                 </vue-draggable-resizable> -->
+
+
                 </div>
                 </div>
             </draggable>
@@ -96,13 +126,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { mapMutations } from 'vuex'
 //Items
 import Editor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
 import ProjectImage from './project_image/Image'
 import WebImage from './project_image/WebImage'
 import WebVideo from './video/WebVideo'
+import Shapes from './shapes/Shapes'
 //General
 import UrlInput from './general/UrlInput'
 import ContextMenu from '../../components/projects/context_menu/ContextMenu'
@@ -123,6 +153,7 @@ export default {
         ProjectImage,
         WebImage,
         WebVideo,
+        Shapes,
         UrlInput,
         ContextMenu
     },
@@ -131,14 +162,20 @@ export default {
             isEmpty: true,
             dragging: false,
             imageData: '',
-            animated: false
+            animated: false,
+            animationName: ''
         }
     },
     computed: {
         ...mapGetters({
             layout: 'Layout/getLayout',
+            currentLayout: 'Layout/getCurrentLayout',
+            currentItem: 'Layout/getCurrentItem',
+            currentSelectedItem: 'Layout/getCurrentSelectedItem',
             toolboxes:'LayoutHelpers/getToolboxes',
             startMenuIcons: "StartMenu/getStartMenuIcons",
+            currentMode: 'PresentationMode/getCurrentMode',
+            animationList: 'PresentationMode/getAnimationItmes'
         })
     },
     mounted(){
@@ -148,15 +185,21 @@ export default {
         this.$store.dispatch('Layout/resetLayout')
     },
     methods: {
-        animate(){
-        var self = this;
-        self.animated = true;
-        setTimeout(function(){ self.animated = false; }, 1000);
-        },
         activatePresentationMode(event){
             console.log(event.keyCode)
         },
+        animationObject(obj){
+            return {
+                animated: obj.animated,
+                fadeIn: obj.animation_name
+            }
+        },
         layoutItemClicked(row){
+        if(this.currentSelectedItem != ''){
+            this.$store.commit('Layout/DESELECT_ITEM')
+            console.log(this.currentSelectedItem)
+        }
+        //check if item creation icon was selected, if yes create new item
         for( let i = 0; i < this.startMenuIcons.length; i++){ 
         if ( this.startMenuIcons[i].activated === true && i === 0) {
             this.$store.commit('Layout/ADD_TEXTFIELD', {row: row, icon: i})
@@ -170,6 +213,9 @@ export default {
             this.$store.commit('StartMenu/SET_ICON_TO_FALSE',{row: row, icon: i})
             return
             }
+        else if (this.startMenuIcons[i]. activated === true && i === 2){
+            
+        }
             }
         },
         openContextMenu(row){
@@ -236,16 +282,39 @@ div.grid-items {
     padding: 0;
 }
 div.item-group {
-    height: 647px;
+    height: 640px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 div.item-container {
-    height: 640px;
+    height: 635px;
     width: 100%; border: 1px solid black; 
     position: relative;
     margin-bottom: 0.25rem;
     margin-top: 0.25rem;
+}
+
+div.animation-number{
+    width: 10px;
+    height: 15px;
+    z-index: 500;
+    border: black 1px dotted;
+    position: relative;
+    top: -16px;
+    font-size: 10px;
+    align-content: center
+}
+
+.project-textfield-container{
+      display: table;
+}
+
+.project-web-image-container{
+    display: table;
+}
+
+.selected {
+    border: rgb(4, 131, 173) dotted;
 }
 
 .ghost {
@@ -310,6 +379,10 @@ div.toolbox {
     margin: 0;
     padding: 0;
     cursor: pointer;
+}
+
+.project-table-container{
+    display: table;
 }
 
 

@@ -17,16 +17,25 @@ class CreateTextfieldsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 100)->default('default');
             $table->string('project_id');
-            $table->unsignedTinyInteger('row')->default(1);
+            $table->unsignedTinyInteger('row')->default(0);
             $table->text('text')->nullable();
             $table->string('font', 225)->default('Calibri');
             $table->string('color', 225)->default('Black');
+            $table->string('animation_name', 25)->nullable();
+            $table->boolean('animated')->default(false);
             $table->unsignedSmallInteger('font_size')->default(18);
             $table->unsignedSmallInteger('top')->default(0);
             $table->unsignedSmallInteger('left')->default(0);
             $table->unsignedSmallInteger('width')->default(150);
             $table->unsignedSmallInteger('height')->default(100);
             $table->unsignedSmallInteger('z_index')->default(0);
+            $table->string('background_image')->nullable();
+            $table->string('background_color',100)->default('none');
+            $table->string('border_color',100)->default('black');
+            $table->string('border_style',100)->default('solid');
+            $table->unsignedTinyInteger('border_width')->default(1);
+            $table->unsignedTinyInteger('border_radius')->default(0);
+            $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
             $table->foreign('project_id')

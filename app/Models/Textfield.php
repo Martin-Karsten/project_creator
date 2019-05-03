@@ -14,4 +14,7 @@ class Textfield extends Model
     {
         return $this->belongTo('App\Models\Project');
     }
+    public function animations() {
+        return $this->hasOne('App\Models\Animations\TextfieldAnimation');
+    }
 }

@@ -14,16 +14,23 @@ class CreateWebVideosTable extends Migration
     public function up()
     {
         Schema::create('web_videos', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('project_id');
             $table->string('name')->default('picture.jpeg');
             $table->string('video_id')->nullable();
-            $table->unsignedTinyInteger('row')->default(1);
+            $table->string('animation_name', 25)->nullable();
+            $table->boolean('animated')->default(false);
+            $table->unsignedTinyInteger('row')->default(0);
             $table->unsignedSmallInteger('top')->default(0);
             $table->unsignedSmallInteger('left')->default(0);
             $table->unsignedSmallInteger('width')->default(150);
             $table->unsignedSmallInteger('height')->default(100);
             $table->unsignedSmallInteger('z_index')->default(0);
+            $table->string('border_color',100)->default('black');
+            $table->string('border_style',100)->default('solid');
+            $table->unsignedTinyInteger('border_width')->default(1);
+            $table->unsignedTinyInteger('border_radius')->default(0);
+            $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
             $table->foreign('project_id')

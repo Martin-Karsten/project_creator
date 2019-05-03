@@ -1,6 +1,14 @@
+*:focus {
+    outline: none;
+}
+
+.not-allowed{
+    cursor: not-allowed !important;
+}
+
 @import 'variables';
 //TODO: why doesn't this work????
-// @import '~sweetalert2/src/sweetalert2';
+@import '~sweetalert2/src/sweetalert2';
 
 
 @import 'elements/card';
@@ -11,3 +19,8 @@
 @import 'textfield/menubar';
 @import 'textfield/menububble';
 @import 'textfield/editor';
+
+@import './startMenu/default';
+
+@import '~bulma';
+

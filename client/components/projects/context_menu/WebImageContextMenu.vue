@@ -3,10 +3,11 @@
         <aside ref="contextMenu" :style="{top: contextMenu.style.top, left: contextMenu.style.left}" v-show="contextMenu.activated" class="context-menu">
             <ul class="menu-list">
                 <li>
-                <ul>
+                <ul class="context-menu-list">
                     <li><a>Copy</a></li>
                     <li><a>Delete</a></li>
                     <li @click="openStartMenuAnimations"><a>Add Animation</a></li>
+                    <li> <a>Format Form</a> </li>
                 </ul>
                 </li>
             </ul>

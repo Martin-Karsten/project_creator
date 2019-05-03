@@ -1,7 +1,9 @@
 <template>
-  <div @contextmenu="openContextMenu">
+  <div class="editor-textfield" @contextmenu="openContextMenu" @click="setCurrentItem">
     <editor-menu-bar ref="editor" :editor="editor" @contextmenu="openContextMenu">
-      <div class="" slot-scope="{ commands, isActive }">
+      <div class="menubar is-hide"
+      :class="{ 'is-focused': focused }"
+       slot-scope="{ commands, isActive, focused }">
         <button
           class="button is-small menubar__button"
           :class="{ 'is-active': isActive.bold() }"
@@ -120,7 +122,7 @@ import {
 import { mapGetters } from 'vuex'
 import { mapMutations } from 'vuex'
 export default {
-  props: ['id','text'],
+  props: ['id','text', 'opacity', 'layoutRow', 'row'],
   components: {
     EditorMenuBar,
     EditorContent,
@@ -157,6 +159,7 @@ export default {
       }),
       json: this.text,
       html: this.text,
+      selected: false
     }
   },
   mounted() {
@@ -169,7 +172,16 @@ export default {
   },
   methods: {
     openContextMenu(){
-      console.log('dsfd')
+      
+    },
+    setCurrentItem(){
+      let payload = 
+      {
+        layoutRow: this.layoutRow,
+        itemRow: this.row,
+        itemName: 'textfields'
+      }
+      this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
     },
     sendEditor() {
       this.$store.commit('Layout/SET_EDITOR', this.editor)
@@ -186,21 +198,18 @@ export default {
 }
 </script>
 
-<style>
-.textfield-content {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  pointer-events: auto;
-  resize: none;
-  background: transparent;
-  /* overflow: hidden; */
+<style scoped>
+
+.editor-textfield{
+    display: table;
+    width: 100%;
 }
-textarea.textfield {
-    pointer-events: auto;
-    resize: none;
-    background: transparent;
-    position: absolute;
-    overflow: hidden;
+
+
+.textfield, editor__content{
+    display: table;
+    width: 100%;
 }
+
+
 </style>
