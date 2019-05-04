@@ -11,7 +11,7 @@
     opacity: 0;
     transition: opacity 0.2s, visibility 0.2s;
   
-    &.is-active {
+    &.is-act {
       opacity: 1;
       visibility: visible;
     }

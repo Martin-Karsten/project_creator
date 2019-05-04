@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import Meta from 'vue-meta'
 import { createRouter } from './router.js'
-import NoSSR from './components/no-ssr.js'
+import NoSsr from './components/no-ssr.js'
 import NuxtChild from './components/nuxt-child.js'
-import NuxtLink from './components/nuxt-link.js'
 import NuxtError from './components/nuxt-error.vue'
 import Nuxt from './components/nuxt.js'
 import App from './App.js'
@@ -12,25 +11,25 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_vuescrollto_392955dc from 'nuxt_plugin_vuescrollto_392955dc' // Source: ./vue-scrollto.js (ssr: false)
-import nuxt_plugin_global_0a6ae274 from 'nuxt_plugin_global_0a6ae274' // Source: ../client/components/global
-import nuxt_plugin_i18n_56ca5e75 from 'nuxt_plugin_i18n_56ca5e75' // Source: ../client/plugins/i18n
-import nuxt_plugin_vform_f95cee7a from 'nuxt_plugin_vform_f95cee7a' // Source: ../client/plugins/vform
-import nuxt_plugin_axios_fb9c9a02 from 'nuxt_plugin_axios_fb9c9a02' // Source: ../client/plugins/axios
-import nuxt_plugin_fontawesome_773d88fd from 'nuxt_plugin_fontawesome_773d88fd' // Source: ../client/plugins/fontawesome
-import nuxt_plugin_eCharts_35a49963 from 'nuxt_plugin_eCharts_35a49963' // Source: ../client/plugins/eCharts
-import nuxt_plugin_colorpicker_dc745d86 from 'nuxt_plugin_colorpicker_dc745d86' // Source: ../client/plugins/color-picker (ssr: false)
+import nuxt_plugin_vuescrollto_392955dc from 'nuxt_plugin_vuescrollto_392955dc' // Source: ./vue-scrollto.js (mode: 'client')
+import nuxt_plugin_router_6bb3f5c2 from 'nuxt_plugin_router_6bb3f5c2' // Source: ./router.js (mode: 'all')
+import nuxt_plugin_global_0a6ae274 from 'nuxt_plugin_global_0a6ae274' // Source: ../client/components/global (mode: 'all')
+import nuxt_plugin_i18n_56ca5e75 from 'nuxt_plugin_i18n_56ca5e75' // Source: ../client/plugins/i18n (mode: 'all')
+import nuxt_plugin_vform_f95cee7a from 'nuxt_plugin_vform_f95cee7a' // Source: ../client/plugins/vform (mode: 'all')
+import nuxt_plugin_axios_fb9c9a02 from 'nuxt_plugin_axios_fb9c9a02' // Source: ../client/plugins/axios (mode: 'all')
+import nuxt_plugin_fontawesome_773d88fd from 'nuxt_plugin_fontawesome_773d88fd' // Source: ../client/plugins/fontawesome (mode: 'all')
+import nuxt_plugin_colorpicker_dc745d86 from 'nuxt_plugin_colorpicker_dc745d86' // Source: ../client/plugins/color-picker (mode: 'client')
 
-// Component: <no-ssr>
-Vue.component(NoSSR.name, NoSSR)
+// Component: <NoSsr>
+Vue.component(NoSsr.name, NoSsr)
 
-// Component: <nuxt-child>
+// Component: <NuxtChild>
 Vue.component(NuxtChild.name, NuxtChild)
+Vue.component('NChild', NuxtChild)
 
-// Component: <nuxt-link>
-Vue.component(NuxtLink.name, NuxtLink)
+// Component NuxtLink is imported in server.js or client.js
 
-// Component: <nuxt>`
+// Component: <Nuxt>`
 Vue.component(Nuxt.name, Nuxt)
 
 // vue-meta configuration
@@ -120,7 +119,8 @@ async function createApp(ssrContext) {
     payload: ssrContext ? ssrContext.payload : undefined,
     req: ssrContext ? ssrContext.req : undefined,
     res: ssrContext ? ssrContext.res : undefined,
-    beforeRenderFns: ssrContext ? ssrContext.beforeRenderFns : undefined
+    beforeRenderFns: ssrContext ? ssrContext.beforeRenderFns : undefined,
+    ssrContext
   })
 
   const inject = function (key, value) {
@@ -158,16 +158,36 @@ async function createApp(ssrContext) {
 
   // Plugin execution
 
-  if (typeof nuxt_plugin_global_0a6ae274 === 'function') await nuxt_plugin_global_0a6ae274(app.context, inject)
-  if (typeof nuxt_plugin_i18n_56ca5e75 === 'function') await nuxt_plugin_i18n_56ca5e75(app.context, inject)
-  if (typeof nuxt_plugin_vform_f95cee7a === 'function') await nuxt_plugin_vform_f95cee7a(app.context, inject)
-  if (typeof nuxt_plugin_axios_fb9c9a02 === 'function') await nuxt_plugin_axios_fb9c9a02(app.context, inject)
-  if (typeof nuxt_plugin_fontawesome_773d88fd === 'function') await nuxt_plugin_fontawesome_773d88fd(app.context, inject)
-  if (typeof nuxt_plugin_eCharts_35a49963 === 'function') await nuxt_plugin_eCharts_35a49963(app.context, inject)
+  if (process.client && typeof nuxt_plugin_vuescrollto_392955dc === 'function') {
+    await nuxt_plugin_vuescrollto_392955dc(app.context, inject)
+  }
 
-  if (process.client) {
-    if (typeof nuxt_plugin_vuescrollto_392955dc === 'function') await nuxt_plugin_vuescrollto_392955dc(app.context, inject)
-    if (typeof nuxt_plugin_colorpicker_dc745d86 === 'function') await nuxt_plugin_colorpicker_dc745d86(app.context, inject)
+  if (typeof nuxt_plugin_router_6bb3f5c2 === 'function') {
+    await nuxt_plugin_router_6bb3f5c2(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_global_0a6ae274 === 'function') {
+    await nuxt_plugin_global_0a6ae274(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_i18n_56ca5e75 === 'function') {
+    await nuxt_plugin_i18n_56ca5e75(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vform_f95cee7a === 'function') {
+    await nuxt_plugin_vform_f95cee7a(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_axios_fb9c9a02 === 'function') {
+    await nuxt_plugin_axios_fb9c9a02(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_fontawesome_773d88fd === 'function') {
+    await nuxt_plugin_fontawesome_773d88fd(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_colorpicker_dc745d86 === 'function') {
+    await nuxt_plugin_colorpicker_dc745d86(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

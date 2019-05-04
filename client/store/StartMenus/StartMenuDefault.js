@@ -1,10 +1,11 @@
-
 export const state = () => ({
     startMenu: { name: 'StartMenuDefault', activated: false},
+    editor: null
 })
 
 export const getters = {
   getStartMenu: state => state.startMenu,
+  getEditor: state => state.editor,
 }
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
     },
     CLOSE_START_MENU (state, payload) {
         state.startMenu = ''
+    },
+    SET_EDITOR (state, payload) {
+        state.editor = payload
     }
 }
 
