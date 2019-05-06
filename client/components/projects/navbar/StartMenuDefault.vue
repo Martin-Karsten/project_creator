@@ -27,7 +27,7 @@
       <div class="column is-2 menu-section second-menu-section">
         <div class="columns is-multiline is-gapless">
 
-    <editor-menu-bar :editor="editor"> 
+    <editor-menu-bar :editor="ed"> 
       <div
         class="menubar"
         :class="{ 'is-focused': focused }"
@@ -66,39 +66,35 @@
 </template>
 
 <script>
-import { Editor, EditorMenuBar, EditorContent } from 'tiptap'
+import { Editor, EditorMenuBar} from "tiptap";
+import { Heading, Bold, Italic, Underline } from "tiptap-extensions";
 import { mapGetters } from 'vuex'
-import { mapMutations } from 'vuex'
 import TableSizePicker from './table/TableSizePicker'
 import UrlInput from './general/UrlInput'
-import {
-  Blockquote,
-  CodeBlock,
-  HardBreak,
-  Heading,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
-  Bold,
-  Code,
-  Italic,
-  Link,
-  Strike,
-  Underline,
-  History,
-} from 'tiptap-extensions'
 export default {
     components: {
-      EditorContent,
       EditorMenuBar,
       TableSizePicker,
       UrlInput
     },
     data(){
       return{
-      editor: null,
+        ed: new Editor({
+          content: this.content,
+          extensions: [
+            new Heading({ levels: [1, 2, 3] }),
+            new Bold(),
+            new Italic(),
+            new Underline()
+          ],
+          onUpdate: ({ getJSON, getHTML }) => {
+            
+          },
+          onFocus: ({event, state, view}) => {
+            this.setCurrentItem()
+            // this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
+          }
+        }),
         menuItemActivated: 'menu-section-activated',
         creatorActivated: false,
         fieldActivated: false,
@@ -107,31 +103,11 @@ export default {
     },
     computed: {
     ...mapGetters({
-    textfields: 'Textfield/getTextfields', //not needed??
-    currentTextfield: 'Textfield/getCurrentTextfield', //not needed??
+      content: 'StartMenus/StartMenuDefault/getEditor'
+
     }),
-    //update fontType the vuex way
-    fontType: {
-    get () {
-      return this.$store.getters["Textfield/getCurrentTextfield"].font
-      },
-    set (value) {
-      this.$store.commit('Textfield/UPDATE_FONT_TYPE', value)
-      }
-    },
-    //update fontSize the vuex way
-    fontSize: {
-    get () {
-      return this.$store.getters["Textfield/getCurrentTextfield"].size
-      },
-    set (value) {
-      this.$store.commit('Textfield/UPDATE_FONT_SIZE', value)
-      }
-    }
   },
 
-  mounted() {
-  },
     methods: {
       activateTextfieldIcon(){
         this.creatorActivated = true
@@ -154,28 +130,7 @@ export default {
         this.creatorActivated = true
         this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
       },
-      test() {
-this.editor = new Editor({
-        extensions: [
-          new Blockquote(),
-          new CodeBlock(),
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
-          new BulletList(),
-          new OrderedList(),
-          new ListItem(),
-          new TodoItem(),
-          new TodoList(),
-          new Bold(),
-          new Code(),
-          new Italic(),
-          new Link(),
-          new Strike(),
-          new Underline(),
-          new History(),
-        ]
-      })
-      }
+    
     }
 }
 </script>

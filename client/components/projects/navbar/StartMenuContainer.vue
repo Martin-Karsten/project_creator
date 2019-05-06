@@ -1,5 +1,9 @@
 <template>
-   <component :is="startMenu.name" v-show="true"></component> 
+<div>
+    <no-ssr>
+    <component :is="startMenu.name" v-show="true"></component> 
+    </no-ssr>
+</div>
 </template>
 
 <script>

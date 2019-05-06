@@ -35,7 +35,6 @@ export const mutations = {
         for(let j=0; j<arr1.length; j++){
             for(let k=0; k<arr1[j].length; k++){
                 if(arr1[j][k].animations != null)
-                console.log(arr1[j][k])
                     state.animationItems.push(arr1[j][k])
             }
         }

@@ -18,10 +18,6 @@ const SettingsPassword = () => import('~/pages/settings/password').then(m => m.d
 
 const Projects = () => import('~/pages/project/create').then(m => m.default || m)
 
-const Charts = () => import('~/pages/charts/charts').then(m => m.default || m)
-const LineChart = () => import('~/pages/charts/lineChart').then(m => m.default || m)
-const BarChart = () => import('~/pages/charts/barChart').then(m => m.default || m)
-
 const routes = [
   { path: '/', name: 'welcome', component: Welcome },
   { path: '/home', name: 'home', component: Home },
@@ -40,9 +36,6 @@ const routes = [
       { path: 'project', name: 'settings.project', component: SettingsPassword },
     ] },
 
-    { path: '/charts', name: 'charts', component: Charts},
-    { path: '/charts/lineChart', name: 'lineChart', component: LineChart},
-    { path: '/charts/barChart', name: 'barChart', component: BarChart},
 
   {path: '/project',
    component: Projects,

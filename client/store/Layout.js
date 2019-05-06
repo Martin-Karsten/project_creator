@@ -50,8 +50,7 @@ SET_CURRENT_ITEM (state, payload) {
   state.currentItem.selected = true
   state.currentSelectedItem.selected = true
 
-  console.log(state.currentSelectedItem)
-
+  console.log(state.currentItem)
 },
 
 DESELECT_ITEM (state, payload) {
@@ -131,6 +130,14 @@ ADD_TABLE(state, payload) {
   row:payload.Layoutrow, background_color: 'none', border_color: 'black', border_style: 'solid', animated:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
   left:0, width:200, height:100})
+},
+
+//////////// CHART SETTINGS
+ADD_CHART(state, payload) {
+
+},
+
+RESIZE_CHART_CONTAINER(state, payload){
 },
 
 HIDE_TOOLBAR(state, payload) {

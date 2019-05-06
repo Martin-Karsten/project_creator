@@ -59,8 +59,8 @@ module.exports = {
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/fontawesome',
-    '~plugins/eCharts',
-    {src: 'plugins/color-picker', ssr: false}
+    {src: 'plugins/color-picker', ssr: false},
+    // { src: '~plugins/vue-echarts.js', ssr: false },
     // '~plugins/nuxt-client-init',
   ],
 
@@ -80,7 +80,7 @@ module.exports = {
           nodeExternals({
             // default value for `whitelist` is
             // [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
-            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i, /^vue-echarts/]
+            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
           })
         ]
       }

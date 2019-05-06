@@ -13,6 +13,7 @@
                 class="item"
                 
                 >
+                
               <div class="item-container" @click.self="layoutItemClicked(index)">
                     <div class="columns is-multiline toolbox" v-show="toolboxes[index].isEmpty">
                         <div class="column tip"  data-tooltip="Text" @click="toTextfield(index)">
@@ -54,10 +55,10 @@
                     :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
                     borderRadius: textfield.border_radius + 'px', backgroundColor: textfield.background_color}"
                 >
-                <div class="animation-number">{{}}</div>
-                <no-ssr>
-                    <editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex"/>
-                </no-ssr>
+                <!-- <div class="animation-number">{{}}</div> -->
+            
+                    <textfield-editor :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex"/>
+
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
@@ -103,6 +104,16 @@
                     <web-video :videoId="web_video.video_id"></web-video>
                 </vue-draggable-resizable>
 
+                <vue-draggable-resizable
+                    :w="600" :h="400"
+                    :parent="true" 
+                    @resizing="chartResizing"
+                >
+                <div class="cont">
+                    <chart></chart>
+                </div>
+                </vue-draggable-resizable>
+
                 <!-- <vue-draggable-resizable
                     v-for="(web_image, index) in element.web_images" :key="index+'shape'"
                     :w="web_image.width" :h="web_image.height" :x="web_image.left + 100" :y="web_image.top + 100" :z="web_image.z_index"
@@ -127,10 +138,11 @@
 <script>
 import { mapGetters } from 'vuex'
 //Items
-import Editor from './textfield/TipTapEditor'
+import TextfieldEditor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
 import ProjectImage from './project_image/Image'
 import WebImage from './project_image/WebImage'
+import Chart from './chart/Chart'
 import WebVideo from './video/WebVideo'
 import Shapes from './shapes/Shapes'
 //General
@@ -148,11 +160,12 @@ export default {
     components: {
         draggable,
         VueDraggableResizable,
-        Editor,
+        TextfieldEditor,
         TableEditor,
         ProjectImage,
         WebImage,
         WebVideo,
+        Chart,
         Shapes,
         UrlInput,
         ContextMenu
@@ -163,7 +176,7 @@ export default {
             dragging: false,
             imageData: '',
             animated: false,
-            animationName: ''
+            animationName: '',
         }
     },
     computed: {
@@ -175,7 +188,7 @@ export default {
             toolboxes:'LayoutHelpers/getToolboxes',
             startMenuIcons: "StartMenu/getStartMenuIcons",
             currentMode: 'PresentationMode/getCurrentMode',
-            animationList: 'PresentationMode/getAnimationItmes'
+            animationList: 'PresentationMode/getAnimationItmes',
         })
     },
     mounted(){
@@ -197,7 +210,6 @@ export default {
         layoutItemClicked(row){
         if(this.currentSelectedItem != ''){
             this.$store.commit('Layout/DESELECT_ITEM')
-            console.log(this.currentSelectedItem)
         }
         //check if item creation icon was selected, if yes create new item
         for( let i = 0; i < this.startMenuIcons.length; i++){ 
@@ -223,6 +235,9 @@ export default {
                        y: event.pageY + 'px',
                        row: row}
             this.$store.commit('ContextMenu/OPEN_CONTEXT_MENU', payload)
+        },
+        chartResizing(left, top, width, height){
+            this.$store.commit('Layout/RESIZE_CHART_CONTAINER', {width, height})
         },
         toTextfield(row){
             this.$store.commit('Layout/ADD_TEXTFIELD', row)
@@ -260,7 +275,6 @@ export default {
 
         },
         addItem() {
-            // console.log(layout.length)
             this.$store.commit('Layout/ADD_ITEM', this.layout.length)
             this.$store.commit('LayoutHelpers/ADD_TOOLBOX', this.layout.length)
         },
@@ -275,6 +289,10 @@ export default {
 <style>
 @import '/home/martin/nuxt/larvel-nuxt/client/assets/sass/_animations.scss';
 
+div.cont{
+    width: 600px;
+    height: 400px;
+}
 div.gird {
     background: lightgrey;
 }
