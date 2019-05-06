@@ -50,14 +50,29 @@ SET_CURRENT_ITEM (state, payload) {
   state.currentItem.selected = true
   state.currentSelectedItem.selected = true
 
-  console.log(state.currentItem)
 },
 
 DESELECT_ITEM (state, payload) {
   state.currentSelectedItem = {}
 },
 
-CREATE_LAYOUT(state, payload) {
+COPY_ITEM (state, payload){
+  let newItem = JSON.parse(JSON.stringify(state.currentItem))
+  newItem.itemRow = state.layout[state.currentLayout][state.currentItem.itemName].length
+	// console.log("TCL: COPY_ITEM -> [state.currentLayout][state.currentItem.itemName]", [state.currentLayout][state.currentItem.itemName])
+  newItem.id = Date.now()
+  newItem.textfield_id = Date.now()
+  state.layout[state.currentLayout][state.currentItem.itemName].push(newItem)
+
+  console.log(state.layout)
+},
+
+  //delete item off layout -> splice item, not entire layout
+DELETE_ITEM (state, payload) {
+  state.layout[state.currentLayout][state.currentItem.itemName].splice(state.currentItem.itemRow, 1)
+},
+
+CREATE_LAYOUT (state, payload) {
   state.layout = [{name: 'zero', id: 0, textfields: [], images: [], web_images: [], charts: [], tables: [], shapes: [], isEmpty: true, active: false},]
 },
 
@@ -114,7 +129,7 @@ ADD_WEB_IMAGE(state, payload) {
     state.currentLayout = payload.layoutRow
   }
   state.layout[state.currentLayout].web_images.push({id: Date.now(), project_id: state.projectId, name: 'web_image', url:payload.url, animated:false, 
-  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animated:{},
+  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
   left:0, width:200, height:100})
 },
@@ -127,17 +142,24 @@ ADD_WEB_VIDEO(state, payload) {
 ///////// TABLE SETTINGS
 ADD_TABLE(state, payload) {
   state.layout[payload.layoutRow].tables.push({id: Date.now(), project_id: state.projectId, name: 'table', columns: payload,columns, rows: payload.rows, 
-  row:payload.Layoutrow, background_color: 'none', border_color: 'black', border_style: 'solid', animated:{},
+  row:payload.Layoutrow, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
   left:0, width:200, height:100})
 },
 
 //////////// CHART SETTINGS
 ADD_CHART(state, payload) {
-
+  if(payload.layoutRow != null){
+    state.currentLayout = payload.layoutRow
+  }
+  state.layout[state.currentLayout].charts.push({id: Date.now(), project_id: state.projectId, name: 'chart',
+  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{}, chart_settings:{},
+  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
+  left:0, width:200, height:100})
 },
 
 RESIZE_CHART_CONTAINER(state, payload){
+  //Chart.vue is subscribing to this mutation
 },
 
 HIDE_TOOLBAR(state, payload) {

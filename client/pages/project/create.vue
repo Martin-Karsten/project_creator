@@ -18,7 +18,9 @@
             <project class="column" v-show="true"/>
             
         </div>
-            <edit-container v-show="editContainer.activated" ></edit-container>
+            <template v-if="editContainer.activated">
+                <edit-container v-show="editContainer.activated" ></edit-container>
+            </template>
 
     </div> 
 </template>
@@ -58,7 +60,7 @@ export default {
     },
     methods: {
         closeContextMenu(){
-            this.$store.dispatch('Contextmenus/ContextMenu/closeContextMenu')
+            this.$store.dispatch('ContextMenus/ContextMenu/closeContextMenu')
         },
         activateScroller(value) {
             this.activated = value

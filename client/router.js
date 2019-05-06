@@ -13,7 +13,7 @@ const PasswordReset = () => import('~/pages/auth/password/reset').then(m => m.de
 const PasswordRequest = () => import('~/pages/auth/password/email').then(m => m.default || m)
 
 const Settings = () => import('~/pages/settings/index').then(m => m.default || m)
-const SettingsProfile = () => import('~/pages/settings/profile').then(m => m.default || m)
+// const SettingsProfile = () => import('~/pages/settings/profile').then(m => m.default || m)
 const SettingsPassword = () => import('~/pages/settings/password').then(m => m.default || m)
 
 const Projects = () => import('~/pages/project/create').then(m => m.default || m)
@@ -30,8 +30,8 @@ const routes = [
   { path: '/settings',
     component: Settings,
     children: [
-      { path: '', redirect: { name: 'settings.profile' } },
-      { path: 'profile', name: 'settings.profile', component: SettingsProfile },
+      // { path: '', redirect: { name: 'settings.profile' } },
+      // { path: 'profile', name: 'settings.profile', component: SettingsProfile },
       { path: 'password', name: 'settings.password', component: SettingsPassword },
       { path: 'project', name: 'settings.project', component: SettingsPassword },
     ] },

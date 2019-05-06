@@ -65,4 +65,7 @@ class Project extends Model
     public function tables() {
         return $this->hasMany('App\Models\Table');
     }
+    public function charts() {
+        return $this->hasMany('App\Models\Chart');
+    }
 }

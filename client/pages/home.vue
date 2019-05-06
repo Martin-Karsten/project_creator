@@ -1,6 +1,15 @@
 <template>
 <div class="home">
 
+  <el-row>
+  <el-button>Default</el-button>
+  <el-button type="primary">Primary</el-button>
+  <el-button type="success">Success</el-button>
+  <el-button type="info">Info</el-button>
+  <el-button type="warning">Warning</el-button>
+  <el-button type="danger">Danger</el-button>
+</el-row>
+
   <!-- <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
   <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1> -->
 
@@ -75,6 +84,7 @@ import Form from 'vform'
 // import HomeSidebar from '../components/home/HomeSidebar'
 import Checkbox from '../components/global/Checkbox'
 import Pagination from '../components/global/Pagination'
+
 export default {
   layout:'default',
   middleware: 'auth',

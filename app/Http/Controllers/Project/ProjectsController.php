@@ -34,7 +34,8 @@ class ProjectsController extends Controller
     {
         return Project::where([['user_id', '=', 1], ['id', '=', $id]])
         ->with(['textfields', 'textfields.animations'])->with(['webImages', 'webImages.animations'])->with(['images', 'images.animations'])
-        ->with(['tables', 'tables.animations'])->with(['webVideos', 'webVideos.animations'])->get();
+        ->with(['tables', 'tables.animations'])->with(['charts', 'charts.animations', 'charts.chart_settings'])
+        ->with(['webVideos', 'webVideos.animations'])->get();
         
         // return DB::table('projects')
         // ->where('projects.id', $id)

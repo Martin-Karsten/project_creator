@@ -11,7 +11,6 @@
                 v-for="(element, index) in layout"
                 :key="index"
                 class="item"
-                
                 >
                 
               <div class="item-container" @click.self="layoutItemClicked(index)">
@@ -54,9 +53,9 @@
                     :class="{'bounce animated': textfield.animated}" 
                     :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
                     borderRadius: textfield.border_radius + 'px', backgroundColor: textfield.background_color}"
+                    @contextmenu="openContextMenu"
                 >
                 <!-- <div class="animation-number">{{}}</div> -->
-            
                     <textfield-editor :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex"/>
 
                 </vue-draggable-resizable>
@@ -105,12 +104,19 @@
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
-                    :w="600" :h="400"
-                    :parent="true" 
-                    @resizing="chartResizing"
+                    class-name="project-table-container"
+                    v-for="(chart, chartIndex) in element.charts" :key="chartIndex+'chart'"
+                    :w="chart.width" :h="chart.height" :x="chart.left + 100" :y="chart.top + 100" :z="chart.z_index"
+                    :parent="true" :grid="[5,5]" 
+                    class-name-active="selected" 
+                    :style="{borderStyle: chart.border_style, borderColor: chart.border_color, borderWidth: chart.border_width + 'px',
+                     borderRadius: chart.border_radius + 'px', backgroundColor: chart.background_color}"
+                     @resizing="chartResizing"
+                     @contextmenu="openContextMenu"
+                     :draggable="isDraggable"
                 >
-                <div class="cont">
-                    <chart></chart>
+                <div class="cont" @contextmenu.prevent="openContextMenu(index, chartIndex)">
+                    <chart :width="chart.width" :height="chart.height" :layoutRow="index" :row="chartIndex"></chart>
                 </div>
                 </vue-draggable-resizable>
 
@@ -175,8 +181,7 @@ export default {
             isEmpty: true,
             dragging: false,
             imageData: '',
-            animated: false,
-            animationName: '',
+            isDraggable: true,
         }
     },
     computed: {
@@ -230,11 +235,21 @@ export default {
         }
             }
         },
-        openContextMenu(row){
-            let payload = {x: event.pageX + 'px',
-                       y: event.pageY + 'px',
-                       row: row}
-            this.$store.commit('ContextMenu/OPEN_CONTEXT_MENU', payload)
+        openContextMenu(layoutRow, row){
+            let payload = {
+                name: 'ChartContextMenu',
+                x: event.pageX + 'px',
+                y: event.pageY + 'px',
+                row: row}
+
+            let payload2 = {
+                layoutRow: layoutRow,
+                itemRow: row,
+                itemName: 'charts'
+            }
+            this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
+            this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
+
         },
         chartResizing(left, top, width, height){
             this.$store.commit('Layout/RESIZE_CHART_CONTAINER', {width, height})
@@ -242,8 +257,8 @@ export default {
         toTextfield(row){
             this.$store.commit('Layout/ADD_TEXTFIELD', row)
         },
-        toChart() {
-
+        toChart(row) {
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'ChartContainer', row: row})
         },
         toImage(row, $event) {
           this.imageData = event.target;
@@ -263,7 +278,7 @@ export default {
         },
         toWebImage(row){
             this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
-            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', row)
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebImageContainer', row: row})
 
         },
         toWebVideo(row){
@@ -290,8 +305,8 @@ export default {
 @import '/home/martin/nuxt/larvel-nuxt/client/assets/sass/_animations.scss';
 
 div.cont{
-    width: 600px;
-    height: 400px;
+    width: 100%;
+    height: 100%;
 }
 div.gird {
     background: lightgrey;

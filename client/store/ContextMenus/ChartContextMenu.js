@@ -1,6 +1,6 @@
 
 export const state = () => ({
-    contextMenu: {activated: false, row: 0, style: {left: "100px", top: "100px"}}
+    contextMenu: {name:'ChartContextMenu', activated: false, row: 0, style: {left: "100px", top: "100px"}}
 })
 
 export const getters = {

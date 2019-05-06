@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import ElementUi from '~/plugins/element-ui'
 import Navbar from '~/components/Navbar'
 
 export default {

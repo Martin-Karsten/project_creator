@@ -32,7 +32,6 @@ export default {
     },
     data(){
         return{
-            test: '',
             currentTab: 'urlInput',
             urlInput: {name: 'urlInput', isActive: true},
             searchImageComponent: {name: 'searchImageComponent', isActive: false},
@@ -40,9 +39,6 @@ export default {
         }
     },
     methods:{
-        testM(){
-            this.test = 'oasidhf'
-        },
         toUrl(){
             this.currentTab = this.urlInput.name
             this.urlInput.isActive = true

@@ -25,7 +25,7 @@ data(){
 },
 computed:{
     ...mapGetters({
-        contextMenu: 'ContextMenus/WebImageContextMenu/getContextMenu'
+        contextMenu: 'ContextMenus/ChartContextMenu/getContextMenu'
     })
 },
 methods:{

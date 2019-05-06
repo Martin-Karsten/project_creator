@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-textfield" @contextmenu="openContextMenu">
+  <div class="editor-textfield" @contextmenu.prevent="openContextMenu">
       <editor-menu-bubble :editor="ed">
         <div
         slot-scope="{ commands, isActive, menu }"
@@ -15,7 +15,7 @@
           </button>
         </div>
       </editor-menu-bubble>
-    <editor-content class="textfield editor__content" :editor="ed" @contextmenu="openContextMenu"/>
+    <editor-content class="textfield editor__content" :editor="ed"/>
   </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       ed: new Editor({
-        content: "Your Content goes here",
+        content: this.text,
         extensions: [
           new Heading({ levels: [1, 2, 3] }),
           new Bold(),
@@ -42,8 +42,10 @@ export default {
         onUpdate: ({ getJSON, getHTML }) => {
           
         },
-        onBlur: ({event, state, view}) => {
+        onFocus: () => {
           this.setCurrentItem()
+        },
+        onBlur: ({event, state, view}) => {
           this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed.getHTML());
         }
       })
@@ -59,9 +61,6 @@ export default {
     // this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
   },
   methods: {
-    openContextMenu(){
-      //
-    },
     setCurrentItem(){
       let payload = 
       {
@@ -73,6 +72,21 @@ export default {
     },
     setEditor(){
       this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
+    },
+    openContextMenu(){
+            let payload = {
+                name: 'TextfieldContextMenu',
+                x: event.pageX + 'px',
+                y: event.pageY + 'px',
+                row: this.row}
+
+            let payload2 = {
+              layoutRow: this.layoutRow,
+              itemRow: this.row,
+              itemName: 'textfields'
+            }
+            this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
+            this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
     }
   }
 };

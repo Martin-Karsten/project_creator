@@ -1,10 +1,47 @@
 <template>
-    
+    <div>
+        <aside ref="contextMenu" :style="{top: contextMenu.style.top, left: contextMenu.style.left}" v-show="contextMenu.activated" class="context-menu">
+            <ul class="menu-list">
+                <li>
+                <ul class="context-menu-list">
+                    <li @click="copyItem"><a>Copy</a></li>
+                    <li @click="openStartMenuAnimations"><a>Add Animation</a></li>
+                    <li> <a>Format Form</a> </li>
+                    <li @click="deleteItem"><a>Delete</a></li>
+                </ul>
+                </li>
+            </ul>
+        </aside>
+    </div>    
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
+data(){
+    return{
 
+    }
+},
+computed:{
+    ...mapGetters({
+        contextMenu: 'ContextMenus/TextfieldContextMenu/getContextMenu'
+    })
+},
+methods:{
+    openStartMenuAnimations(){
+        let payload = {name : 'StartMenuAnimations'}
+        this.$store.dispatch('StartMenus/StartMenu/openStartMenu', payload)
+    },
+
+    copyItem(){
+        this.$store.commit('Layout/COPY_ITEM')
+    },
+
+    deleteItem(){
+        this.$store.commit('Layout/DELETE_ITEM')
+    }
+}
 }
 </script>
 

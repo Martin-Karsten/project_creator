@@ -35,7 +35,7 @@ export const actions = {
         }
     },
     closeContextMenu({state, commit, rootGetters}, payload){
-        commit('Contextmenus/WebImageContextMenu/CLOSE_CONTEXT_MENU', payload, {root: true})
+        commit('ContextMenus/WebImageContextMenu/CLOSE_CONTEXT_MENU', payload, {root: true})
         commit('CLOSE_CONTEXT_MENU')
     }
 }

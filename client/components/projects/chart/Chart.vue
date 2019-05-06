@@ -1,5 +1,5 @@
 <template>
-    <chart :options="pie" ref="pie" @click="resize" autoresize></chart>
+    <chart :options="pie" ref="pie" @click="setCurrentItem" @contextmenu="openContextMenu" autoresize></chart>
 </template>
 
 <script>
@@ -8,10 +8,11 @@
     import 'echarts/lib/component/tooltip'
     import 'echarts/lib/component/legend'
     import 'echarts/lib/component/title'
-import { mapGetters } from 'vuex';
+    
+    import { mapGetters } from 'vuex';
 
     export default {
-        props: ['width', 'height'],
+        props: ['width', 'height', 'layoutRow', 'row'],
         name: 'piechart',
         components: {
             chart: ECharts
@@ -70,13 +71,39 @@ import { mapGetters } from 'vuex';
                 this.w = mutation.payload.width
                 this.h = mutation.payload.height
                 this.resize(mutation.payload.width, mutation.payload.height)
+                console.log(mutation.payload.width, mutation.payload.height)
+                break;
             }
         },)
         },
         methods: {
             resize (w, h) {
-              let opts = {width: w-5, height: h}
+              let opts = {width: w, height: h}
               this.$refs.pie.resize(opts)
+            },
+            setCurrentItem(){
+                let payload = {
+                layoutRow: this.layoutRow,
+                itemRow: this.row,
+                itemName: 'charts'
+                }
+                this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
+            },
+            openContextMenu(){
+                let payload = {
+                    name: 'ChartContextMenu',
+                    x: event.pageX + 'px',
+                    y: event.pageY + 'px',
+                    row: this.row}
+
+                let payload2 = {
+                layoutRow: this.layoutRow,
+                itemRow: this.row,
+                itemName: 'charts'
+                }
+                this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
+                this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
+
             }
         }
     }

@@ -60,14 +60,13 @@ module.exports = {
     '~plugins/axios',
     '~plugins/fontawesome',
     {src: 'plugins/color-picker', ssr: false},
-    // { src: '~plugins/vue-echarts.js', ssr: false },
+    { src: '~plugins/vue-echarts.js', ssr: false},
     // '~plugins/nuxt-client-init',
   ],
 
   modules: [
     '@nuxtjs/router',
     '~/modules/spa',
-    // '@nuxtjs/bulma',
     'vue-scrollto/nuxt',
   ],
 

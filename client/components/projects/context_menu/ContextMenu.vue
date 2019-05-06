@@ -6,10 +6,12 @@
 import { mapGetters } from 'vuex';
 import WebImageContextMenu from './WebImageContextMenu' 
 import TextfieldContextMenu from './TextfieldContextMenu'
+import ChartContextMenu from './ChartContextMenu'
 export default {
     components: {
         WebImageContextMenu,
-        TextfieldContextMenu
+        TextfieldContextMenu,
+        ChartContextMenu
     },
     data(){
         return{
@@ -17,7 +19,7 @@ export default {
     },
     computed:{
         ...mapGetters({
-            contextMenu: 'Contextmenus/ContextMenu/getContextMenu',
+            contextMenu: 'ContextMenus/ContextMenu/getContextMenu',
         })
     },
     methods:{

@@ -31,12 +31,14 @@ export default {
                 x: event.pageX + 'px',
                 y: event.pageY + 'px',
                 row: this.row}
+
             let payload2 = {
-              name: 'web_images',
-              row: this.row
+              layoutRow: this.layoutRow,
+              itemRow: this.row,
+              itemName: 'web_images'
             }
-            this.$store.dispatch('Contextmenus/ContextMenu/openContextMenu', payload)
             this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
+            this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
     }
   }
 }

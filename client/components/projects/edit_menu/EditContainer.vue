@@ -1,23 +1,29 @@
 <template>
-    <div>
-        <div class="exampleoverlay"></div>
         <div class="edit-container">
-            <component :is="WebImageComponent"></component>
-        </div>
+            <component :is="currentContainer.name"></component>
         </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import unsplash from '../../../apis/unsplash/unsplash.js'
 import WebImageContainer from './web_image/WebImageContainer'
+import ChartContainer from './chart/ChartContainer'
 export default {
     components: {
-        WebImageContainer
+        WebImageContainer,
+        ChartContainer
     },
     data(){
         return {
-            WebImageComponent: 'WebImageContainer'
+            webImageComponent: 'WebImageContainer',
+            chartContainer: 'ChartContainer'
         }
+    },
+    computed:{
+        ...mapGetters({
+            currentContainer: 'EditContainer/getEditContainer'
+        })
     },
     methods:{
         closeUrlInput(){
