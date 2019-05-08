@@ -1,14 +1,14 @@
 <template>
-  <div class="layout">
-    <navbar/>
-    <div class="container is-fluid">
+  <el-container class="layout">
+    <el-header>
+      <navbar/>
+    </el-header>
       <nuxt/>
-    </div>
-  </div>
+  </el-container>
 </template>
 
 <script>
-import ElementUi from '~/plugins/element-ui'
+import '~/plugins/element-ui'
 import Navbar from '~/components/Navbar'
 
 export default {

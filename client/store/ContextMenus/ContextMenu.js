@@ -1,6 +1,6 @@
 
 export const state = () => ({
-    contextMenu: {name: '', activated: false, layoutRow: 0, style: {left: "100px", top: "100px"}},
+    contextMenu: {name: '', activated: false, layoutRow: 0, style: {left: "250px", top: "100px"}},
 })
 
 export const getters = {
@@ -10,10 +10,9 @@ export const getters = {
 export const mutations = {
     OPEN_CONTEXT_MENU (state, payload) {
         state.contextMenu = payload
-        console.log(state.contextMenu)
     },
     CLOSE_CONTEXT_MENU (state, payload) {
-        state.contextMenu = ''
+        state.contextMenu.activated = false
     }
 }
 

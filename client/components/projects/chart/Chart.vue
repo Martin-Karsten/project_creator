@@ -71,7 +71,6 @@
                 this.w = mutation.payload.width
                 this.h = mutation.payload.height
                 this.resize(mutation.payload.width, mutation.payload.height)
-                console.log(mutation.payload.width, mutation.payload.height)
                 break;
             }
         },)

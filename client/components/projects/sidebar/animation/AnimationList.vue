@@ -1,11 +1,13 @@
 <template>
-<div class="list is-hoverable">
-        <draggable>
-              <a class="list-item is-active" v-for="(animation, index) in animationList" :key="index">
-                  {{animation.animations.animation_order}}{{animation.animations.animation_name}}
-            </a>
-        </draggable>
-</div>
+    <el-menu>
+        <div class="is-hoverable">
+            <draggable>
+                <a class="list-item is-active" v-for="(animation, index) in animationList" :key="index">
+                    {{animation.animations.animation_order}}{{animation.animations.animation_name}}
+                </a>
+            </draggable>
+        </div>
+    </el-menu>
 </template>
 
 <script>
@@ -39,5 +41,8 @@ export default {
 </script>
 
 <style>
-
+    .animation-list{
+        margin-top: 1rem;
+        border-right: 1px black solid;
+    }
 </style>

@@ -1,5 +1,7 @@
 <template>
-    <component :is="contextMenu.name"></component>
+    <el-menu class="context-menu" :style="{top: contextMenu.style.top, left: contextMenu.style.left}" v-show="contextMenu.activated">
+        <component :is="contextMenu.name"></component>
+    </el-menu>
 </template>
 
 <script>
@@ -33,8 +35,8 @@ export default {
 }
 </script>
 
-<style>
-aside.context-menu{
+<style lang="scss">
+.context-menu{
     position: fixed;
     top: 50%; 
     left: 50%;
@@ -43,13 +45,20 @@ aside.context-menu{
     border-radius: 5px;
     text-align: center;
     z-index: 11; /* 1px higher than the overlay layer */
-    background-color: white;
-    border: black solid 1px;
 }
 
 ul.context-menu-list{
     border: black solid 1px !important;
-    margin: 0 !important;
-    margin: 0 !important;
+    padding: 0 !important;
+    background-color: white;
+
+        & :last-child{
+        border-bottom: none;
+        }
+}
+
+li.context-menu-item{
+    border-bottom: 1px solid black;
+    height: 2rem;
 }
 </style>

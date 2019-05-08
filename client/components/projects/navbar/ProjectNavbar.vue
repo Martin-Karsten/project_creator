@@ -1,73 +1,30 @@
 <template>
-    <div>
-        <nav class="navbar component-navigation" role="navigation" aria-label="component navigation" v-show="true">
+  <div>
+    <el-header class="project-navbar">
+      <el-menu class="el-menu-demo" 
+        mode="horizontal"
+        background-color="#edeeef"
+        text-color="#fff"
+        active-text-color="black"
+      >
+        <el-menu-item index="1">START</el-menu-item>
 
-            <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start">
-                <locale-dropdown/>
-                <a class="navbar-item" @click="saveProject">
-                    SAVE
-                </a>
-                <a class="navbar-item" @click="toStartMenu">
-                    START
-                </a>
-
-                <a class="navbar-item" @click="toStartMenuAnimations">
-                    ANIMATIONS
-                </a>
-
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                    More
-                    </a>
-
-                    <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
-                    </a>
-                    <a class="navbar-item">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                        Report an issue
-                    </a>
-                    </div>
-                </div>
-                </div>
-
-    <div class="navbar-end">
-      <!-- Authenticated -->
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          <img :src="user.photo_url" class="rounded-circle profile-photo-nav">
+        <el-menu-item index="2">ANIMATIONS</el-menu-item>
+        
+        <el-submenu index="4" style="float: right;" v-if="user">
+          <template slot="title">           
+            <img :src="user.photo_url" class="rounded-circle profile-photo-nav">
             {{ user.first_name }}
-        </a>
+             </template>
+          <el-menu-item index="4-1"><i class="el-icon-setting"></i> Settings</el-menu-item>
+          <el-menu-item index="4-2"><i class="el-icon-information"></i> About</el-menu-item>
+          <el-menu-item index="4-3"><i class="el-icon-circle-close"></i> Logout</el-menu-item>
+        </el-submenu>
+      </el-menu>
+    </el-header>
 
-        <div class="navbar-dropdown is-right">
-            <router-link :to="{ name: 'settings.project.projects' }" class="navbar-item">
-              Projects
-            </router-link>
-            <router-link :to="{ name: 'settings.profile' }" class="navbar-item">
-              <fa icon="cogs" fixed-width/>
-              {{ $t('settings') }}
-            </router-link>
-          <hr class="navbar-divider">
-          <a class="navbar-item" @click.prevent="logout">
-            <fa icon="sign-out-alt" fixed-width/>
-            {{ $t('logout') }}
-          </a>
-        </div>
-      </div>
-    </div>
-            </div>
-        </nav>
-        <!-- <start-menu v-show="showStartMenu"></start-menu> -->
-        <start-menu-container></start-menu-container>
-    </div>
+    <start-menu-container></start-menu-container>
+  </div>
 </template>
 
 
@@ -116,6 +73,10 @@ export default {
 </script>
 
 <style>
+
+.project-navbar {
+    padding: 0 !important;
+}
 .profile-photo-nav {
   width: 2rem;
   height: 2.5rem;

@@ -1,6 +1,8 @@
 <template>
-    <div class="colums grid">
-        <div class="column is-12 grid-items">
+    <el-main class="project-container">
+    <el-row class="grid">
+        <el-button @click="addCol">Add Col</el-button>
+        <el-col :span="24" class="grid-items">
             <draggable
                 :disabled="true"
                 :list="layout"
@@ -14,33 +16,45 @@
                 >
                 
               <div class="item-container" @click.self="layoutItemClicked(index)">
-                    <div class="columns is-multiline toolbox" v-show="toolboxes[index].isEmpty">
-                        <div class="column tip"  data-tooltip="Text" @click="toTextfield(index)">
-                            <span class="tooltiptext">Text</span>
-                            <fa icon="font"/>
-                        </div>
-                        <div class="column tip" data-tooltip="Chart" >
-                            <span class="tooltiptext">Chart</span>
-                            <fa icon="chart-bar" @click="toChart(index)"/>
-                        </div>
-                        <div class="column tip" data-tooltip="Image" @change="toImage(index)">
-                            <span class="tooltiptext">Image</span>
-                            <input id="upload" class="file-input" type="file" name="file-upload" accept="image/*">
-                            <fa icon="image"/>
-                        </div>
-                        <div class="column tip" data-tooltip="Image" @click="toWebImage(index)">
-                            <span class="tooltiptext">Web Image</span>
-                            <fa icon="image"/>
-                        </div>  
-                        <div class="column tip" data-tooltip="Youtube" @click="toWebVideo(index)">
-                            <span class="tooltiptext">Youtube Video</span>
-                            <fa icon="video"/>
-                        </div>  
-                        <div class="column tip" data-tooltip="Table" @click="toTable(index)">
-                            <span class="tooltiptext">Table</span>
-                            <fa icon="table" />
-                        </div>  
-                    </div>
+                    <el-row class="toolbox" v-show="toolboxes[index].isEmpty">
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Text" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="font" @click="toTextfield(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Web Image" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="image" @click="toWebImage(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Chart" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="chart-bar" @click="toChart(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Table" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="table" @click="toTable(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Web Video" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="video" @click="toWebVideo(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                        <el-tooltip class="tooltip-item" effect="dark" content="Shape" placement="top-start">
+                            <el-col :span="4">
+                                <fa class="tooltip-icon" icon="shapes" @click="toShapes(index)"/>
+                            </el-col>
+                        </el-tooltip>
+
+                    </el-row>
 
                     <url-input v-show="toolboxes[index].urlInputActivated" :index="index"></url-input>
 
@@ -91,7 +105,7 @@
                     :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
                      borderRadius: table.border_radius + 'px', backgroundColor: table.background_color}"
                 >
-                        <table-editor></table-editor>
+                        <table-editor :text="table.text"></table-editor>
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
@@ -134,11 +148,12 @@
                 </div>
             </draggable>
             <context-menu></context-menu>
-        </div>
+        </el-col>
 
         <fa class="new-page-chevron" icon="chevron-down" @click="addItem"/>
 
-    </div>
+    </el-row>
+</el-main>
 </template>
 
 <script>
@@ -203,6 +218,9 @@ export default {
         this.$store.dispatch('Layout/resetLayout')
     },
     methods: {
+        addCol(){
+            this.$store.commit('Layout/CREATE_TABLE', {rows:5, columns:6})
+        },
         activatePresentationMode(event){
             console.log(event.keyCode)
         },
@@ -255,7 +273,7 @@ export default {
             this.$store.commit('Layout/RESIZE_CHART_CONTAINER', {width, height})
         },
         toTextfield(row){
-            this.$store.commit('Layout/ADD_TEXTFIELD', row)
+            this.$store.dispatch('Layout/addTextfield', {name: 'TextfieldContainer', row: row})
         },
         toChart(row) {
             this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'ChartContainer', row: row})
@@ -286,8 +304,8 @@ export default {
             this.$store.commit('LayoutHelpers/HIDE_TOOLBAR', row)
             this.$store.commit('LayoutHelpers/SHOW_URL_INPUT', row)
         },
-        toTable() {
-
+        toTable(row) {
+            this.$store.commit('Layout/ADD_TABLE', {layoutRow: row, rows: 2,  columns: 3})
         },
         addItem() {
             this.$store.commit('Layout/ADD_ITEM', this.layout.length)
@@ -304,23 +322,27 @@ export default {
 <style>
 @import '/home/martin/nuxt/larvel-nuxt/client/assets/sass/_animations.scss';
 
+.project-container{
+    padding: 20px 20px 5px 20px !important;
+}
 div.cont{
     width: 100%;
     height: 100%;
 }
 div.gird {
-    background: lightgrey;
+    /* background: lightgrey; */
+    padding-top: 0rem !important;
 }
 div.grid-items {
     padding: 0;
 }
 div.item-group {
-    height: 640px;
+    height: 667px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 div.item-container {
-    height: 635px;
+    height: 659px;
     width: 100%; border: 1px solid black; 
     position: relative;
     margin-bottom: 0.25rem;
@@ -346,6 +368,10 @@ div.animation-number{
     display: table;
 }
 
+.project-table-container{
+    display: table;
+}
+
 .selected {
     border: rgb(4, 131, 173) dotted;
 }
@@ -358,11 +384,12 @@ div.animation-number{
 div.toolbox {
     border-color: #000000;
     border: 1px solid;
-    border-radius: 10px;
+    border-radius: 4px;
     font-size: 30px;
-    cursor: pointer;
-    width: 12%;
+    width: 33%;
     margin: 0;
+    padding-top: 0.25rem;
+    padding-left: 2rem;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -370,29 +397,8 @@ div.toolbox {
     transform: translate(-50%, -50%);
 }
 
-.tip .tooltiptext {
-  visibility: hidden;
-  opacity: 0;
-  width: 5rem;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  transition: opacity 0.25s;
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-  margin-bottom: 20px;
-  width: 120px;
-  bottom: 100%;
-  left: 50%; 
-  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
-}
-
-.tip:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
+.tooltip-icon{
+    cursor: pointer;
 }
 
 .file-input {
@@ -412,10 +418,6 @@ div.toolbox {
     margin: 0;
     padding: 0;
     cursor: pointer;
-}
-
-.project-table-container{
-    display: table;
 }
 
 

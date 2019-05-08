@@ -1,10 +1,26 @@
 import Vue from 'vue';
-// import { Button, Select, Row } from 'element-ui';
+import { Container, Header, Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Aside, Main, Button, Select, Row, Col,
+         Pagination, Checkbox, RadioButton, RadioGroup, Tabs, TabPane, Tooltip} from 'element-ui';
 
-// Vue.use(Button.name, Button);
-// Vue.use(Select.name, Select);
-// Vue.use(Row.name, Row);
-
-import ElementUI from 'element-ui';
-
-Vue.use(ElementUI)
+Vue.component(Container.name, Container);
+Vue.component(Header.name, Header);
+Vue.component(Menu.name, Menu);
+Vue.component(Submenu.name, Submenu);
+Vue.component(MenuItem.name, MenuItem);
+Vue.component(MenuItemGroup.name, MenuItemGroup);
+Vue.component(Dropdown.name, Dropdown);
+Vue.component(DropdownMenu.name, DropdownMenu);
+Vue.component(DropdownItem.name, DropdownItem);
+Vue.component(Aside.name, Aside);
+Vue.component(Main.name, Main);
+Vue.component(Button.name, Button);
+Vue.component(Select.name, Select);
+Vue.component(Row.name, Row);
+Vue.component(Col.name, Col);
+Vue.component(Pagination.name, Pagination)
+Vue.component(Checkbox.name, Checkbox)
+Vue.component(RadioButton.name, RadioButton)
+Vue.component(RadioGroup.name, RadioGroup)
+Vue.component(Tabs.name, Tabs)
+Vue.component(TabPane.name, TabPane)
+Vue.component(Tooltip.name, Tooltip)

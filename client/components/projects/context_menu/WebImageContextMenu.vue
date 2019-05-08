@@ -4,10 +4,10 @@
             <ul class="menu-list">
                 <li>
                 <ul class="context-menu-list">
-                    <li @click="copyItem"><a>Copy</a></li>
-                    <li @click="openStartMenuAnimations"><a>Add Animation</a></li>
-                    <li> <a>Format Form</a> </li>
-                    <li @click="deleteItem"><a>Delete</a></li>
+                    <li class="context-menu-item" @click="copyItem"><a>Copy</a></li>
+                    <li class="context-menu-item" @click="openStartMenuAnimations"><a>Add Animation</a></li>
+                    <li class="context-menu-item" > <a>Format Form</a> </li>
+                    <li class="context-menu-item" @click="deleteItem"><a>Delete</a></li>
                 </ul>
                 </li>
             </ul>

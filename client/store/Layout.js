@@ -52,6 +52,11 @@ SET_CURRENT_ITEM (state, payload) {
 
 },
 
+// we know the current item already, that's why we just assign it to the state instead of calling SET_CURREN_ITEM
+SET_CURRENT_ITEM_OBJECT_ALREADY_EXISTS (state, payload){
+  state.currentItem = JSON.parse(JSON.stringify(payload))
+},
+
 DESELECT_ITEM (state, payload) {
   state.currentSelectedItem = {}
 },
@@ -59,12 +64,10 @@ DESELECT_ITEM (state, payload) {
 COPY_ITEM (state, payload){
   let newItem = JSON.parse(JSON.stringify(state.currentItem))
   newItem.itemRow = state.layout[state.currentLayout][state.currentItem.itemName].length
-	// console.log("TCL: COPY_ITEM -> [state.currentLayout][state.currentItem.itemName]", [state.currentLayout][state.currentItem.itemName])
   newItem.id = Date.now()
   newItem.textfield_id = Date.now()
   state.layout[state.currentLayout][state.currentItem.itemName].push(newItem)
 
-  console.log(state.layout)
 },
 
   //delete item off layout -> splice item, not entire layout
@@ -102,6 +105,8 @@ ADD_TEXTFIELD(state, payload) {
   row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations: {},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0, left:0, width:200, height:100,
   top:0, left:0, width:200, height:100}))
+
+
 },
 
 //////// IMAGE SETTINGS
@@ -131,7 +136,7 @@ ADD_WEB_IMAGE(state, payload) {
   state.layout[state.currentLayout].web_images.push({id: Date.now(), project_id: state.projectId, name: 'web_image', url:payload.url, animated:false, 
   row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:200, height:100})
+  left:0, width:400, height:200})
 },
 
 //////// WEB_VIDEO SETTINGS
@@ -141,10 +146,36 @@ ADD_WEB_VIDEO(state, payload) {
 
 ///////// TABLE SETTINGS
 ADD_TABLE(state, payload) {
-  state.layout[payload.layoutRow].tables.push({id: Date.now(), project_id: state.projectId, name: 'table', columns: payload,columns, rows: payload.rows, 
+  state.layout[payload.layoutRow].tables.push({id: Date.now(), project_id: state.projectId, name: 'table', columns: payload.columns, rows: payload.rows, 
   row:payload.Layoutrow, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:200, height:100})
+  left:0, width:400, height:200})
+},
+
+CREATE_TABLE(state, payload){
+  let str ='<table><tbody>'
+  for(let i=0; i<=payload.columns; i++){
+    str = str + '<tr>'
+    for(let j=0; j<=payload.rows; j++){
+      str = str + '<th></th>'
+    }
+    str = str + '</tr>'
+  }
+ str = str + '</tbody></table>'
+
+ console.log(str)
+ if(state.layout[0].tables[0] != null){
+  state.layout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
+  row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
+  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
+  left:0, width:400, height:200})
+ }
+ else{
+  state.layout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
+  row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
+  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
+  left:0, width:400, height:200})
+ }
 },
 
 //////////// CHART SETTINGS
@@ -280,6 +311,16 @@ export const actions = {
        alert('AN ERROR OCCURRED')
       }
   },
+
+  addTextfield({state, commit}, payload){
+    commit('ADD_TEXTFIELD', payload)
+    let row = state.layout[payload.row]['textfields'].length - 1
+
+    let newItem = JSON.parse(JSON.stringify(state.layout[0]['textfields'][row]))
+    newItem.itemName = 'textfields'
+    commit('SET_CURRENT_ITEM_OBJECT_ALREADY_EXISTS', newItem)
+  },
+
 
   animate({state, commit, rootGetters}, payload){
     //animation_order is not know -> trigger action in presentationMode and add order to payload

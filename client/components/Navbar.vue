@@ -1,59 +1,45 @@
 <template>
-  <nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-     <router-link :to="{ name: user ? 'home' : 'welcome' }" class="navbar-item">
-        <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
-      </router-link>
+      <el-menu :default-active="activeIndex" class="el-menu-demo" 
+        mode="horizontal"
+        @select="handleSelect"
+        background-color="#989da2"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item index="1">Processing Center</el-menu-item>
 
-      <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
+        <el-submenu index="2">
+          <template slot="title">Workspace</template>
+          <el-menu-item index="2-1">item one</el-menu-item>
+          <el-menu-item index="2-2">item two</el-menu-item>
+          <el-menu-item index="2-3">item three</el-menu-item>
+          <el-submenu index="2-4">
+            <template slot="title">item four</template>
+            <el-menu-item index="2-4-1">item one</el-menu-item>
+            <el-menu-item index="2-4-2">item two</el-menu-item>
+            <el-menu-item index="2-4-3">item three</el-menu-item>
+          </el-submenu>
+        </el-submenu>
 
-    <div id="navbarBasicExample" class="navbar-menu">
+          <el-menu-item index="3" disabled>Info</el-menu-item>
 
-    <div class="navbar-start">
-      <locale-dropdown/>
-    </div>
+          <el-submenu index="4" style="float: right;" v-if="user">
+            <template slot="title"><i class="el-icon-menu"></i></template>
+            <el-menu-item index="4-1"><i class="el-icon-setting"></i> Settings</el-menu-item>
+            <el-menu-item index="4-2"><i class="el-icon-information"></i> About</el-menu-item>
+            <el-menu-item index="4-3"><i class="el-icon-circle-close"></i> Logout</el-menu-item>
+          </el-submenu>
 
-    <div class="navbar-end">
-      <!-- Authenticated -->
-      <div v-if="user" class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          <img :src="user.photo_url" class="rounded-circle profile-photo-nav">
-            {{ user.first_name }}
-        </a>
-
-        <div class="navbar-dropdown is-right">
-            <router-link :to="{ name: 'settings.project.projects' }" class="navbar-item">
-              Projects
+          <template v-else>
+            <router-link :to="{ name: 'login' }" class="navbar-item" active-class="active">
+              {{ $t('login') }}
             </router-link>
-            <router-link :to="{ name: 'settings.profile' }" class="navbar-item">
-              <fa icon="cogs" fixed-width/>
-              {{ $t('settings') }}
+            <router-link :to="{ name: 'register' }" class="navbar-item" active-class="active">
+              {{ $t('register') }}
             </router-link>
-          <hr class="navbar-divider">
-          <a class="navbar-item" @click.prevent="logout">
-            <fa icon="sign-out-alt" fixed-width/>
-            {{ $t('logout') }}
-          </a>
-        </div>
-      </div>
-      <!-- Guest -->
-      <template v-else>
-        <router-link :to="{ name: 'login' }" class="navbar-item" active-class="active">
-          {{ $t('login') }}
-        </router-link>
-        <router-link :to="{ name: 'register' }" class="navbar-item" active-class="active">
-          {{ $t('register') }}
-        </router-link>
-      </template>
-    </div>
+          </template>
 
-    </div>
-  </nav>
+      </el-menu>
 </template>
 
 <script>
@@ -66,6 +52,7 @@ export default {
   },
 
   data: () => ({
+    activeIndex: '1',
     appName: process.env.appName
   }),
 
@@ -74,6 +61,9 @@ export default {
   }),
 
   methods: {
+    handleSelect(key, keyPath) {
+      console.log(key, keyPath);
+    },
     async logout () {
       // Log out the user.
       await this.$store.dispatch('auth/logout')
@@ -85,7 +75,17 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
+/* .el-menu--horizontal .el-submenu > .el-menu {
+  left: initial !important;
+  right: 0;
+} */
+
+.navbar-right-dropdown{
+  margin-left: 35rem;
+}
+
 .profile-photo-nav {
   width: 2rem;
   height: 2.5rem;

@@ -1,80 +1,69 @@
 <template>
-<div class="home">
+  <el-container>
+      <el-aside>
+        <el-menu 
+          default-active="2"
+          class="el-menu-vertical-demo"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+          <el-submenu index="1">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>Navigator One</span>
+            </template>
+            <el-menu-item-group title="Group One">
+              <el-menu-item index="1-1">item one</el-menu-item>
+              <el-menu-item index="1-2">item one</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group title="Group Two">
+              <el-menu-item index="1-3">item three</el-menu-item>
+            </el-menu-item-group>
+            <el-submenu index="1-4">
+              <template slot="title">item four</template>
+              <el-menu-item index="1-4-1">item one</el-menu-item>
+            </el-submenu>
+          </el-submenu>
+          <el-menu-item index="2">
+            <i class="el-icon-menu"></i>
+            <span>Navigator Two</span>
+          </el-menu-item>
+          <el-menu-item index="3" disabled>
+            <i class="el-icon-document"></i>
+            <span>Navigator Three</span>
+          </el-menu-item>
+          <el-menu-item index="4">
+            <i class="el-icon-setting"></i>
+            <span>Navigator Four</span>
+          </el-menu-item>
+        </el-menu>
+    </el-aside>
 
-  <el-row>
-  <el-button>Default</el-button>
-  <el-button type="primary">Primary</el-button>
-  <el-button type="success">Success</el-button>
-  <el-button type="info">Info</el-button>
-  <el-button type="warning">Warning</el-button>
-  <el-button type="danger">Danger</el-button>
-</el-row>
-
-  <!-- <h1 class="title is-1 home-title" v-if="projects.length < 1">Looks like you haven't created any Projects yet</h1>
-  <h1 class="title is-1 home-title" v-else>{{ $t("your_projects") }}</h1> -->
-
-<div class="columns is-multiline">
-
-  <!-- <home-sidebar class="column is-1">
-      <li>
-        <fa class="show-scroller-chevron" icon="chevron-right" />
-      </li>
-      <li>
-          <div></div>
-      </li>
-  </home-sidebar> -->
-  
-    <div class="column is-11 columns  is-multiline project-list" >
-      <div class="column is-2" >
-        <div class="project-item  project-empty has-text-centered is-vertical-center">
-            <div class="column is-11 project-name ">
-              <input class="input title is-5 project-name-input" type="text" placeholder="Project Name..." v-model="form.project_name">
-              <button class="button is-success" @click="createProject">{{ $t('create_project') }}</button>
-              <button class="button is-danger" @click="cancelProject">{{ $t('cancel') }}</button>
-            </div>
-        </div>
-      </div>
-      
-      <div class="column is-2" v-show="ready" v-for="project in projects" :key="project.id">
-        <div class="project-item  project-empty has-text-centered is-vertical-center">
-        <div class="dropdown is-right project-dropdown" :class="{ 'is-active': project.clicked}" >
-          <div class="dropdown-trigger">
-            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu" @click="selectProject(project.id)">
-              <span class="icon is-small">
-                <fa icon="ellipsis-h"/>
-              </span>
-            </button>
+    <el-main>
+      <el-row class="home-content-row">
+        <el-col class="home-content-column wobble" :span="6" v-for="(project, index) in projects" :key="index">
+          <div class="cptn03" @mouseover="showEditable(index)" @mouseleave="hideEditable(index)">
+            <img src="http://lorempixel.com/350/263/" alt="">
+            <el-checkbox class="home-column-checkbox" :value="project.selected" @input="selectProject(index)" v-show="project.editable || project.selected"/>
+              <div class="cptn">
+                  <div>
+                      <h3>{{project.project_name}} ({{user.first_name}},{{user.last_name}})</h3>
+                      <p>{{project.created_at}}</p>
+                  </div>
+                  <a @click="viewProject(project.id)"> <fa class="fa" icon="arrow-right"/> </a>
+              </div>
           </div>
-          <!-- <checkbox @click="project.clicked = !project.clicked" ></checkbox> -->
-          <div class="dropdown-menu" role="menu">
-            <ul class="box dropdown-items">
-              <li class="dropdown-item">Rename</li>
-              <li class="dropdown-item">Download</li>
-              <li class="dropdown-item" @click="deleteProject(project.id)">Delete</li>
-            </ul>
-          </div>
-        </div>
-            <div class="column is-11 project-name ">
-              <input class="input title is-5 project-name-input" type="text" v-bind:placeholder="project.project_name" v-model="form.project_name">
-              <!-- <router-link :to="{name: 'project.view', params: { id: project.id }}"> -->
-                <!-- <p>{{ $t('created_at') }}</p> -->
-                <b>
-                  <p>{{project.created_at}}</p>
-                </b>
-                <button class="button" @click="viewProject(project.id)">View</button>
-              <!-- </router-link> -->
-            </div>
-        </div>
-      </div>
-
-  </div>
-
-  <div class="column is-half is-offset-one-quarter">
-    <pagination :pagination="pagination" :offset="3" @paginate="changeNumber()"></pagination>
-  </div>
-</div>
-  
-</div>
+        </el-col>
+      </el-row>
+  {{editable}}
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :hide-on-single-page="true"
+        :total="projects.length">
+      </el-pagination>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
@@ -99,11 +88,9 @@ export default {
     return { title: this.$t('home') }
   },
   data: () => ({
+      checked: false,
       projectsClicked: [],
-        pagination: {
-            'current_page': 1
-        },
-      inputName: 'column is-2 input-big has-text-centered is-3 project-container',
+      editable: false,
       ready: false,
       form: new Form({
             project_name: '',
@@ -111,34 +98,33 @@ export default {
             private: true,
           }),
       deleteForm: new Form({
-        id: ''
     }),
   }),
     computed: {
     ...mapGetters({
         user: 'auth/user',
-        projects: 'project/getProjects',
+        projects: 'Project/getProjects',
     }), 
   },
   async mounted() {
-    await this.$store.dispatch('project/fetchProjects')
+    await this.$store.dispatch('Project/fetchProjects')
 
     this.ready = true
   },
   methods:{
-    showProjectNameInput(){
-      this.inputName = 'column has-text-centered is-6 project-container'
-      this.projects[0] = null
-      this.iconAcitvated = false;
-      this.inputActivated = true
-    },
-    selectProject(id) {
-      this.$store.commit('project/SELECT_PROJECT', id)
+      showEditable(index){
+        this.$store.commit('Project/SHOW_EDITABLE', index)
+      },
+      hideEditable(index){
+        this.$store.commit('Project/HIDE_EDITABLE', index)
+      },
+    selectProject(index) {
+      this.$store.commit('Project/SELECT_PROJECT', index)
     },
     async changeNumber() {
     axios.get('user/projects?page=' + this.pagination.current_page)
     .then(response => {
-        this.$store.dispatch('project/changeNumber', response)
+        this.$store.dispatch('Project/changeNumber', response)
         this.pagination = response.data.pagination;
     })
     .catch(error => {
@@ -170,12 +156,12 @@ export default {
     async deleteProject(id) {
       this.deleteForm.id = id
       try{
-      await this.deleteForm.delete(`user/project/${id}/delete`, id)      
+      await this.deleteForm.delete(`user/Project/${id}/delete`, id)      
       }
       catch(e){
         console.log(e)
       }
-      this.$store.commit('project/DELETE_PROJECT',id)
+      this.$store.commit('Project/DELETE_PROJECT',id)
     },
     cancelProject() {
       this.form.project_name = ''
@@ -187,82 +173,90 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  .el-menu-vertical-demo{
+    margin-left: 1.4rem;
+    height: 88vh;
+    margin-top: 1.4rem;
+  }
+  .home-content-row {
+    margin-bottom: 20px;
+    min-height: 86%;
+  }
+  .home-content-column {
+    padding: 0 0.5rem 1rem 0.5rem;
+    border-radius: 4px;
+  }
 
-div.home{
+.cptn03 {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.cptn03 img {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    bottom: 0;
+    position: relative;
 }
 
-h1.home-title {
-  margin-bottom: 0.5rem;
-}
-
-.is-vertical-center {
-display: flex;
-justify-content: center;
-align-items: center;
-}
-
-div.project-container{
-  position: relative;
-  min-width: 10rem;
-}
-
-div.project-list {
-  margin-top: 1rem;
-  padding-bottom: 0;
-  min-height: 82vh;
-}
-
-input.project-name-input {
-  margin-bottom: 0!important;
-}
-
-div.project-item{
-  position: relative;
-  border-style: solid;
-  border-radius: 4px;
-  min-height: 13rem;
-}
-
-div.project-empty{
-  background: #c7d9e8;
-}
-
-div.project-empy:hover{
-  border-color: pink;
-}
-
-.project-dropdown{
+.home-column-checkbox{
   position: absolute;
-  top: 14px;
-  right: 22px;
-  font-size: 18px;
-  cursor: pointer;
+  top: 15px;
+  left: 345px;
 }
 
-.plus-icon{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
-  font-size: 65px;
+.cptn03 .cptn {
+    background: #545c64;
+    width: 100%;
+    height: 23%;
+    position: absolute;
+    left: 0;
+    overflow: auto;
+    padding: 0 15px;
+    border-radius: 4px;
+    opacity: 0.75;
+    top: 214px;
+}
+.cptn03 .cptn div {
+    float: left;
+    height: 100%;
+}
+.cptn03 .cptn .fa {
+    -wibkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    border: 2px solid #fff;
+    -wibkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    color: #fff;
+    display: block;
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    text-decoration: none;
+    width: 30px;
+    margin-top: 10px;
+    opacity: 0.3;
+}
+.cptn03 .cptn .fa:hover {
+    opacity: 1;
+}
+.cptn03 .cptn h3 {
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-weight: normal;
+}
+.cptn03 .cptn p {
+    color: fff;
+    font-size: 14px;
 }
 
-.plus-icon:hover{
-  background: black;
-  border-radius: 40px;
-  opacity: 0.6;
-  cursor: pointer;
-}
-
-.fade-enter,
-.fade-leave-to { transition: opacity 5.5s ease-out }
-
-.fade-leave,
-.fade-enter-to { transition: opacity 5.5s ease-in }
-
-.fade-enter-active,
-.fade-leave-active { transition: opacity 300ms }
 </style>
 

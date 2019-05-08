@@ -1,68 +1,30 @@
 <template>
-  <div class="columns is-multiline start-menu">
-      <div class="column is-1 menu-section first-menu-section">
-        <div class="columns is-multiline">
-          <div class="column is-4 "> <fa id="menu-icon-0" class="component-icon start-menu-button" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/> </div>
-          <div class="column is-4"> <fa id="menu-icon-1" class="component-icon" icon="image" @click="activateImageIcon" /> </div>          
-          <div class="column is-4"> <fa id="menu-icon-2" class="component-icon" icon="table" @click="activateTableIcon" /> </div>
-          <div class="column is-4"> <fa id="menu-icon-3" class="component-icon" icon="chart-bar" @click="activateChartIcon" /> </div>
-          <div class="column is-4"> <fa id="menu-icon-4" class="component-icon" icon="shapes" @click="fieldActivated = true"/> </div>
-          <div v-show="fieldActivated">
-            <div class="box">
-              <div class="columns">
-                <div class="column is-4"> <fa class="component-icon" icon="square"/> </div>
-                <div class="column is-4"> <fa class="component-icon" icon="circle"/> </div>
-                <div class="column is-4"> <fa class="component-icon" icon="arrow-right"/> </div>   
-              </div>         
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="column is-2 menu-section second-menu-section">
-        <div class="columns is-multiline is-gapless">
-          <table-size-picker v-show="tableSizePickerActivated" />
-        </div>
-      </div>
+    <el-row :gutter="3">
+      <el-col class="start-menu-column" :span="6" :offset="9">
+        <el-row class="start-menu-icon-columns">
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-0" class="start-menu-icon" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+          </el-col>
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-1" class="start-menu-icon" icon="image" @click="activateWebImageIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+          </el-col>
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-2" class="start-menu-icon" icon="chart-bar" @click="activateChartIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+          </el-col>
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-0" class="start-menu-icon" icon="table" @click="activateTableIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+            <table-size-picker v-show="tableSizePickerActivated" />
+          </el-col>
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-1" class="start-menu-icon" icon="video" @click="activateWebVideoIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+          </el-col>
+          <el-col class="start-menu-icon-column" :span="4">
+            <fa id="menu-icon-2" class="start-menu-icon" icon="shapes" @click="activateShapesIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+          </el-col>
+        </el-row>
+      </el-col>
+    </el-row>
 
-      <div class="column is-2 menu-section second-menu-section">
-        <div class="columns is-multiline is-gapless">
-
-    <editor-menu-bar :editor="ed"> 
-      <div
-        class="menubar"
-        :class="{ 'is-focused': focused }"
-        slot-scope="{ commands, isActive, focused }"
-      >
-        <button
-          class="button is-small menubar__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <fa class="component-icon" icon="bold"/>
-        </button>
-
-        <button
-          class="button is-small menubar__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <fa class="component-icon" icon="italic"/>
-        </button>
-
-        <button
-          class="button is-small menubar__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <fa class="component-icon" icon="underline"/>
-        </button>
-
-      </div>
-    </editor-menu-bar>
-        </div>
-      </div>
-
-    </div>  
 </template>
 
 <script>
@@ -113,22 +75,26 @@ export default {
         this.creatorActivated = true
         this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
       },
-      activateImageIcon(){
+      activateWebImageIcon(){
         this.creatorActivated = true
         this.$store.commit('StartMenu/ACTIVATE_ICON', 1)
+      },
+      activateChartIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 2)
       },
       activateTableIcon(){
         this.tableSizePickerActivated = !this.tableSizePickerActivated
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 2)
-      },
-      activateChartIcon(){
-        this.creatorActivated = true
         this.$store.commit('StartMenu/ACTIVATE_ICON', 3)
       },
-      activateShapeIcon(){
+      activateWebVideoIcon(){
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 4)
+      },
+      activateShapesIcon(){
+        this.creatorActivated = true
+        this.$store.commit('StartMenu/ACTIVATE_ICON', 5)
       },
     
     }
@@ -144,43 +110,29 @@ export default {
    z-index: 10;
  }
 
-div.menu-section {
-  height: 120px;
-  border-left: 1px black dashed;
-  border-right: 1px black dashed;
-  z-index: 10;
-  background-color: white;
+.start-menu-icon-columns{
+  padding: 1.4rem 0.5rem 0.5rem 1.8rem;
 }
 
-div.first-menu-section {
-  margin-left: 0.75rem;
-  border-left: none !important;
-  font-size: 26px;
-  z-index: 10;
+.start-menu-column{
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  height: 100%;
 }
 
-div.second-menu-section {
-  border-left: none !important;
-}
-
-div.font-size-input {
-  margin-right: 1rem !important;
-}
-
-.font-size-input-icon {
-  margin: 0.25rem;
+.start-menu-icon-colum{
+  height: 100%;
   font-size: 20px !important;
-  border-style: solid;
-  border-width: 0.1px;
+}
+
+.start-menu-icon{
+  font-size: 30px;
+  cursor: pointer;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {  
    opacity: 1;
-}
-
-.component-icon{
-  cursor: pointer;
 }
 
 </style>

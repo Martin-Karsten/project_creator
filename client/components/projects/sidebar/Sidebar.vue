@@ -1,7 +1,6 @@
 <template>
   <div>
-    <sidebar-container></sidebar-container>
-    <a class="clickable-border" @click="showAnimationList"/>
+    <sidebar-container class="project-sidebar"></sidebar-container>
   </div>
 </template>
 
@@ -38,14 +37,5 @@ methods: {
 </script>
 
 <style>
-a.clickable-border{
-  height: 50%;
-  position: absolute;
-  right: 0;
-  border: black 2px solid;
-  width: 1px;
-  background-color: black;
-  box-shadow: 0px 0px 5px 3px grey;
-  cursor: pointer;
-}
+
 </style>

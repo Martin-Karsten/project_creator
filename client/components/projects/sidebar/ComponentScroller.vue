@@ -1,7 +1,9 @@
 <template>
+    <!-- <el-aside class="component-scroller"> -->
+        <!-- <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse"> -->
             <draggable
                 v-model="layout"
-                class="item-group"
+                class="scroll-group"
                 ghost-class="ghost"
                 handle=".scroll-handle"
             >
@@ -14,6 +16,8 @@
                 <div class="scroll-handle" />
                 </a>
             </draggable>
+        <!-- </el-menu>  -->
+    <!-- </el-aside> -->
 </template>
 
 
@@ -29,7 +33,7 @@ export default {
     },
     data (){
         return{
-
+            isCollapse: false
         }
     },  
     computed: {
@@ -50,18 +54,27 @@ export default {
     // await this.$store.dispatch('Textfield/fetchTextfields', this.$route.params)
     },
     methods: {
-
+      handleOpen(key, keyPath) {
+        console.log(key, keyPath);
+      },
+      handleClose(key, keyPath) {
+        console.log(key, keyPath);
+      }
     } 
 }
 </script>
 
 <style>
-div.test {
-    width: 100px;
-    height: 100px;
-    background: blue;
-    z-index: 100;
+
+.component-scroller{
+    /* margin-top: 1rem; */
+    border-right: 1px solid black;
 }
+
+div.scroll-group{
+    height: 640px;
+}
+
 a.scroll-item {
     background: lightgray;
     height: 22%;

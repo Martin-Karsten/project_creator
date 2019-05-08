@@ -31,7 +31,7 @@ void (function updateModules() {
   resolveStoreModules(require('@/store/LayoutHelpers.js'), 'LayoutHelpers.js')
   resolveStoreModules(require('@/store/LayoutItem.js'), 'LayoutItem.js')
   resolveStoreModules(require('@/store/ColorPicker.js'), 'ColorPicker.js')
-  resolveStoreModules(require('@/store/project.js'), 'project.js')
+  resolveStoreModules(require('@/store/Project.js'), 'Project.js')
   resolveStoreModules(require('@/store/sidebar-default.js'), 'sidebar-default.js')
   resolveStoreModules(require('@/store/ProjectItems/Chart.js'), 'ProjectItems/Chart.js')
   resolveStoreModules(require('@/store/ContextMenus/WebImageContextMenu.js'), 'ContextMenus/WebImageContextMenu.js')
@@ -61,7 +61,7 @@ void (function updateModules() {
       '@/store/LayoutHelpers.js',
       '@/store/LayoutItem.js',
       '@/store/ColorPicker.js',
-      '@/store/project.js',
+      '@/store/Project.js',
       '@/store/sidebar-default.js',
       '@/store/ProjectItems/Chart.js',
       '@/store/ContextMenus/WebImageContextMenu.js',

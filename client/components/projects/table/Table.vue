@@ -1,22 +1,22 @@
 <template>
 	<div class="table-editor">
 		<editor-menu-bar :editor="editor">
-			<div class="menubar is-hide" 
-      :class="{ 'is-focused': focused }"
-      slot-scope="{ commands, isActive, focused }">
+			<div class="menubar" 
+				:class="{ 'is-focused': focused }"
+				slot-scope="{ commands, isActive, focused }">
 				<div class="toolbar">
 					<button
 						class="menubar__button"
 						@click="commands.undo"
 					>
-						<icon name="undo" />
+						<h1>Undo</h1>
 					</button>
 
 					<button
 						class="menubar__button"
 						@click="commands.redo"
 					>
-						<icon name="redo" />
+						<h1>Redo</h1>
 					</button>
 
 					<button
@@ -24,7 +24,7 @@
 						:class="{ 'is-active': isActive.bold() }"
 						@click="commands.bold"
 					>
-						<icon name="bold" />
+						<h1>Bold</h1>
 					</button>
 
 					<button
@@ -32,102 +32,15 @@
 						:class="{ 'is-active': isActive.italic() }"
 						@click="commands.italic"
 					>
-						<icon name="italic" />
+						<h1>Italic</h1>
 					</button>
 
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.strike() }"
-						@click="commands.strike"
-					>
-						<icon name="strike" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.underline() }"
-						@click="commands.underline"
-					>
-						<icon name="underline" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.code() }"
-						@click="commands.code"
-					>
-						<icon name="code" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.paragraph() }"
-						@click="commands.paragraph"
-					>
-						<icon name="paragraph" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.heading({ level: 1 }) }"
-						@click="commands.heading({ level: 1 })"
-					>
-						H1
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.heading({ level: 2 }) }"
-						@click="commands.heading({ level: 2 })"
-					>
-						H2
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.heading({ level: 3 }) }"
-						@click="commands.heading({ level: 3 })"
-					>
-						H3
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.bullet_list() }"
-						@click="commands.bullet_list"
-					>
-						<icon name="ul" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.ordered_list() }"
-						@click="commands.ordered_list"
-					>
-						<icon name="ol" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.blockquote() }"
-						@click="commands.blockquote"
-					>
-						<icon name="quote" />
-					</button>
-
-					<button
-						class="menubar__button"
-						:class="{ 'is-active': isActive.code_block() }"
-						@click="commands.code_block"
-					>
-						<icon name="code" />
-					</button>
 
 					<button
 						class="menubar__button"
 						@click="commands.createTable({rowsCount: 3, colsCount: 3, withHeaderRow: false })"
 					>
-						<icon name="table" />
+						<fa icon="table" />
 					</button>
 
 					<span v-if="isActive.table()">
@@ -135,49 +48,38 @@
 							class="menubar__button"
 							@click="commands.deleteTable"
 						>
-							<icon name="delete_table" />
+							<h1>Delete Table</h1>
 						</button>
 						<button
 							class="menubar__button"
 							@click="commands.addColumnBefore"
 						>
-							<icon name="add_col_before" />
+							<h1>Add Col</h1>
 						</button>
 						<button
 							class="menubar__button"
 							@click="commands.addColumnAfter"
 						>
-							<icon name="add_col_after" />
+							<h1>Add After</h1>
 						</button>
-						<button
-							class="menubar__button"
-							@click="commands.deleteColumn"
-						>
-							<icon name="delete_col" />
-						</button>
+
 						<button
 							class="menubar__button"
 							@click="commands.addRowBefore"
 						>
-							<icon name="add_row_before" />
+							<h1>Delete Col</h1>
 						</button>
 						<button
 							class="menubar__button"
 							@click="commands.addRowAfter"
 						>
-							<icon name="add_row_after" />
+							<h1>Add Row After</h1>
 						</button>
 						<button
 							class="menubar__button"
 							@click="commands.deleteRow"
 						>
-							<icon name="delete_row" />
-						</button>
-						<button
-							class="menubar__button"
-							@click="commands.toggleCellMerge"
-						>
-							<icon name="combine_cells" />
+							<h1>Delete Row</h1>
 						</button>
 					</span>
 				</div>
@@ -213,6 +115,7 @@
 		History,
 	} from 'tiptap-extensions'
 	export default {
+		props:['text'],
 		components: {
 			EditorContent,
 			EditorMenuBar,
@@ -242,23 +145,13 @@
 						new TableCell(),
 						new TableRow(),
 					],
-					content: `
-            <table>
-              <tr>
-                <th colspan="3" data-colwidth="100,0,0">Wide header</th>
-              </tr>
-              <tr>
-                <td>One</td>
-                <td>Two</td>
-                <td>Three</td>
-              </tr>
-              <tr>
-                <td>Four</td>
-                <td>Five</td>
-                <td>Six</td>
-              </tr>
-            </table>
-          `,
+					onUpdate: ({ getJSON, getHTML }) => {
+						this.$store.commit('Layout/ADD_TABLE_COLUMN', getHTML())
+					},
+					content: 
+					`
+					${this.text}
+					`,
 				}),
 			}
 		},
@@ -268,7 +161,72 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
+// th, td{
+// 	border: green solid 1px !important;
+// }
+ table {
+      border-collapse: collapse !important;
+      table-layout: fixed !important;
+	  width: 100% !important;
+	  height: 100% !important;
+      margin: 0 !important;
+	  overflow: hidden !important;
+	  display: table;
+
+	p{
+		height: 100%
+	}
+      td, th {
+        min-width: 1em !important;
+        border: 2px solid grey !important;
+        padding: 3px 5px !important;
+        vertical-align: top !important;
+        box-sizing: border-box !important;
+		position: relative !important;
+		height: 100;
+		display: table-cell;
+        > * {
+          margin-bottom: 0 !important;
+        }
+      }
+
+      th {
+        font-weight: bold !important;
+        text-align: left !important;
+      }
+
+      .selectedCell:after {
+        z-index: 2 !important;
+        position: absolute !important;
+        content: "" !important;
+        left: 0; right: 0; top: 0; bottom: 0 !important;
+        background: rgba(200, 200, 255, 0.4) !important;
+        pointer-events: none !important;
+      }
+
+      .column-resize-handle {
+        position: absolute !important;
+        right: -2px; top: 0; bottom: 0!important;
+        width: 4px !important;
+        z-index: 20;
+        background-color: #adf !important;
+        pointer-events: none !important;
+      }
+	}
+	.editor__content table th{
+		height: 100%;
+	}
+
+    .tableWrapper {
+      margin: 1em 0 !important;
+      overflow-x: auto !important;
+    }
+
+    .resize-cursor {
+      cursor: ew-resize !important;
+      cursor: col-resize !important;
+    }
 .menubar {
   margin: 0;
   padding: 0;

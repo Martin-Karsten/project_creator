@@ -1,19 +1,27 @@
 <template>
-    <div>
-        <div class="tabs sidebar-header">
-            <!-- <div class="close" /> -->
-            <fa class="show-scroller-chevron" ref="showScrollerChevron" icon="chevron-right" @click="showScroller" />
-            <ul>
-                <li @click="showStart" :class="{'is-active' : defaultTabActive}"><a> <span> <fa icon="stream"></fa> </span> </a></li>
-                <li @click="showColorEdit" :class="{'is-active' : colorTabActive}"><a> <span> <fa icon="fill-drip"></fa> </span> </a></li>
-                <li @click="showLinesEdit" :class="{'is-active' : linesTabActive}"><a> <span> <img class="sidebar-tab-image" src="../navbar/border-style.svg"> </span> </a></li>
-                <li @click="showAnimation" :class="{'is-active' : animationTabActive}"> <a> <span> <fa icon="play-circle"></fa> </span> </a> </li>
-            </ul>
-        </div>    
+<div>
+    <el-tabs class="sidebar-tabs" type="card" v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane class="sidebar-tab" v-for="item in tabItems" :key="item.componentName"
+            :label="item.name"
+            :name="item.name">
+            <!-- <span slot="label"><i class="el-icon-date"></i> Route</span> -->
+            <span slot="label"> 
+                <fa v-if="item.icon != 'sidebar-tab-image'" :icon="item.icon" /> 
+                <img v-else class="custom-sidebar-tag-image" src="../navbar/border-style.svg">
+            </span>
+            <el-menu 
+            default-active="1"
+            class="el-menu-vertical-demo"
+            background-color="#edeeef"
+            text-color="#fff"
+            active-text-color="#ffd04b"
+            >
+                <component :is="currentComponent"></component>
+            </el-menu>
+        </el-tab-pane>
+    </el-tabs>
 
-        <component :is="currentComponoent"></component>
-        
-    </div>
+</div>
 </template>
 
 <script>
@@ -34,24 +42,78 @@ export default {
  },
  data(){
      return{
-         currentComponoent: 'sidebar-default',
-         sidebarDefault: 'sidebar-default',
-         editColor: 'edit-color',
-         editLines: 'edit-lines',
-         sidebarAnimation: 'sidebar-animation',
-         scrollerActivated: false,
-         defaultTabActive: true,
-         colorTabActive: false,
-         linesTabActive: false,             //lines not line !
-         animationTabActive: false,
+         test: 'font',
+         activeName: 'first',
+         currentComponent: 'sidebar-default',
+         tabItems: [{name: 'first', componentName: 'sidebar-default', icon: 'stream'},
+                    {name: 'second', componentName: 'edit-color', icon: 'fill-drip'},
+                    {name: 'third', componentName: 'edit-lines', icon: 'sidebar-tab-image'}],
+         tabIcon: ''
      }
  },
  computed:{
     ...mapGetters({
-        col: 'Layout/getCurrentItem'
-    })
+        currentItem: 'Layout/getCurrentItem'
+    }),
+    iconClass: function(obj){
+        switch(obj.name){
+            case 'font':
+                return obj.name
+            case 'chart-bar':
+                return obj.name
+        }
+    }
  },
+ watch: {
+     currentItem: function (newVal) {
+         let newArr = [...this.tabItems]
+         switch(newVal.itemName){
+             //tab items does not exist yet -> push new item to tabs
+             case 'textfields':
+             if(this.tabItems[1].icon === 'fill-drip'){
+                this.tabItems.splice(1, 0,{name: 'forth', componentName: 'SidebarTextfield', icon: 'font'})
+                break;
+             }
+            //tab item already exists -> replace with current item
+            else{
+                newArr[1].icon = 'font'
+                this.tabItems = newArr
+                break;
+            }
+         }
+         switch(newVal.itemName){
+             case 'charts':
+             if(this.tabItems[1].icon ==='fill-drip'){
+                this.tabItems.splice(1, 0, {name: 'forth', componentName: 'ChartdSidebar', icon: 'chart-bar'})
+                break;
+             }
+
+            else{
+                newArr[1].icon = 'chart-bar'
+                this.tabItems = newArr
+                break;
+            }
+         }
+     }
+},
   methods:{
+    handleClick(tab){
+        console.log(tab.name)
+        switch(tab.name){
+            case "first":
+            this.currentComponent = 'sidebar-default'
+            break;
+
+            case 'second':
+            this.currentComponent = 'edit-color'
+            break;
+
+            case 'third':
+            this.currentComponent ='edit-lines'
+
+            case 'forth':
+        }
+    },
     showScroller(){
         this.scrollerActivated = !this.scrollerActivated
         if(this.scrollerActivated)
@@ -60,74 +122,25 @@ export default {
             this.$refs.showScrollerChevron.style.transform = "rotate(0deg)"
         this.$store.commit('Sidebar/ACTIVATE_SCROLLER')
     },
-    showStart(){
-        this.currentComponoent = this.sidebarDefault
-        this.defaultTabActive = true
-        this.colorTabActive = false
-        this.linesTabActive = false
-        this.animationTabActive = false
-    },
-    showColorEdit(){
-        this.currentComponoent = this.editColor
-        this.defaultTabActive = false
-        this.colorTabActive = true
-        this.linesTabActive = false
-        this.animationTabActive = false
-    },
-    showLinesEdit(){
-        this.currentComponoent = this.editLines
-        this.defaultTabActive = false
-        this.colorTabActive = false
-        this.linesTabActive = true
-        this.animationTabActive = false
-    },
-    showAnimation(){
-        this.currentComponoent = this.sidebarAnimation
-        this.defaultTabActive = false
-        this.colorTabActive = false
-        this.linesTabActive = false
-        this.animationTabActive = true      
-    }
   }
 }
 </script>
 
-<style>
-    .show-scroller-chevron{
-        position: absolute !important;
-        right: 10px;
-        top: 10px;
-        width: 30px;
-        height: 30px;
-        opacity: 1;
-    }
-    img.sidebar-tab-image{
-        width: 22px;
-        height: 22px;
-    }
-    div.sidebar-header{
-        position: relative;
-        font-size: 20px !important;
-        margin-bottom: 0.5rem !important;
-    }
-    aside.sidebar-header-content{
-        font-size: 20px !important;
-    }
-    div.sidebar-content-item{
-        padding-bottom: 0 !important;
-    }
-    div.sidebar-header-radios{
-        padding-left: 2rem;
-    }
-    div.sidebar-header-radio-item1{
-        padding-bottom: 0
-    }
-    div.sidebar-header-radio-item2{
-        padding-top:0;
-    }
-    div.sidebar-color-settings {
-        margin-top: 1rem;
-        padding-left: 2rem;
-        font-size: 18px !important;
-    }
+<style lang="scss">
+.el-menu-vertical-demo{
+    height: 77.1vh;
+}
+.sidebar-tabs{
+    border-right: 1px solid black;
+    background: #f4f5f5;
+}
+
+.el-tabs__nav-scroll{
+    background-color:#edeeef;
+}
+
+.custom-sidebar-tag-image{
+    width: 15.75px;
+    height: 14px;
+}
 </style>

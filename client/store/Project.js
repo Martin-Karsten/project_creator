@@ -15,13 +15,16 @@ export const getters = {
 // mutations
 export const mutations = {
 
+  SHOW_EDITABLE (state, payload){
+    state.projects[payload].editable = true
+  },
+
+  HIDE_EDITABLE (state, payload){
+    state.projects[payload].editable = false
+  },
+
   SELECT_PROJECT (state, payload) {
-    for( let i = 0; i < state.projects.length; i++){ 
-      if ( state.projects[i].id === payload) {
-        state.projects[i].clicked = !state.projects[i].clicked 
-        return
-      }
-   }
+    state.projects[payload].selected = !state.projects[payload].selected
   },
 
   CREATE_PROJECT (state, payload) {
@@ -32,7 +35,7 @@ export const mutations = {
   FETCH_PROJECTS_SUCCESS (state, payload) {
     console.log(payload.data)
     let newP = payload.data.map(function (project) {
-      return {id:project.id, project_name:project.project_name, created_at:project.created_at, clicked:false}
+      return {id:project.id, project_name:project.project_name, created_at:project.created_at, clicked:false, editable: false}
     });
     state.projects = newP
   },

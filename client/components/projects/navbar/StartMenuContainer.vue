@@ -1,7 +1,7 @@
 <template>
 <div>
     <no-ssr>
-    <component :is="startMenu.name" v-show="true"></component> 
+    <component class="start-menu" :is="startMenu.name" v-show="true"></component> 
     </no-ssr>
 </div>
 </template>
@@ -28,5 +28,12 @@ export default {
 </script>
 
 <style>
-
+    .start-menu{
+    height: 5rem;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    position: relative;
+    z-index: 10;
+    background-color: #f4f5f5;
+    }
 </style>

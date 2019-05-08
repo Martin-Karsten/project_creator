@@ -1,28 +1,27 @@
 <template>
-    <div class="container-fluid create-project" @click="closeContextMenu">
-        <div class="columns">
-            <sidebar class="column side is-3 main-sidebar" @clicked="activateAnimationList" v-show="true"/>
+    <el-container class="create-project">
+        <el-aside>
+            <sidebar @clicked="activateAnimationList" v-show="true"/>
+        </el-aside>
 
-            <transition name="fade" mode="in-out">
-            <div class="column is-1 animation-list" v-show="showAnimation">
+        <transition name="fade" mode="in-out">
+            <el-aside  class="animation-list" width="200px" v-show="false">
                 <animation-list></animation-list>
-            </div>
-            </transition>
+            </el-aside>
+        </transition>
 
-            <transition name="fade">
-            <div class="column is-1 scroller"  v-show="sidebar.scrollerActivated">
+        <transition name="fade">
+            <el-aside class="component-scroller" width="200px" v-show="true">
                 <component-scroller></component-scroller>
-            </div>
-            </transition>
+            </el-aside>
+        </transition>
 
-            <project class="column" v-show="true"/>
-            
-        </div>
-            <template v-if="editContainer.activated">
-                <edit-container v-show="editContainer.activated" ></edit-container>
-            </template>
+        <project v-show="true"/>
 
-    </div> 
+        <template v-if="editContainer.activated">
+            <edit-container v-show="editContainer.activated" ></edit-container>
+        </template>
+    </el-container>
 </template>
 
 <script>
@@ -59,7 +58,11 @@ export default {
         })
     },
     methods: {
+        onClickChild(){
+            console.log('yes!')
+        },
         closeContextMenu(){
+            console.log('close')
             this.$store.dispatch('ContextMenus/ContextMenu/closeContextMenu')
         },
         activateScroller(value) {
@@ -74,19 +77,13 @@ export default {
 
 <style>
 
+.create-project{
+    height: 83.7vh;
+}
+
 .main-sidebar{
     position: relative;
     border-right: 1px black solid;
-}
-
-div.animation-list{
-    border-right: black 1px solid;
-}
-
-div.scroller {
-    overflow-y: overlay;
-    padding-left: 0;
-    height: 710px;
 }
 
 .show-scroller-chevron {
