@@ -1,5 +1,6 @@
 import axios from "axios";
-import { root } from "postcss-selector-parser";
+import Vue from 'vue';
+import { normalize, schema } from 'normalizr';
 
 export const state = () => ({
     layout: [],
@@ -163,19 +164,44 @@ CREATE_TABLE(state, payload){
   }
  str = str + '</tbody></table>'
 
- console.log(str)
- if(state.layout[0].tables[0] != null){
+ if(state.layout[0].tables[0] == null){
   state.layout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
   row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
   left:0, width:400, height:200})
+  console.log('not existing')
  }
- else{
-  state.layout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
-  row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:400, height:200})
- }
+},
+
+REPLACE_TABLE(state, payload){
+
+  let str ='<table><tbody>'
+  for(let i=0; i<=payload.columns; i++){
+    str = str + '<tr>'
+    for(let j=0; j<=payload.rows; j++){
+      str = str + '<th></th>'
+    }
+    str = str + '</tr>'
+  }
+ str = str + '</tbody></table>'
+
+state.layout  = [
+  ...state.categories.filter(element => element.id !== id),
+  category
+]
+
+   let newLayout = [...state.layout]
+   newLayout[0].tables.splice(0, 1)
+   state.layout[0].tables.splice(0, 1)
+ 
+   newLayout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
+   row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
+   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
+   left:0, width:400, height:200}) 
+ 
+   state.layout = newLayout
+   console.log(newLayout[0].tables, 'after push')
+   console.log(state.layout[0].tables, 'after push')
 },
 
 //////////// CHART SETTINGS
@@ -321,6 +347,16 @@ export const actions = {
     commit('SET_CURRENT_ITEM_OBJECT_ALREADY_EXISTS', newItem)
   },
 
+  createTable({state, commit}, payload){
+    if(state.layout[0].tables[0] == null){
+      commit('CREATE_TABLE', payload)
+      console.log('create??')
+    }
+    else{
+      commit('REPLACE_TABLE', payload)
+      console.log('??')
+    }
+  },
 
   animate({state, commit, rootGetters}, payload){
     //animation_order is not know -> trigger action in presentationMode and add order to payload

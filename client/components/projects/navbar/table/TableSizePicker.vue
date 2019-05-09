@@ -60,7 +60,7 @@ export default {
             this.gridX = x
             this.columns = newArr
 
-            this.$store.commit('Layout/CREATE_TABLE', {rows: this.gridY, columns: this.gridX})
+            this.$store.dispatch('Layout/createTable', {rows: this.gridY, columns: this.gridX})
         },
         resetPicker(){
             this.gridY = ''
