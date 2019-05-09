@@ -10,9 +10,9 @@ class Textfield extends Model
         'name', 'project_id', 'text', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
     ];
 
-    public function project()
+    public function projectLayout()
     {
-        return $this->belongTo('App\Models\Project');
+        return $this->belongTo('App\Models\ProjectLayout');
     }
     public function animations() {
         return $this->hasOne('App\Models\Animations\TextfieldAnimation');

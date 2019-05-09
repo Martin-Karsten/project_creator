@@ -50,22 +50,7 @@ class Project extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function textfields() {
-        return $this->hasMany('App\Models\Textfield');
-    }
-    public function images() {
-        return $this->hasMany('App\Models\Image');
-    }
-    public function webImages() {
-        return $this->hasMany('App\Models\WebImage');
-    }
-    public function webVideos() {
-        return $this->hasMany('App\Models\WebVideo');
-    }
-    public function tables() {
-        return $this->hasMany('App\Models\Table');
-    }
-    public function charts() {
-        return $this->hasMany('App\Models\Chart');
+    public function projectLayout() {
+        return $this->hasOne('App\Models\ProjectLayout');
     }
 }

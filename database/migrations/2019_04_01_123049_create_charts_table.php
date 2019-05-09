@@ -15,7 +15,7 @@ class CreateChartsTable extends Migration
     {
         Schema::create('charts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('project_id');
+            $table->unsignedBigInteger('project_layout_id');
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedTinyInteger('row')->default(0);
@@ -33,9 +33,9 @@ class CreateChartsTable extends Migration
             $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
-            $table->foreign('project_id')
+            $table->foreign('project_layout_id')
             ->references('id')
-            ->on('projects')
+            ->on('project_layouts')
             ->onDelete('cascade');
         });
     }

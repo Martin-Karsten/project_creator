@@ -10,9 +10,9 @@ class Table extends Model
             'name', 'project_id', 'text', 'columns', 'rows', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
         ];
     
-        public function project()
+        public function projectLayout()
         {
-            return $this->belongTo('App\Models\Project');
+            return $this->belongTo('App\Models\ProjectLayout');
         }
         public function animations() {
             return $this->hasMany('App\Models\Animations\TextfieldAnimation');

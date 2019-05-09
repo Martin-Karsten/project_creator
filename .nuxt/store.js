@@ -33,6 +33,7 @@ void (function updateModules() {
   resolveStoreModules(require('@/store/ColorPicker.js'), 'ColorPicker.js')
   resolveStoreModules(require('@/store/Project.js'), 'Project.js')
   resolveStoreModules(require('@/store/sidebar-default.js'), 'sidebar-default.js')
+  resolveStoreModules(require('@/store/schema.js'), 'schema.js')
   resolveStoreModules(require('@/store/ProjectItems/Chart.js'), 'ProjectItems/Chart.js')
   resolveStoreModules(require('@/store/ContextMenus/WebImageContextMenu.js'), 'ContextMenus/WebImageContextMenu.js')
   resolveStoreModules(require('@/store/ContextMenus/TextfieldContextMenu.js'), 'ContextMenus/TextfieldContextMenu.js')
@@ -63,6 +64,7 @@ void (function updateModules() {
       '@/store/ColorPicker.js',
       '@/store/Project.js',
       '@/store/sidebar-default.js',
+      '@/store/schema.js',
       '@/store/ProjectItems/Chart.js',
       '@/store/ContextMenus/WebImageContextMenu.js',
       '@/store/ContextMenus/TextfieldContextMenu.js',

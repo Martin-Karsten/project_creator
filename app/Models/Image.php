@@ -10,8 +10,8 @@ class Image extends Model
         'name', 'project_id', 'url', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
     ];
 
-    public function projects(){
-        return $this->belongTo('App\Models\Project');
+    public function projectLayout(){
+        return $this->belongTo('App\Models\ProjectLayout');
     }
     public function animations() {
         return $this->hasMany('App\Models\Animations\ImageAnimation');

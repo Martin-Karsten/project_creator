@@ -15,7 +15,7 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('project_id');
+            $table->unsignedBigInteger('project_layout_id');
             $table->string('name')->default('picture.jpeg');
             $table->string('url');
             $table->string('animation_name', 25)->nullable();
@@ -33,9 +33,9 @@ class CreateImagesTable extends Migration
             $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
-            $table->foreign('project_id')
+            $table->foreign('project_layout_id')
             ->references('id')
-            ->on('projects')
+            ->on('project_layouts')
             ->onDelete('cascade');
         });
     }

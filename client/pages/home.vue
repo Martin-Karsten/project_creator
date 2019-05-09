@@ -41,6 +41,9 @@
 
     <el-main>
       <el-row class="home-content-row">
+        <el-col projects>
+          <el-button @click="createProject">Create Project</el-button>
+        </el-col>
         <el-col class="home-content-column wobble" :span="6" v-for="(project, index) in projects" :key="index">
           <div class="cptn03" @mouseover="showEditable(index)" @mouseleave="hideEditable(index)">
             <img src="http://lorempixel.com/350/263/" alt="">
@@ -93,7 +96,7 @@ export default {
       editable: false,
       ready: false,
       form: new Form({
-            project_name: '',
+            project_name: 'Project 1',
             user_id: '',
             private: true,
           }),
@@ -139,7 +142,7 @@ export default {
       this.$store.commit('Layout/CREATE_LAYOUT')
       this.$store.dispatch('project/createProject', {
         project_id: data.id,
-        project_name: data.project_name,
+        project_name: 'Project 1',
         user_id : data.user_id,
         private : data.private
       })

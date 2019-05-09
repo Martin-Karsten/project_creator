@@ -1,6 +1,7 @@
 <template>
     <el-main class="project-container">
     <el-row class="grid">
+        {{ll}}
         <el-button @click="addCol">Add Col</el-button>
         <el-col :span="24" class="grid-items">
             <draggable
@@ -201,6 +202,8 @@ export default {
     },
     computed: {
         ...mapGetters({
+            ll: 'Layout/getLL',
+            llArr: 'Layout/llArr',
             layout: 'Layout/getLayout',
             currentLayout: 'Layout/getCurrentLayout',
             currentItem: 'Layout/getCurrentItem',

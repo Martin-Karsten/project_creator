@@ -1,8 +1,10 @@
 import axios from "axios";
 import Vue from 'vue';
 import { normalize, schema } from 'normalizr';
+import postsSchema from './schema';
 
 export const state = () => ({
+    ll: '',
     layout: [],
     currentLayout: 0,
     currentItem: '',
@@ -19,12 +21,16 @@ export const state = () => ({
   })
 
 export const getters = {
+    llArr: state => state.ll.result,
+    getLL: state => state.ll,
     getLayout: state => state.layout,
     getCurrentLayout: state => state.currentLayout,
     getCurrentItem: state => state.currentItem,
     getCurrentSelectedItem: state => state.currentSelectedItem,
     getAnimated: state => state.animated,
-    getColor: state => state.color
+    getColor: state => state.color,
+
+    layoutSet: (state) => state.ll.map( userId => state.users[userId] )
   }
 
 export const mutations = {
@@ -81,6 +87,7 @@ CREATE_LAYOUT (state, payload) {
 },
 
 SET_LAYOUT(state, payload) {
+
   let newL = []
   for(let item of payload){
     item.images = []
@@ -88,6 +95,9 @@ SET_LAYOUT(state, payload) {
     newL.push(item)
   }
   state.layout = newL
+
+  state.ll = normalize(payload, postsSchema)
+  state.ll = state.ll.entities.layouts
 },
 
 RESET_LAYOUT(state) {
