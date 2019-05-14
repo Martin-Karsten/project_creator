@@ -15,7 +15,7 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('project_layout_id');
+            $table->unsignedBigInteger('layout_item_id');
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedTinyInteger('row')->default(0);
@@ -36,9 +36,9 @@ class CreateTablesTable extends Migration
             $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
-            $table->foreign('project_layout_id')
+            $table->foreign('layout_item_id')
             ->references('id')
-            ->on('project_layouts')
+            ->on('layout_items')
             ->onDelete('cascade');
         });
     }

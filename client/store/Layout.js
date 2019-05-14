@@ -1,28 +1,27 @@
 import axios from "axios";
 import Vue from 'vue';
 import { normalize, schema } from 'normalizr';
-import postsSchema from './schema';
+import layoutSchema from './schema';
 
 export const state = () => ({
-    ll: '',
+    realLayout: '',
     layout: [],
+    layoutList: [],  // keep array of the ids
     currentLayout: 0,
-    currentItem: '',
-    currentSelectedItem: '',
+    currentItem: {},
+    currentSelectedItem: {},
     projectId: '',
-    textfields: [],
-    images: [],
-    web_images: [],
-    tables: [],
-    charts: [],
-    shapes: [],
+    textfields: '',
+    images: '',
+    web_images: '',
+    web_videos: '',
+    tables: '',
+    charts: '',
+    shapes: '',
     imagesForm: [],
-    projectId: '',
   })
 
 export const getters = {
-    llArr: state => state.ll.result,
-    getLL: state => state.ll,
     getLayout: state => state.layout,
     getCurrentLayout: state => state.currentLayout,
     getCurrentItem: state => state.currentItem,
@@ -30,13 +29,13 @@ export const getters = {
     getAnimated: state => state.animated,
     getColor: state => state.color,
 
-    layoutSet: (state) => state.ll.map( userId => state.users[userId] )
+    getLayoutList: state => state.layoutList,
+    getLayoutSet: state => state.layoutList.map(id => state.realLayout[id]),
+
+    getTextfields: state => state.textfields
   }
 
 export const mutations = {
-SET_EDITOR(state, payload) {
-  state.editor = payload
-},
 
 SET_PROJECT_ID(state, payload) {
   state.projectId = payload
@@ -46,17 +45,18 @@ SET_PROJECT_ID(state, payload) {
 SET_CURRENT_LAYOUT (state, payload) {
   state.currentLayout = payload
 },
-SET_CURRENT_ITEM (state, payload) {
-  state.currentItem = state.layout[payload.layoutRow][payload.itemName][payload.itemRow]
-  state.currentItem.itemName = payload.itemName
-  state.currentItem.itemRow = payload.itemRow
-  state.currentSelectedItem = state.layout[payload.layoutRow][payload.itemName][payload.itemRow]
-  state.currentSelectedItem.itemName = payload.itemName
-  state.currentSelectedItem.itemRow = payload.itemRow
 
+SET_CURRENT_ITEM (state, payload){
+
+  state.currentItem = state[payload.itemName][payload.id]
   state.currentItem.selected = true
-  state.currentSelectedItem.selected = true
+  state.currentItem.itemName = payload.itemName
 
+  state.currentSelectedItem = state[payload.itemName][payload.id]
+  state.currentSelectedItem.selected = true
+  state.currentSelectedItem.itemName = payload.itemName
+
+  // console.log(JSON.stringify(state.currentItem))
 },
 
 // we know the current item already, that's why we just assign it to the state instead of calling SET_CURREN_ITEM
@@ -87,36 +87,37 @@ CREATE_LAYOUT (state, payload) {
 },
 
 SET_LAYOUT(state, payload) {
+  const temp = normalize(payload, layoutSchema)
 
-  let newL = []
-  for(let item of payload){
-    item.images = []
-    item.isEmpty = true
-    newL.push(item)
-  }
-  state.layout = newL
+  state.layoutList = temp.result
+  state.realLayout = temp.entities.layouts
+  
+  state.textfields = temp.entities.textfields
+  state.images = temp.entities.images
+  state.web_images = temp.entities.web_images
+  state.web_videos = temp.entities.web_videos
+  state.tables = temp.entities.tables
+  state.charts = temp.entities.charts
+  state.shapes = temp.entities.shapes
 
-  state.ll = normalize(payload, postsSchema)
-  state.ll = state.ll.entities.layouts
-},
+  state.textfields = (state.textfields !== undefined) ? state.textfields : {};
+  state.images = (state.images !== undefined) ? state.images : {};
+  state.web_images = (state.web_images !== undefined) ? state.web_images : {};
+  state.web_videos = (state.web_videos !== undefined) ? state.web_videos : {};
+  state.charts = (state.charts !== undefined) ? state.charts : {};
+  state.tables = (state.tables !== undefined) ? state.tables : {};
+  state.shapes = (state.shapes !== undefined) ? state.shapes : {};
 
-RESET_LAYOUT(state) {
-  state.layout = []
 },
 
 ////// TEXTFIELD SETTINGS
+  //we get our payload from store/LayoutItems/Textfield
 ADD_TEXTFIELD(state, payload) {
-  state.layout[payload.row].isEmpty = false
-  state.layout[payload.row].textfields.push(({id: Date.now(), project_id: state.projectId, name: 'textfield', text:'', row:payload, font:'Calibri', font_size: 18, color: 'red', 
-  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations: {},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0, left:0, width:200, height:100,
-  top:0, left:0, width:200, height:100}))
+  // push obj key to textfields ids array
+  state.realLayout[payload.layoutId]['textfields'].push(payload.id)
 
-  state.textfields.push(({id: Date.now(), project_id: state.projectId, name: 'textfield', text:'', row:payload, font:'Calibri', font_size: 18, color: 'red', 
-  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations: {},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0, left:0, width:200, height:100,
-  top:0, left:0, width:200, height:100}))
-
+  state.currentItem = state['textfields'][payload.id]
+  state.currentItem.selected = true
 
 },
 
@@ -131,23 +132,12 @@ ADD_IMAGE(state, payload) {
   state.imagesForm.append('images[]', payload.file, payload.file.name);
 },
 
-//////// WEB_IMAGE SETTINGS
-ADD_WEB_IMAGES(state, payload) {
-  state.layout[payload].isEmpty = false
-  state.getCurrentLayout = row
-  state.layout.web_images.push({id: Date.now(), project_id: payload.projectId, name: payload.name, url:payload.url, animated:false ,row:payload.row, top:0, left:0, width:200, height:100})
-
-  state.web_images.push({id: Date.now(), project_id: payload.projectId, name: payload.name, url:payload.url ,row:payload.row, top:0, left:0, width:200, height:100})
-},
-
 ADD_WEB_IMAGE(state, payload) {
-  if(payload.layoutRow != null){
-    state.currentLayout = payload.layoutRow
-  }
-  state.layout[state.currentLayout].web_images.push({id: Date.now(), project_id: state.projectId, name: 'web_image', url:payload.url, animated:false, 
-  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:400, height:200})
+  // push obj key to web_images ids array
+  state.realLayout[payload.layoutId]['web_images'].push(payload.id)
+
+  Vue.set(state.currentItem, 0, state['web_images'][payload.id])
+  state.currentItem.selected = true
 },
 
 //////// WEB_VIDEO SETTINGS
@@ -164,65 +154,18 @@ ADD_TABLE(state, payload) {
 },
 
 CREATE_TABLE(state, payload){
-  let str ='<table><tbody>'
-  for(let i=0; i<=payload.columns; i++){
-    str = str + '<tr>'
-    for(let j=0; j<=payload.rows; j++){
-      str = str + '<th></th>'
-    }
-    str = str + '</tr>'
-  }
- str = str + '</tbody></table>'
-
- if(state.layout[0].tables[0] == null){
-  state.layout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
-  row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:400, height:200})
-  console.log('not existing')
- }
-},
-
-REPLACE_TABLE(state, payload){
-
-  let str ='<table><tbody>'
-  for(let i=0; i<=payload.columns; i++){
-    str = str + '<tr>'
-    for(let j=0; j<=payload.rows; j++){
-      str = str + '<th></th>'
-    }
-    str = str + '</tr>'
-  }
- str = str + '</tbody></table>'
-
-state.layout  = [
-  ...state.categories.filter(element => element.id !== id),
-  category
-]
-
-   let newLayout = [...state.layout]
-   newLayout[0].tables.splice(0, 1)
-   state.layout[0].tables.splice(0, 1)
- 
-   newLayout[0].tables.push({id: Date.now(), project_id: state.projectId, text: str, name: 'table', columns: payload.columns, rows: payload.rows, 
-   row: 0, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
-   border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-   left:0, width:400, height:200}) 
- 
-   state.layout = newLayout
-   console.log(newLayout[0].tables, 'after push')
-   console.log(state.layout[0].tables, 'after push')
+    // push obj key to tables ids array
+    if(state.realLayout[payload.layoutId]['tables'][0]  === undefined)
+      state.realLayout[payload.layoutId]['tables'].push(id)
 },
 
 //////////// CHART SETTINGS
 ADD_CHART(state, payload) {
-  if(payload.layoutRow != null){
-    state.currentLayout = payload.layoutRow
-  }
-  state.layout[state.currentLayout].charts.push({id: Date.now(), project_id: state.projectId, name: 'chart',
-  row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations:{}, chart_settings:{},
-  border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-  left:0, width:200, height:100})
+  // push obj key to textfields ids array
+  state.realLayout[payload.layoutId]['charts'].push(payload.id)
+
+  state.currentItem = state['charts'][payload.id]
+  state.currentItem.selected = true
 },
 
 RESIZE_CHART_CONTAINER(state, payload){
@@ -307,19 +250,25 @@ CHANGE_BORDER_OPACITY(state, payload){
 }
 
 export const actions = {
-  async initialize({state, commit, dispatch}, payload) {
+  async initialize({state, commit, dispatch, rootGetters, rootState}, payload) {
     let id = payload.id
 
     commit('SET_PROJECT_ID', id)
     try {
       const { data } = await axios.get(`/user/project/${id}`)
-      commit('SET_LAYOUT', data)
-    } catch (e) {
+        commit('SET_LAYOUT', data)
+    } 
+    catch (e) {
       console.log(e)
     }
 
     this.dispatch('PresentationMode/setAnimationItems', state.layout)
     this.dispatch('LayoutHelpers/initialize', state.layout)
+
+    this.dispatch('LayoutItems/Textfield/initialize', state.textfields)
+    this.dispatch('LayoutItems/WebImage/initialize', state.web_images)
+    this.dispatch('LayoutItems/Table/initialize', state.tables)
+    this.dispatch('LayoutItems/Chart/initialize', state.charts)
   },
 
   async saveToDB ({state,commit}, payload) {
@@ -348,26 +297,6 @@ export const actions = {
       }
   },
 
-  addTextfield({state, commit}, payload){
-    commit('ADD_TEXTFIELD', payload)
-    let row = state.layout[payload.row]['textfields'].length - 1
-
-    let newItem = JSON.parse(JSON.stringify(state.layout[0]['textfields'][row]))
-    newItem.itemName = 'textfields'
-    commit('SET_CURRENT_ITEM_OBJECT_ALREADY_EXISTS', newItem)
-  },
-
-  createTable({state, commit}, payload){
-    if(state.layout[0].tables[0] == null){
-      commit('CREATE_TABLE', payload)
-      console.log('create??')
-    }
-    else{
-      commit('REPLACE_TABLE', payload)
-      console.log('??')
-    }
-  },
-
   animate({state, commit, rootGetters}, payload){
     //animation_order is not know -> trigger action in presentationMode and add order to payload
     this.dispatch('PresentationMode/incrementAnimationOrder', state.currentItem)
@@ -381,8 +310,7 @@ export const actions = {
       setTimeout(function(){ commit('RESET_ANIMATION') }, 1000);
   },
 
-  resetLayout({commit}) {
-    commit('RESET_LAYOUT')
-  },
-    
+  resetLayout(){
+
+  }    
 }

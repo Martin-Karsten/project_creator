@@ -39,17 +39,19 @@ export default {
     computed: {
         layout: {
         get() {
-            return this.$store.getters['Layout/getLayout']
+            return this.$store.getters['Layout/getLayoutList']
         },
         set(value) {
-            console.log(value)
             this.$store.commit('Layout/UPDATE_LAYOUT', value)
-        }
+            }
         },
     },
     async mounted() {
     // if(this.$route.params != null){
         await this.$store.dispatch('Layout/initialize', this.$route.params)
+        // .then((res) =>{
+        //     console.log('res', res)
+        // })
     // }
     // await this.$store.dispatch('Textfield/fetchTextfields', this.$route.params)
     },

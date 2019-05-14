@@ -9,7 +9,7 @@
         </ul>
         </div>
         
-        <component :index="editContainer.row" :is="currentTab"></component>
+        <component :index="editContainer.row" :layoutId="editContainer.layoutId" :is="currentTab"></component>
 
     </div>
 </template>

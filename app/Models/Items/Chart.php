@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Items;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,9 +10,9 @@ class Chart extends Model
         'name', 'project_id', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
     ];
 
-    public function projectLayout()
+    public function layoutItem()
     {
-        return $this->belongTo('App\Models\ProjectLayout');
+        return $this->belongTo('App\Models\LayoutItem');
     }
     public function animations() {
         return $this->hasOne('App\Models\Animations\TextfieldAnimation');

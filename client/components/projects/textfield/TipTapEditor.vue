@@ -24,7 +24,7 @@ import { Editor, EditorContent, EditorMenuBubble } from "tiptap";
 import { Heading, Bold, Italic, Underline } from "tiptap-extensions";
 import { mapGetters } from 'vuex';
 export default {
-  props: ['text', 'opacity', 'layoutRow', 'row'],
+  props: ['text', 'opacity', 'layoutRow', 'row', 'layoutId', 'id'],
   components: {
     EditorContent,
     EditorMenuBubble,
@@ -64,10 +64,11 @@ export default {
     setCurrentItem(){
       let payload = 
       {
-        layoutRow: this.layoutRow,
-        itemRow: this.row,
+        id: this.id,
+        layoutId: this.layoutId,
         itemName: 'textfields'
       }
+      // this.$store.dispatch('Layout/setCurrentItem', payload)
       this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
     },
     setEditor(){
@@ -81,8 +82,8 @@ export default {
                 row: this.row}
 
             let payload2 = {
-              layoutRow: this.layoutRow,
-              itemRow: this.row,
+              id: this.id,
+              layoutId: this.layoutId,
               itemName: 'textfields'
             }
             this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)

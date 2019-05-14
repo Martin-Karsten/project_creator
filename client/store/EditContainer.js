@@ -1,6 +1,6 @@
 
 export const state = () => ({
-    editContainer: {name: '', activated: false, layoutRow:0, row: 0}
+    editContainer: {name: '', activated: false, layoutId:0, layoutRow:0, row: 0}
 })
 
 export const getters = {
@@ -9,7 +9,7 @@ export const getters = {
 
 export const mutations = {
     OPEN_EDIT_CONTAINER (state, payload) {
-        console.log(payload)
+        state.editContainer.layoutId = payload.layoutId
         state.editContainer.activated = true
         state.editContainer.row = payload.row
         state.editContainer.name = payload.name

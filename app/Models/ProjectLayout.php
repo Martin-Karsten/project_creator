@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectLayout extends Model
 {
+    protected $primaryKey = 'project_id';
     protected $table = 'project_layouts';
 
     protected $fillable = [
@@ -16,23 +17,8 @@ class ProjectLayout extends Model
     {
         return $this->belongsTo('App\Models\Project');
     }
-
-    public function textfields() {
-        return $this->hasMany('App\Models\Textfield');
-    }
-    public function images() {
-        return $this->hasMany('App\Models\Image');
-    }
-    public function webImages() {
-        return $this->hasMany('App\Models\WebImage');
-    }
-    public function webVideos() {
-        return $this->hasMany('App\Models\WebVideo');
-    }
-    public function tables() {
-        return $this->hasMany('App\Models\Table');
-    }
-    public function charts() {
-        return $this->hasMany('App\Models\Chart');
+    public function layoutItems()
+    {
+        return $this->hasMany('App\Models\LayoutItem');
     }
 }

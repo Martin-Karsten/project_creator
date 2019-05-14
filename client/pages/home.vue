@@ -41,9 +41,6 @@
 
     <el-main>
       <el-row class="home-content-row">
-        <el-col projects>
-          <el-button @click="createProject">Create Project</el-button>
-        </el-col>
         <el-col class="home-content-column wobble" :span="6" v-for="(project, index) in projects" :key="index">
           <div class="cptn03" @mouseover="showEditable(index)" @mouseleave="hideEditable(index)">
             <img src="http://lorempixel.com/350/263/" alt="">

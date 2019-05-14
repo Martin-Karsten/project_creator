@@ -4,7 +4,6 @@
         <el-tab-pane class="sidebar-tab" v-for="item in tabItems" :key="item.componentName"
             :label="item.name"
             :name="item.name">
-            <!-- <span slot="label"><i class="el-icon-date"></i> Route</span> -->
             <span slot="label"> 
                 <fa v-if="item.icon != 'sidebar-tab-image'" :icon="item.icon" /> 
                 <img v-else class="custom-sidebar-tag-image" src="../navbar/border-style.svg">
@@ -20,7 +19,6 @@
             </el-menu>
         </el-tab-pane>
     </el-tabs>
-
 </div>
 </template>
 
@@ -31,6 +29,7 @@ import SidebarDefault from './SidebarDefault'
 import EditColor from './format/EditColor'
 import EditLines from './format/EditLines'
 import SidebarAnimation from './animation/SidebarAnimation'
+import SidebarChart from './items/SidebarChart'
 
 export default {
  components: {
@@ -38,7 +37,8 @@ export default {
      'sidebar-default' : SidebarDefault,
      'edit-color': EditColor,
      'edit-lines' : EditLines,
-     'sidebar-animation' : SidebarAnimation
+     'sidebar-animation' : SidebarAnimation,
+     'sidebar-chart' : SidebarChart
  },
  data(){
      return{
@@ -64,41 +64,43 @@ export default {
         }
     }
  },
- watch: {
-     currentItem: function (newVal) {
-         let newArr = [...this.tabItems]
-         switch(newVal.itemName){
-             //tab items does not exist yet -> push new item to tabs
-             case 'textfields':
-             if(this.tabItems[1].icon === 'fill-drip'){
-                this.tabItems.splice(1, 0,{name: 'forth', componentName: 'SidebarTextfield', icon: 'font'})
-                break;
-             }
-            //tab item already exists -> replace with current item
-            else{
-                newArr[1].icon = 'font'
-                this.tabItems = newArr
-                break;
-            }
-         }
-         switch(newVal.itemName){
-             case 'charts':
-             if(this.tabItems[1].icon ==='fill-drip'){
-                this.tabItems.splice(1, 0, {name: 'forth', componentName: 'ChartdSidebar', icon: 'chart-bar'})
-                break;
-             }
+ watch:{
+     currentItem: function(newVal){
+        switch(newVal.itemName || newVal.item){
+            // case 'textfields':
+                // if(this.tabItems[1].icon === 'fill-drip'){
+                //     this.tabItems.splice(1, 0,{name: 'textfield', componentName: 'SidebarTextfield', icon: 'font'})
+                //     break;
+                // }
+                // //tab item already exists -> replace with current item
+                // else{
+                //     this.$set(this.tabItems, 1,{name: 'textfield', componentName: 'SidebarTextfield', icon: 'font'})
+                //     break;
+                // }
+                // break;
 
-            else{
-                newArr[1].icon = 'chart-bar'
-                this.tabItems = newArr
-                break;
+                case 'charts':
+                    if(this.tabItems[1].icon ==='fill-drip'){
+                        this.tabItems.splice(1, 0, {name: 'chart', componentName: 'ChartdSidebar', icon: 'chart-bar'})
+                        this.activeName = 'chart'
+                        this.currentComponent = 'sidebar-chart'
+                        break;
+                    }
+
+                    else{
+                        this.$set(this.tabItems, 1,{name: 'chart', componentName: 'ChartdSidebar', icon: 'chart-bar'})
+                        this.activeName = 'chart'
+                        this.currentComponent = 'sidebar-chart'
+                        break;
+                    }
+                default:
+                this.activeName = 'first'
+                this.currentComponent = 'sidebar-default'
             }
-         }
-     }
-},
+        }
+    },
   methods:{
     handleClick(tab){
-        console.log(tab.name)
         switch(tab.name){
             case "first":
             this.currentComponent = 'sidebar-default'
@@ -110,8 +112,11 @@ export default {
 
             case 'third':
             this.currentComponent ='edit-lines'
+            break;
 
-            case 'forth':
+            case 'chart':
+            this.currentComponent = 'sidebar-chart'       
+            break;
         }
     },
     showScroller(){

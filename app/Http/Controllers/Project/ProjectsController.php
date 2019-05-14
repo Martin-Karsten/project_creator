@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Project;
 
 use App\Models\Project;
 use App\Models\ProjectLayout;
+use App\Models\LayoutItem;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,33 +33,28 @@ class ProjectsController extends Controller
     }
     protected function show($id)
     {
-        return Project::where([['user_id', '=', 1], ['id', '=', $id]])
-            ->with('projectLayout')->with(['projectLayout.textfields', 'projectLayout.textfields.animations'])
-            ->with('projectLayout')->with(['projectLayout.webImages', 'projectLayout.webImages.animations'])
-            ->with('projectLayout')->with(['projectLayout.images', 'projectLayout.images.animations'])
-            ->with('projectLayout')->with(['projectLayout.tables', 'projectLayout.tables.animations'])
-            ->with('projectLayout')->with(['projectLayout.charts', 'projectLayout.charts.animations'])
-            ->with('projectLayout')->with(['projectLayout.webVideos', 'projectLayout.webVideos.animations'])
-            ->get();
-        
-        // return DB::table('projects')
-        // ->where('projects.id', $id)
-        // ->get();
-        
+        return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')->with('charts')->with('webVideos')->get();
+
+        // return ProjectLayout::where([['project_id', '=', $id]])->layoutItems;
+            // ->with('projectLayout')->with(['projectLayout.textfields', 'projectLayout.textfields.animations'])
+            // ->with('projectLayout')->with(['projectLayout.webImages', 'projectLayout.webImages.animations'])
+            // ->get();
     }
     protected function create(ProjectStoreRequest $request)
     {
         $validated = $request->validated();
 
-        $project =    Project::create([
+        $project = Project::create([
                 'project_name' => $request->project_name,
                 'user_id' => $request->user_id,
                 'private' => $request->private
             ]);
 
-        print_r($project);
-
-        return ProjectLayout::create([
+        $layout = ProjectLayout::create([
+                'project_id' => $project->id
+            ]);
+        
+       return LayoutItem::create([
             'project_id' => $project->id
         ]);
     }

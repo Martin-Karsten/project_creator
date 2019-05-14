@@ -14,7 +14,7 @@ class CreateProjectLayouts extends Migration
     public function up()
     {
         Schema::create('project_layouts', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            // $table->bigIncrements('id');
             $table->string('project_id', 80);	
             $table->unsignedSmallInteger('rows')->default(1);	
             $table->timestamps();

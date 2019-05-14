@@ -14,6 +14,7 @@
           <el-col class="start-menu-icon-column" :span="4">
             <fa id="menu-icon-0" class="start-menu-icon" icon="table" @click="activateTableIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
             <table-size-picker v-show="tableSizePickerActivated" />
+            <!-- <table-size-picker-input v-show="tableSizePickerActivated"  @clicked="tableSizePickerActivated = false"/> -->
           </el-col>
           <el-col class="start-menu-icon-column" :span="4">
             <fa id="menu-icon-1" class="start-menu-icon" icon="video" @click="activateWebVideoIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
@@ -32,31 +33,17 @@ import { Editor, EditorMenuBar} from "tiptap";
 import { Heading, Bold, Italic, Underline } from "tiptap-extensions";
 import { mapGetters } from 'vuex'
 import TableSizePicker from './table/TableSizePicker'
+import TableSizePickerInput from './table/TableSizePickerInput'
 import UrlInput from './general/UrlInput'
 export default {
     components: {
       EditorMenuBar,
       TableSizePicker,
+      TableSizePickerInput,
       UrlInput
     },
     data(){
       return{
-        ed: new Editor({
-          content: this.content,
-          extensions: [
-            new Heading({ levels: [1, 2, 3] }),
-            new Bold(),
-            new Italic(),
-            new Underline()
-          ],
-          onUpdate: ({ getJSON, getHTML }) => {
-            
-          },
-          onFocus: ({event, state, view}) => {
-            this.setCurrentItem()
-            // this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
-          }
-        }),
         menuItemActivated: 'menu-section-activated',
         creatorActivated: false,
         fieldActivated: false,

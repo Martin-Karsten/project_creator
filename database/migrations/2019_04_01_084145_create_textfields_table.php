@@ -16,7 +16,7 @@ class CreateTextfieldsTable extends Migration
         Schema::create('textfields', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100)->default('default');
-            $table->unsignedBigInteger('project_layout_id');
+            $table->unsignedBigInteger('layout_item_id');
             $table->unsignedTinyInteger('row')->default(0);
             $table->text('text')->nullable();
             $table->string('font', 225)->default('Calibri');
@@ -38,9 +38,9 @@ class CreateTextfieldsTable extends Migration
             $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
-            $table->foreign('project_layout_id')
+            $table->foreign('layout_item_id')
             ->references('id')
-            ->on('project_layouts')
+            ->on('layout_items')
             ->onDelete('cascade');
         });
     }

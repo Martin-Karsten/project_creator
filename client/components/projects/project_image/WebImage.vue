@@ -5,7 +5,7 @@
 <script>
 import { mapGetters } from 'vuex'
 export default {
-  props:['id', 'url', 'radius', 'opacity', 'layoutRow', 'row'],
+  props:['id', 'layoutId', 'url', 'radius', 'opacity', 'layoutRow', 'row'],
   components: {
   },
   data() {
@@ -19,8 +19,8 @@ export default {
     setCurrentItem(){
       let payload = 
       {
-        layoutRow: this.layoutRow,
-        itemRow: this.row,
+        id: this.id,
+        layoutId: this.layoutId,
         itemName: 'web_images'
       }
       this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
@@ -33,8 +33,8 @@ export default {
                 row: this.row}
 
             let payload2 = {
-              layoutRow: this.layoutRow,
-              itemRow: this.row,
+              id: this.id,
+              layoutId: this.layoutId,
               itemName: 'web_images'
             }
             this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)

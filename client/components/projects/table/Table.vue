@@ -146,7 +146,6 @@
 						new TableRow(),
 					],
 					onUpdate: ({ getJSON, getHTML }) => {
-						this.$store.commit('Layout/ADD_TABLE_COLUMN', getHTML())
 					},
 					content: 
 					`

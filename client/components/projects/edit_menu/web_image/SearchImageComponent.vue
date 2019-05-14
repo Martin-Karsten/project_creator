@@ -27,6 +27,7 @@ import Unsplash, { toJson } from 'unsplash-js';
 
 
 export default {
+props: ['layoutId'],
 components: {
     WebPagination
 },
@@ -53,9 +54,10 @@ methods:{
     },
     selectImage(url){
         let payload = {
-            url: url
+            url: url,
+            layoutId: this.layoutId
         }
-        this.$store.commit('Layout/ADD_WEB_IMAGE', payload)
+        this.$store.dispatch('LayoutItems/WebImage/addWebImage', payload)
     },
     previousPage(){
         if(this.page != 1){

@@ -15,7 +15,7 @@ class CreateWebImagesTable extends Migration
     {
         Schema::create('web_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('project_layout_id');
+            $table->unsignedBigInteger('layout_item_id');
             $table->string('name')->default('picture.jpeg');
             $table->string('url')->nullable();
             $table->string('animation_name', 25)->nullable();
@@ -35,9 +35,9 @@ class CreateWebImagesTable extends Migration
             $table->double('opacity', 3, 2)->default(1);
             $table->timestamps();
 
-            $table->foreign('project_layout_id')
+            $table->foreign('layout_item_id')
             ->references('id')
-            ->on('project_layouts')
+            ->on('layout_items')
             ->onDelete('cascade');
         });
     }

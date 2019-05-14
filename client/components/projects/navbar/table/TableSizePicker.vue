@@ -60,7 +60,7 @@ export default {
             this.gridX = x
             this.columns = newArr
 
-            this.$store.dispatch('Layout/createTable', {rows: this.gridY, columns: this.gridX})
+            this.$store.dispatch('LayoutItems/Table/createTable', {layoutId: 2, rows: this.gridY, columns: this.gridX})
         },
         resetPicker(){
             this.gridY = ''
@@ -87,7 +87,7 @@ li.table-size-picker-item{
     background-color: blanchedalmond;
     height: 20px;
     width: 20px;
-    z-index: 110;
+    z-index: 15;
     margin: 0.1rem;
 }
 

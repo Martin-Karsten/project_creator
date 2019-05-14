@@ -21,28 +21,31 @@ void (function updateModules() {
 
   resolveStoreModules(require('@/store/PresentationMode.js'), 'PresentationMode.js')
   resolveStoreModules(require('@/store/auth.js'), 'auth.js')
-  resolveStoreModules(require('@/store/StartMenu.js'), 'StartMenu.js')
-  resolveStoreModules(require('@/store/SidebarTextfield.js'), 'SidebarTextfield.js')
-  resolveStoreModules(require('@/store/SidebarImage.js'), 'SidebarImage.js')
-  resolveStoreModules(require('@/store/Sidebar.js'), 'Sidebar.js')
-  resolveStoreModules(require('@/store/EditContainer.js'), 'EditContainer.js')
   resolveStoreModules(require('@/store/lang.js'), 'lang.js')
   resolveStoreModules(require('@/store/Layout.js'), 'Layout.js')
   resolveStoreModules(require('@/store/LayoutHelpers.js'), 'LayoutHelpers.js')
   resolveStoreModules(require('@/store/LayoutItem.js'), 'LayoutItem.js')
   resolveStoreModules(require('@/store/ColorPicker.js'), 'ColorPicker.js')
+  resolveStoreModules(require('@/store/EditContainer.js'), 'EditContainer.js')
   resolveStoreModules(require('@/store/Project.js'), 'Project.js')
-  resolveStoreModules(require('@/store/sidebar-default.js'), 'sidebar-default.js')
   resolveStoreModules(require('@/store/schema.js'), 'schema.js')
-  resolveStoreModules(require('@/store/ProjectItems/Chart.js'), 'ProjectItems/Chart.js')
-  resolveStoreModules(require('@/store/ContextMenus/WebImageContextMenu.js'), 'ContextMenus/WebImageContextMenu.js')
-  resolveStoreModules(require('@/store/ContextMenus/TextfieldContextMenu.js'), 'ContextMenus/TextfieldContextMenu.js')
+  resolveStoreModules(require('@/store/sidebar-default.js'), 'sidebar-default.js')
+  resolveStoreModules(require('@/store/Sidebar.js'), 'Sidebar.js')
+  resolveStoreModules(require('@/store/SidebarImage.js'), 'SidebarImage.js')
+  resolveStoreModules(require('@/store/SidebarTextfield.js'), 'SidebarTextfield.js')
+  resolveStoreModules(require('@/store/StartMenu.js'), 'StartMenu.js')
   resolveStoreModules(require('@/store/ContextMenus/ContextMenu.js'), 'ContextMenus/ContextMenu.js')
+  resolveStoreModules(require('@/store/ContextMenus/TextfieldContextMenu.js'), 'ContextMenus/TextfieldContextMenu.js')
+  resolveStoreModules(require('@/store/ContextMenus/WebImageContextMenu.js'), 'ContextMenus/WebImageContextMenu.js')
+  resolveStoreModules(require('@/store/StartMenus/StartMenuTable.js'), 'StartMenus/StartMenuTable.js')
+  resolveStoreModules(require('@/store/LayoutItems/Chart.js'), 'LayoutItems/Chart.js')
+  resolveStoreModules(require('@/store/LayoutItems/Table.js'), 'LayoutItems/Table.js')
   resolveStoreModules(require('@/store/ContextMenus/ChartContextMenu.js'), 'ContextMenus/ChartContextMenu.js')
+  resolveStoreModules(require('@/store/LayoutItems/WebImage.js'), 'LayoutItems/WebImage.js')
   resolveStoreModules(require('@/store/StartMenus/StartMenu.js'), 'StartMenus/StartMenu.js')
   resolveStoreModules(require('@/store/StartMenus/StartMenuAnimations.js'), 'StartMenus/StartMenuAnimations.js')
   resolveStoreModules(require('@/store/StartMenus/StartMenuDefault.js'), 'StartMenus/StartMenuDefault.js')
-  resolveStoreModules(require('@/store/StartMenus/StartMenuTable.js'), 'StartMenus/StartMenuTable.js')
+  resolveStoreModules(require('@/store/LayoutItems/Textfield.js'), 'LayoutItems/Textfield.js')
 
   // If the environment supports hot reloading...
 
@@ -51,29 +54,32 @@ void (function updateModules() {
     module.hot.accept([
       '@/store/PresentationMode.js',
       '@/store/auth.js',
-      '@/store/StartMenu.js',
-      '@/store/SidebarTextfield.js',
-      '@/store/SidebarImage.js',
-      '@/store/Sidebar.js',
-      '@/store/EditContainer.js',
       '@/store/index.js',
       '@/store/lang.js',
       '@/store/Layout.js',
       '@/store/LayoutHelpers.js',
       '@/store/LayoutItem.js',
       '@/store/ColorPicker.js',
+      '@/store/EditContainer.js',
       '@/store/Project.js',
-      '@/store/sidebar-default.js',
       '@/store/schema.js',
-      '@/store/ProjectItems/Chart.js',
-      '@/store/ContextMenus/WebImageContextMenu.js',
-      '@/store/ContextMenus/TextfieldContextMenu.js',
+      '@/store/sidebar-default.js',
+      '@/store/Sidebar.js',
+      '@/store/SidebarImage.js',
+      '@/store/SidebarTextfield.js',
+      '@/store/StartMenu.js',
       '@/store/ContextMenus/ContextMenu.js',
+      '@/store/ContextMenus/TextfieldContextMenu.js',
+      '@/store/ContextMenus/WebImageContextMenu.js',
+      '@/store/StartMenus/StartMenuTable.js',
+      '@/store/LayoutItems/Chart.js',
+      '@/store/LayoutItems/Table.js',
       '@/store/ContextMenus/ChartContextMenu.js',
+      '@/store/LayoutItems/WebImage.js',
       '@/store/StartMenus/StartMenu.js',
       '@/store/StartMenus/StartMenuAnimations.js',
       '@/store/StartMenus/StartMenuDefault.js',
-      '@/store/StartMenus/StartMenuTable.js',
+      '@/store/LayoutItems/Textfield.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

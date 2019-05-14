@@ -1,77 +1,73 @@
 <template>
     <el-main class="project-container">
     <el-row class="grid">
-        {{ll}}
-        <el-button @click="addCol">Add Col</el-button>
+        {{currentItem}}
         <el-col :span="24" class="grid-items">
             <draggable
                 :disabled="true"
-                :list="layout"
+                :list="layoutSet"
                 class="item-group"
                 ghost-class="ghost"
             >
                 <div
-                v-for="(element, index) in layout"
+                v-for="(element, index) in layoutSet"
                 :key="index"
                 class="item"
                 >
-                
-              <div class="item-container" @click.self="layoutItemClicked(index)">
-                    <el-row class="toolbox" v-show="toolboxes[index].isEmpty">
+              <div class="item-container" @click.self="layoutItemClicked(index, element.id)">
+                    <el-row class="toolbox">
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Text" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="font" @click="toTextfield(index)"/>
+                                <fa class="tooltip-icon" icon="font" @click="toTextfield(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Web Image" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="image" @click="toWebImage(index)"/>
+                                <fa class="tooltip-icon" icon="image" @click="toWebImage(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Chart" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="chart-bar" @click="toChart(index)"/>
+                                <fa class="tooltip-icon" icon="chart-bar" @click="toChart(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Table" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="table" @click="toTable(index)"/>
+                                <fa class="tooltip-icon" icon="table" @click="toTable(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Web Video" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="video" @click="toWebVideo(index)"/>
+                                <fa class="tooltip-icon" icon="video" @click="toWebVideo(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Shape" placement="top-start">
                             <el-col :span="4">
-                                <fa class="tooltip-icon" icon="shapes" @click="toShapes(index)"/>
+                                <fa class="tooltip-icon" icon="shapes" @click="toShapes(index, element.id)"/>
                             </el-col>
                         </el-tooltip>
 
                     </el-row>
 
-                    <url-input v-show="toolboxes[index].urlInputActivated" :index="index"></url-input>
+                    <!-- <url-input v-show="toolboxes[index].urlInputActivated" :index="index"></url-input> -->
 
                
                 <vue-draggable-resizable
-                    v-for="(textfield, textfieldIndex) in element.textfields" :key="textfieldIndex+'t'"
+                    v-for="(textfield, textfieldIndex) in layoutTextfields(element)" :key="textfieldIndex+'t'"
                     :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
                     :parent="true" :grid="[5,5]"
                     class-name="project-textfield-container"
-                    :class="{'bounce animated': textfield.animated}" 
                     :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
                     borderRadius: textfield.border_radius + 'px', backgroundColor: textfield.background_color}"
                     @contextmenu="openContextMenu"
                 >
-                <!-- <div class="animation-number">{{}}</div> -->
-                    <textfield-editor :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex"/>
+                    <textfield-editor :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex" :id="textfield.id" :layoutId="element.id"/>
 
                 </vue-draggable-resizable>
 
@@ -79,32 +75,29 @@
                     v-for="image in element.images" :key="image.name"
                     :w="image.width" :h="image.height" :x="image.left" :y="image.top" :z="image.z_index"
                     :parent="true" :grid="[5,5]" :lock-aspect-ratio="true" 
-                    class-name-active="selected" :class="[image.animation_name, 'animated']"
+                    class-name-active="selected" 
                     :style="{borderStyle: image.border_style, borderColor: image.border_color, borderWidth: image.border_width + 'px', borderRadius: image.border_radius + 'px'}"
                 >
                     <project-image :id="image.id" :imageData="imageData" />
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
-                    v-for="(web_image, webImageIndex) in element.web_images" :key="webImageIndex+'wE'"
+                    v-for="(web_image, webImageIndex) in layoutWebImages(element)" :key="webImageIndex+'wE'"
                     :w="web_image.width" :h="web_image.height" :x="web_image.left" :y="web_image.top" :z="web_image.z_index"
                     :parent="true" :grid="[5,5]"
                     class-name=project-web-image-container 
-                    class-name-active="selected" :class="{'animated':web_image.animated,[web_image.animation_name]:web_image.animation_name}"
+                    class-name-active="selected"
                     :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px', borderRadius: web_image.border_radius + 'px'}"
                 >
                 <div class="animation-number"></div>
-                    <web-image :id="web_image.id" :url="web_image.url" :radius="web_image.border_radius" :opacity="web_image.opacity" :layoutRow="index" :row="webImageIndex"/>
+                    <web-image :id="web_image.id" :layoutId="element.id" :url="web_image.url" :radius="web_image.border_radius" :opacity="web_image.opacity" :layoutRow="index" :row="webImageIndex"/>
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
                     class-name="project-table-container"
-                    v-for="(table, tableIndex) in element.tables" :key="tableIndex+'table'"
-                    :w="table.width" :h="table.height" :x="table.left + 100" :y="table.top + 100" :z="table.z_index"
-                    :parent="true" :grid="[5,5]" 
-                    class-name-active="selected" :class="[{'animated': table.animated}, table.animation_name]"
-                    :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
-                     borderRadius: table.border_radius + 'px', backgroundColor: table.background_color}"
+                    v-for="(table, tableIndex) in layoutTables(element)" :key="tableIndex+'table'"
+                    :w="400" :h="200" :x="100" :y=" 100" 
+               
                 >
                         <table-editor :text="table.text"></table-editor>
                 </vue-draggable-resizable>
@@ -113,14 +106,14 @@
                     v-for="web_video in element.web_videos" :key="web_video.id"
                     :w="web_video.width" :h="web_video.height" :x="web_video.left" :y="web_video.top" :z="web_video.z_index"
                     :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
-                    class-name-active="selected" :class="{'wobble animated': web_video.animated}"
+                    class-name-active="selected"
                 >
                     <web-video :videoId="web_video.video_id"></web-video>
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
                     class-name="project-table-container"
-                    v-for="(chart, chartIndex) in element.charts" :key="chartIndex+'chart'"
+                    v-for="(chart, chartIndex) in layoutCharts(element)" :key="chartIndex+'chart'"
                     :w="chart.width" :h="chart.height" :x="chart.left + 100" :y="chart.top + 100" :z="chart.z_index"
                     :parent="true" :grid="[5,5]" 
                     class-name-active="selected" 
@@ -130,20 +123,13 @@
                      @contextmenu="openContextMenu"
                      :draggable="isDraggable"
                 >
-                <div class="cont" @contextmenu.prevent="openContextMenu(index, chartIndex)">
-                    <chart :width="chart.width" :height="chart.height" :layoutRow="index" :row="chartIndex"></chart>
+                <!-- Echarts needs an extra container to set the current element and to resize the table to the size of its parent, 
+                    thats why we set the currentItem by clicking the container here, instead of doing it inside the component
+                 -->
+                <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex)">
+                    <chart :width="chart.width" :height="chart.height" :settings="chart.chart_settings" :layoutId="element.id" :id="chart.id"></chart>
                 </div>
                 </vue-draggable-resizable>
-
-                <!-- <vue-draggable-resizable
-                    v-for="(web_image, index) in element.web_images" :key="index+'shape'"
-                    :w="web_image.width" :h="web_image.height" :x="web_image.left + 100" :y="web_image.top + 100" :z="web_image.z_index"
-                    :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
-                    class-name-active="selected" :class="[{'animated': web_image.animated}, web_image.animation_name]"
-                >
-                    <shapes :width="web_image.width" :height="web_image.height"></shapes>
-                </vue-draggable-resizable> -->
-
 
                 </div>
                 </div>
@@ -158,7 +144,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 //Items
 import TextfieldEditor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
@@ -202,16 +188,20 @@ export default {
     },
     computed: {
         ...mapGetters({
-            ll: 'Layout/getLL',
-            llArr: 'Layout/llArr',
-            layout: 'Layout/getLayout',
-            currentLayout: 'Layout/getCurrentLayout',
             currentItem: 'Layout/getCurrentItem',
-            currentSelectedItem: 'Layout/getCurrentSelectedItem',
             toolboxes:'LayoutHelpers/getToolboxes',
             startMenuIcons: "StartMenu/getStartMenuIcons",
             currentMode: 'PresentationMode/getCurrentMode',
             animationList: 'PresentationMode/getAnimationItmes',
+
+            layoutSet: 'Layout/getLayoutSet',
+
+        }),
+        ...mapState({
+            textfieldObj: state => state.LayoutItems.Textfield.textfields,
+            webImageObj: state => state.LayoutItems.WebImage.web_images,
+            tableObj: state => state.Layout.tables,
+            chartObj: state => state.Layout.charts,
         })
     },
     mounted(){
@@ -221,8 +211,17 @@ export default {
         this.$store.dispatch('Layout/resetLayout')
     },
     methods: {
-        addCol(){
-            this.$store.commit('Layout/CREATE_TABLE', {rows:5, columns:6})
+        layoutTextfields(layout) { 
+            return layout.textfields.map(id => this.textfieldObj[id]) 
+        },
+        layoutWebImages(layout){
+            return layout.web_images.map(id => this.webImageObj[id])
+        },
+        layoutTables(layout){
+            return layout.tables.map(id => this.tableObj[id])
+        },
+        layoutCharts(layout){
+            return layout.charts.map(id => this.chartObj[id])
         },
         activatePresentationMode(event){
             console.log(event.keyCode)
@@ -233,14 +232,14 @@ export default {
                 fadeIn: obj.animation_name
             }
         },
-        layoutItemClicked(row){
+        layoutItemClicked(row, layoutId){
         if(this.currentSelectedItem != ''){
             this.$store.commit('Layout/DESELECT_ITEM')
         }
         //check if item creation icon was selected, if yes create new item
         for( let i = 0; i < this.startMenuIcons.length; i++){ 
         if ( this.startMenuIcons[i].activated === true && i === 0) {
-            this.$store.commit('Layout/ADD_TEXTFIELD', {row: row, icon: i})
+            this.$store.dispatch('LayoutItems/Textfield/addTextfield', layoutId)
             this.$store.commit('StartMenu/SET_ICON_TO_FALSE',{row: row, icon: i})
             return
             }
@@ -272,14 +271,23 @@ export default {
             this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
 
         },
+        chartClicked(layoutId, id){
+            let payload =
+                {
+                layoutId: layoutId,
+                id: id,
+                itemName: 'charts'
+                }
+                this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
+        },
         chartResizing(left, top, width, height){
             this.$store.commit('Layout/RESIZE_CHART_CONTAINER', {width, height})
         },
-        toTextfield(row){
-            this.$store.dispatch('Layout/addTextfield', {name: 'TextfieldContainer', row: row})
+        toTextfield(index,layoutId){
+            this.$store.dispatch('LayoutItems/Textfield/addTextfield', layoutId)
         },
-        toChart(row) {
-            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'ChartContainer', row: row})
+        toChart(row, layoutId) {
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'ChartContainer', row: row, layoutId: layoutId})
         },
         toImage(row, $event) {
           this.imageData = event.target;
@@ -297,9 +305,9 @@ export default {
             file: this.imageData.files[0],
             name: this.imageData.files[0].name})         
         },
-        toWebImage(row){
+        toWebImage(row, layoutId){
             this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
-            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebImageContainer', row: row})
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebImageContainer', row: row, layoutId: layoutId})
 
         },
         toWebVideo(row){
@@ -308,11 +316,11 @@ export default {
             this.$store.commit('LayoutHelpers/SHOW_URL_INPUT', row)
         },
         toTable(row) {
-            this.$store.commit('Layout/ADD_TABLE', {layoutRow: row, rows: 2,  columns: 3})
+            // this.$store.commit('Layout/ADD_TABLE', {layoutRow: row, rows: 2,  columns: 3})
         },
         addItem() {
-            this.$store.commit('Layout/ADD_ITEM', this.layout.length)
-            this.$store.commit('LayoutHelpers/ADD_TOOLBOX', this.layout.length)
+            // this.$store.commit('Layout/ADD_ITEM', this.layout.length)
+            // this.$store.commit('LayoutHelpers/ADD_TOOLBOX', this.layout.length)
         },
         hideOrShowToolbar(row){
             this.urlInputActivated = false

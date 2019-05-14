@@ -24,7 +24,7 @@ export const mutations = {
     }
 }
 export const actions = {
-    deleteItem({state, commit, rootGetters}, payload){
+    deleteItem({state, commit}, payload){
         commit('Layout/DELETE_ITEM', {root: true})
     },
 }

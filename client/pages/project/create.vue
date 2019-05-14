@@ -1,7 +1,7 @@
 <template>
     <el-container class="create-project">
-        <el-aside>
-            <sidebar @clicked="activateAnimationList" v-show="true"/>
+        <el-aside class="project-sidebar" width="350px">
+            <sidebar class="main-project-sidebar" @clicked="activateAnimationList" v-show="true"/>
         </el-aside>
 
         <transition name="fade" mode="in-out">
@@ -76,15 +76,6 @@ export default {
 </script>
 
 <style>
-
-.create-project{
-    height: 83.7vh;
-}
-
-.main-sidebar{
-    position: relative;
-    border-right: 1px black solid;
-}
 
 .show-scroller-chevron {
     cursor: pointer;
