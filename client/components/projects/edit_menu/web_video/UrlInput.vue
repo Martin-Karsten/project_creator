@@ -1,13 +1,14 @@
 <template>
 <div>
-    <h1 class="title edit-container-title">Paste image or gif url</h1>
+    <h1 class="title edit-container-title">Paste Video url</h1>
+      <p>(Currently only Youtube Videos)</p>
     <section class="web-image-url-input">
         <div class="field">
             <div class="control">
               <form @submit.prevent="handleSubmit">
-                <input ref="editContainerWebImageInput" class="input url-input" type="text" placeholder="Image URL" v-model="urlInput">
-                <button class="button is-small is-success">Submit</button>
-              <button class="button is-small is-danger" type=button @click="cancelSubmit">Cancel</button>
+                <el-input v-model="urlInput" class="url-input" placeholder="Video URL" type="text"/>
+                <el-button size="small" type="success">Submit</el-button>
+                <el-button size="small" type="danger" @click="cancelSubmit">Cancel</el-button>
               </form>
             </div>
         </div>
@@ -16,22 +17,23 @@
 </template>
 
 <script>
+import getYouTubeID from 'get-youtube-id';
 export default {
     props:['index', 'layoutId'],
     data(){
     return {
         inputActivated: false,
         urlInput: '',
-        submitButton: true,
     }
     },
     methods: {
       handleSubmit(){
+
         let payload = {
-            url: url,
+            video_id: getYouTubeID(this.urlInput),
             layoutId: this.layoutId
         }
-        this.$store.dispatch('LayoutItems/WebImage/addWebImage', payload)
+        this.$store.dispatch('LayoutItems/WebVideo/addWebVideo', payload)
         this.$store.commit('EditContainer/CLOSE_EDIT_CONTAINER')
         this.urlInput = ''
       },

@@ -1,7 +1,7 @@
 <template>
     <el-main class="project-container">
     <el-row class="grid">
-        {{currentItem}}
+        {{webImageObj}}
         <el-col :span="24" class="grid-items">
             <draggable
                 :disabled="true"
@@ -14,7 +14,8 @@
                 :key="index"
                 class="item"
                 >
-              <div class="item-container" @click.self="layoutItemClicked(index, element.id)">
+              <div class="item-container" ref="itemContainer" @click.self="layoutItemClicked(index, element.id)"
+              >
                     <el-row class="toolbox">
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Text" placement="top-start">
@@ -48,16 +49,19 @@
                         </el-tooltip>
 
                         <el-tooltip class="tooltip-item" effect="dark" content="Shape" placement="top-start">
-                            <el-col :span="4">
-                                <fa class="tooltip-icon" icon="shapes" @click="toShapes(index, element.id)"/>
-                            </el-col>
+                            <el-popover
+                            placement="top"
+                            width="225"
+                            trigger="click"
+                            >
+                            <div style="text-align: right; margin: 0">
+                                <shape-picker></shape-picker>
+                            </div>
+                                <fa slot="reference" class="tooltip-icon" icon="shapes" @click="toShapes(index, element.id)"/>
+                            </el-popover>
                         </el-tooltip>
-
                     </el-row>
 
-                    <!-- <url-input v-show="toolboxes[index].urlInputActivated" :index="index"></url-input> -->
-
-               
                 <vue-draggable-resizable
                     v-for="(textfield, textfieldIndex) in layoutTextfields(element)" :key="textfieldIndex+'t'"
                     :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
@@ -68,12 +72,11 @@
                     @contextmenu="openContextMenu"
                 >
                     <textfield-editor :text="textfield.text" :opacity="textfield.opacity" :layoutRow="index" :row="textfieldIndex" :id="textfield.id" :layoutId="element.id"/>
-
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
                     v-for="image in element.images" :key="image.name"
-                    :w="image.width" :h="image.height" :x="image.left" :y="image.top" :z="image.z_index"
+                    :w="imageWidth(image.width)" :h="imageHeight(image.height)" :x="image.left" :y="image.top" :z="image.z_index"
                     :parent="true" :grid="[5,5]" :lock-aspect-ratio="true" 
                     class-name-active="selected" 
                     :style="{borderStyle: image.border_style, borderColor: image.border_color, borderWidth: image.border_width + 'px', borderRadius: image.border_radius + 'px'}"
@@ -83,14 +86,21 @@
 
                 <vue-draggable-resizable
                     v-for="(web_image, webImageIndex) in layoutWebImages(element)" :key="webImageIndex+'wE'"
-                    :w="web_image.width" :h="web_image.height" :x="web_image.left" :y="web_image.top" :z="web_image.z_index"
+                    :w="(web_image.width / 1850) * 1000" :h="web_image.height"
+                    :z="webImageIndex"
+                    @resizing="containerResizing"
+                    @dragging="containerDragging"
                     :parent="true" :grid="[5,5]"
                     class-name=project-web-image-container 
                     class-name-active="selected"
-                    :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px', borderRadius: web_image.border_radius + 'px'}"
+                    :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px',
+                    borderRadius: web_image.border_radius + 'px', top: '22%', left: '22%' 
+                    
+                    }"
                 >
-                <div class="animation-number"></div>
-                    <web-image :id="web_image.id" :layoutId="element.id" :url="web_image.url" :radius="web_image.border_radius" :opacity="web_image.opacity" :layoutRow="index" :row="webImageIndex"/>
+                <!-- <div class="animation-number"></div> -->
+                    <web-image :id="web_image.id" :layoutId="element.id" :url="web_image.url" :radius="web_image.border_radius"
+                     :opacity="web_image.opacity" :layoutRow="index" :row="webImageIndex"/>
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
@@ -99,14 +109,17 @@
                     :w="400" :h="200" :x="100" :y=" 100" 
                
                 >
-                        <table-editor :text="table.text"></table-editor>
+                
+                        <!-- <table-editor :text="table.text"></table-editor> -->
                 </vue-draggable-resizable>
 
                 <vue-draggable-resizable
-                    v-for="web_video in element.web_videos" :key="web_video.id"
+                    v-for="(web_video, webVideoIndex) in layoutWebVideos(element)" :key="webVideoIndex + 'wV'"
                     :w="web_video.width" :h="web_video.height" :x="web_video.left" :y="web_video.top" :z="web_video.z_index"
                     :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
-                    class-name-active="selected"
+                    class-name-active="selected" 
+                    :style="{borderStyle: web_video.border_style, borderColor: web_video.border_color, borderWidth: web_video.border_width + 'px',
+                     borderRadius: web_video.border_radius + 'px', backgroundColor: web_video.background_color}"
                 >
                     <web-video :videoId="web_video.video_id"></web-video>
                 </vue-draggable-resizable>
@@ -118,7 +131,7 @@
                     :parent="true" :grid="[5,5]" 
                     class-name-active="selected" 
                     :style="{borderStyle: chart.border_style, borderColor: chart.border_color, borderWidth: chart.border_width + 'px',
-                     borderRadius: chart.border_radius + 'px', backgroundColor: chart.background_color}"
+                     borderRadius: chart.border_radius + 'px', backgroundColor: chart.background_color, right: '100px'}"
                      @resizing="chartResizing"
                      @contextmenu="openContextMenu"
                      :draggable="isDraggable"
@@ -129,6 +142,19 @@
                 <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex)">
                     <chart :width="chart.width" :height="chart.height" :settings="chart.chart_settings" :layoutId="element.id" :id="chart.id"></chart>
                 </div>
+                </vue-draggable-resizable>
+
+                <vue-draggable-resizable
+                    class-name="project-shape-container"
+                    v-for="(shape, shapeIndex) in layoutShapes(element)" :key="shapeIndex + 'c'"
+                    :w="shape.width" :h="shape.height" :x="shape.x" :y="shape.y" :z="shape.z"
+                    :parent="true" :grid="[5,5]"
+                    :max-height="maxWidthForLineShape(shape)"
+                    :min-height="1"
+                    @resizing="shapeResizing"
+                    @contextmenu="openContextMenu"
+                >
+                    <shapes :shape="shape.shape_name" :width="shape.width" :height="shape.height" :layoutId="element.id" :id="shape.id"/>
                 </vue-draggable-resizable>
 
                 </div>
@@ -145,6 +171,7 @@
 
 <script>
 import { mapGetters, mapState } from 'vuex'
+import debounce from '../../Helper/Project/LayoutHelper.js'
 //Items
 import TextfieldEditor from './textfield/TipTapEditor'
 import TableEditor from './table/Table'
@@ -153,9 +180,11 @@ import WebImage from './project_image/WebImage'
 import Chart from './chart/Chart'
 import WebVideo from './video/WebVideo'
 import Shapes from './shapes/Shapes'
+import Rectangle from './shapes/Rectangle'
 //General
 import UrlInput from './general/UrlInput'
 import ContextMenu from '../../components/projects/context_menu/ContextMenu'
+import ShapePicker from './navbar/shapes/ShapePicker.vue'
 //Draggables
 import draggable from 'vuedraggable'
 import VueDraggableResizable from 'vue-draggable-resizable'
@@ -165,6 +194,7 @@ import Form from 'vform'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 
 export default {
+    props: ['editMode'],
     components: {
         draggable,
         VueDraggableResizable,
@@ -175,7 +205,9 @@ export default {
         WebVideo,
         Chart,
         Shapes,
+        Rectangle,
         UrlInput,
+        ShapePicker,
         ContextMenu
     },
     data () {
@@ -184,13 +216,15 @@ export default {
             dragging: false,
             imageData: '',
             isDraggable: true,
+            posX: 0,
+            posY: 0
         }
     },
     computed: {
         ...mapGetters({
             currentItem: 'Layout/getCurrentItem',
             toolboxes:'LayoutHelpers/getToolboxes',
-            startMenuIcons: "StartMenu/getStartMenuIcons",
+            startMenuIcons: "StartMenus/StartMenu/getStartMenuIcons",
             currentMode: 'PresentationMode/getCurrentMode',
             animationList: 'PresentationMode/getAnimationItmes',
 
@@ -198,11 +232,13 @@ export default {
 
         }),
         ...mapState({
-            textfieldObj: state => state.LayoutItems.Textfield.textfields,
+            textfieldObj: state => state.Layout.textfields,
             webImageObj: state => state.LayoutItems.WebImage.web_images,
             tableObj: state => state.Layout.tables,
             chartObj: state => state.Layout.charts,
-        })
+            shapesObj: state => state.Layout.shapes,
+            webVideoObj: state => state.Layout.web_videos
+        }),
     },
     mounted(){
         this.$store.dispatch('StartMenus/StartMenu/initialize', this.$route.params)
@@ -210,7 +246,26 @@ export default {
     beforeDestroy(){
         this.$store.dispatch('Layout/resetLayout')
     },
+    watch:{
+        editMode: function(newVal){
+            if(newVal){
+                this.$store.commit('Layout/MAKE_SMALL')
+            }
+            else{
+                this.$store.commit('Layout/MAKE_BIG')
+            }
+        }
+    },
     methods: {
+        scaleItem(){
+            // if(this.pos == 'absolute')
+            // {
+            //     this.pos = 'relative'
+            //     console.log(this.pos)
+            // }
+            // else
+            //     this.pos = 'absolute'
+        },
         layoutTextfields(layout) { 
             return layout.textfields.map(id => this.textfieldObj[id]) 
         },
@@ -223,6 +278,60 @@ export default {
         layoutCharts(layout){
             return layout.charts.map(id => this.chartObj[id])
         },
+        layoutWebVideos(layout){
+            return layout.web_videos.map(id => this.webVideoObj[id])
+        },
+        layoutShapes(layout){
+            return layout.shapes.map(id => this.shapesObj[id])
+        },
+        imageWidth(width){
+            return 250
+        },
+        imageHeight(height){
+            return 250
+        },
+        containerWidth(width,currentItem, index){
+            console.log((width / 1500) * 1000)
+            if(this.editMode){
+                return (width / 1500) * 1000
+            }
+            else{
+                return (width / 1850) * 1000
+            }
+        },
+        containerHeight(height){
+            if(this.editMode){
+                return (height / 660) * 1000
+            }
+            else
+            return (height / 660) * 1000
+        },
+        containerLeft(left){
+            return (left / 1500) * 100
+        },
+        containerTop(top){
+            return (top / 660) * 100
+        },
+        containerDragging: debounce(function (left, top, index){
+            console.log(left, top)
+            let payload = 
+            {
+                left: left,
+                top: top,
+                currentItem: this.currentItem
+            }
+            this.$store.commit('Layout/SET_POSITION', payload)
+        }, 100),
+        containerResizing: debounce(function (left, top, width, height){
+            let payload = {
+                currentItem: this.currentItem,
+                width: width,
+                height: height,
+                top: top,
+                left: left
+            }
+            this.$store.commit('Layout/SET_SIZE', payload)
+        },100),
         activatePresentationMode(event){
             console.log(event.keyCode)
         },
@@ -232,27 +341,39 @@ export default {
                 fadeIn: obj.animation_name
             }
         },
+        maxWidthForLineShape(shape){
+            if(shape.shape_name === 'line-shape')
+                return 30
+            else
+                return 2000
+        },
         layoutItemClicked(row, layoutId){
-        if(this.currentSelectedItem != ''){
-            this.$store.commit('Layout/DESELECT_ITEM')
-        }
-        //check if item creation icon was selected, if yes create new item
-        for( let i = 0; i < this.startMenuIcons.length; i++){ 
-        if ( this.startMenuIcons[i].activated === true && i === 0) {
-            this.$store.dispatch('LayoutItems/Textfield/addTextfield', layoutId)
-            this.$store.commit('StartMenu/SET_ICON_TO_FALSE',{row: row, icon: i})
-            return
+            if(this.currentItem != ''){
+                this.$store.commit('Layout/DESELECT_ITEM')
             }
-        else if (this.startMenuIcons[i].activated === true && i === 1){
-            this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
-            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', row)
-            // this.$store.commit('Layout/ADD_WEB_IMAGE', {row: row, icon: i})
-            this.$store.commit('StartMenu/SET_ICON_TO_FALSE',{row: row, icon: i})
-            return
+            //check if item creation icon was selected, if yes create new item
+            if(this.startMenuIcons[0].activated == true){
+                this.$store.dispatch('LayoutItems/Textfield/addTextfield', layoutId)
+                this.$store.commit('StartMenus/StartMenu/SET_ICON_TO_FALSE',{index: 0})
             }
-        else if (this.startMenuIcons[i]. activated === true && i === 2){
-            
-        }
+            else if(this.startMenuIcons[1].activated){
+                this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
+                this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', row)
+                // this.$store.commit('Layout/ADD_WEB_IMAGE', {row: row, icon: i})
+                this.$store.commit('StartMenus/StartMenu/SET_ICON_TO_FALSE',{index: 1})
+            }
+            else if(this.startMenuIcons[2].activated){
+
+            }
+            else if(this.startMenuIcons[3].activated){
+
+            }
+            else if(this.startMenuIcons[4].activated){
+
+            }
+            else if(this.startMenuIcons[5].activated){
+                this.$store.dispatch('LayoutItems/Shapes/addShape', {layoutId: layoutId, shape: this.startMenuIcons[5].shape})
+                this.$store.commit('StartMenus/StartMenu/SET_ICON_TO_FALSE', {index: 5})
             }
         },
         openContextMenu(layoutRow, row){
@@ -280,9 +401,12 @@ export default {
                 }
                 this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
         },
-        chartResizing(left, top, width, height){
+        chartResizing (left, top, width, height){
             this.$store.commit('Layout/RESIZE_CHART_CONTAINER', {width, height})
         },
+        shapeResizing: debounce(function (left, top, width, height, shape){
+            this.$store.commit('Layout/RESIZE_SHAPE_CONTAINER', {width, height})
+        },25),
         toTextfield(index,layoutId){
             this.$store.dispatch('LayoutItems/Textfield/addTextfield', layoutId)
         },
@@ -310,13 +434,15 @@ export default {
             this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebImageContainer', row: row, layoutId: layoutId})
 
         },
-        toWebVideo(row){
-            this.url = 'video'
-            this.$store.commit('LayoutHelpers/HIDE_TOOLBAR', row)
-            this.$store.commit('LayoutHelpers/SHOW_URL_INPUT', row)
+        toWebVideo(row, layoutId){
+            this.$store.commit('Layout/SET_CURRENT_LAYOUT', row)
+            this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebVideoContainer', row: row, layoutId: layoutId})
         },
         toTable(row) {
             // this.$store.commit('Layout/ADD_TABLE', {layoutRow: row, rows: 2,  columns: 3})
+        },
+        toShapes(row) {
+            console.log('hoho')
         },
         addItem() {
             // this.$store.commit('Layout/ADD_ITEM', this.layout.length)
@@ -353,6 +479,7 @@ div.item-group {
     overflow-x: hidden;
 }
 div.item-container {
+    display: flex;
     height: 659px;
     width: 100%; border: 1px solid black; 
     position: relative;
@@ -373,9 +500,11 @@ div.animation-number{
 
 .project-textfield-container{
       display: table;
+      width: 100%;
 }
 
 .project-web-image-container{
+    position: relative;
     display: table;
 }
 

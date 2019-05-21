@@ -1,5 +1,4 @@
 <template>
-<div>
     <el-tabs class="sidebar-tabs" type="card" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane class="sidebar-tab" v-for="item in tabItems" :key="item.componentName"
             :label="item.name"
@@ -15,11 +14,12 @@
             text-color="#fff"
             active-text-color="#ffd04b"
             >
-                <component :is="currentComponent"></component>
+            <template v-if="currentComponent">
+                <component :is="currentComponent"></component>                    
+            </template>
             </el-menu>
         </el-tab-pane>
     </el-tabs>
-</div>
 </template>
 
 <script>

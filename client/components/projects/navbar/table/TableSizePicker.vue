@@ -78,7 +78,7 @@ ul.table-size-picker-grid{
     display: grid;
    grid-auto-flow: column;
    grid-template-rows: repeat(10, 2fr);
-   z-index: 110;
+   z-index: 20;
     padding: 0.2rem;
 }
 

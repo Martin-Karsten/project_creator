@@ -1,9 +1,16 @@
 <template>
-  <div :style="{width: width + 'px', height: height + 'px', backgroundColor: 'red'}" @click="setCurrentItem" />
+  <div class="triangle" :style="{borderLeftWidth: width / 2 + 'px', borerLeftColor: 'transparent', 
+                                borderRightWidth: width  / 2 + 'px', borderRightColor: 'transperant',
+                                borderBottomWidth: height + 'px', borderBottomColor: color,
+                                borderTopWidth: -height/ 2 + 'px', borderTopColor: 'transperant',
+                                borderStyle: 'solid'
+                                }" 
+      @click="setCurrentItem"
+  />  
 </template>
 
 <script>
-  export default {
+export default {
     props: {
       layoutId:{
 
@@ -46,17 +53,12 @@
 }
 </script>
 
-<style lang="css" scoped>
-      .cls-1 {
-        fill: violet;
-        stroke: #707070;
-      }
-
-      .cls-2 {
-        stroke: none;
-      }
-
-      .cls-3 {
-        fill: none;
-      }
+<style>
+.triangle {
+width: 0;
+height: 0;
+border-style: solid;
+border-width: 0 100px 100px 100px;
+border-color: transparent transparent #007bff transparent;
+}
 </style>

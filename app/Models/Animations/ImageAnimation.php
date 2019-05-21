@@ -14,6 +14,6 @@ class ImageAnimation extends Model
 
     public function image()
     {
-        return $this->belongsTo('App\Models\Animations\ImagedAnimation');
+        return $this->belongsTo('App\Models\Animations\ImageAnimation');
     }
 }

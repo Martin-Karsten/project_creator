@@ -9,14 +9,17 @@ import { mapGetters } from 'vuex'
 import unsplash from '../../../apis/unsplash/unsplash.js'
 import WebImageContainer from './web_image/WebImageContainer'
 import ChartContainer from './chart/ChartContainer'
+import WebVideoContainer from './web_video/WebVideoContainer'
 export default {
     components: {
         WebImageContainer,
-        ChartContainer
+        ChartContainer,
+        WebVideoContainer
     },
     data(){
         return {
             webImageComponent: 'WebImageContainer',
+            WebVideoComponent: 'WebVideoContainer',
             chartContainer: 'ChartContainer'
         }
     },

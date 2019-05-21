@@ -15,6 +15,7 @@ class CreateShapesTable extends Migration
     {
         Schema::create('shapes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('shape_name', 40);
             $table->unsignedBigInteger('layout_item_id');
             $table->string('shape_name', 100)->nullable();
             $table->string('animation_name', 25)->nullable();

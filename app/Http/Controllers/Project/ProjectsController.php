@@ -33,7 +33,8 @@ class ProjectsController extends Controller
     }
     protected function show($id)
     {
-        return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')->with('charts')->with('webVideos')->get();
+        return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')->with('charts')
+        ->with('webVideos')->with('shapes')->get();
 
         // return ProjectLayout::where([['project_id', '=', $id]])->layoutItems;
             // ->with('projectLayout')->with(['projectLayout.textfields', 'projectLayout.textfields.animations'])

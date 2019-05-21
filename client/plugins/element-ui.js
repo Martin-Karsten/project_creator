@@ -1,6 +1,6 @@
 import Vue from 'vue';
-import { Container, Header, Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Aside, Main, Button, Select, Row, Col,
-         Pagination, Checkbox, RadioButton, RadioGroup, Tabs, TabPane, Tooltip, Input, InputNumber, Collapse, CollapseItem, ColorPicker} from 'element-ui';
+import { Container, Header, Menu, Submenu, MenuItem, MenuItemGroup, Dropdown, DropdownMenu, DropdownItem, Aside, Main, Button, Select, Row, Col, Slider, Cascader,
+         Pagination, Checkbox, RadioButton, RadioGroup, Tabs, TabPane, Tooltip, Input, InputNumber, Collapse, CollapseItem, ColorPicker, Option, Popover} from 'element-ui';
 
 Vue.component(Container.name, Container);
 Vue.component(Header.name, Header);
@@ -29,3 +29,7 @@ Vue.component(Input.name, Input)
 Vue.component(Collapse.name, Collapse)
 Vue.component(CollapseItem.name, CollapseItem)
 Vue.component(ColorPicker.name, ColorPicker)
+Vue.component(Option.name, Option)
+Vue.component(Slider.name, Slider)
+Vue.component(Cascader.name, Cascader)
+Vue.component(Popover.name, Popover)

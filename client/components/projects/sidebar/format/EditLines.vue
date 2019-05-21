@@ -1,72 +1,66 @@
 <template>
-    <aside class="is-hidden-mobile sidebar-header-content" :class="{'not-allowed': !currentItem.selected}">
-        <ul class="menu-list">
-            <li :class="{'not-allowed': !currentItem.selected}">
-                <a @click="rotateCeratBorder()" :class="{'not-allowed': !currentItem.selected}">
-                    <span class="icon"> <fa ref="sidebarCeratBorder1" class="caret-right" icon="caret-right"> </fa> </span> Border
-                </a>
-                <template v-if="ceratBorder">
-                    <div class="columns sidebar-header-radios is-multiline">
-                        <div class="column is-10 sidebar-header-radio-item1">
-                            <!-- <input type="radio" name="fillFilling" @change="fillFilling = !fillFilling"> -->
-                            <label for="fillFilling" @change="noBorder">No Border</label>
-                        </div>
-                        <div class="column is-1">
-                            <input type="checkbox">
-                        </div>
-                        <div class="column is-8 sidebar-header-radio-item1">
-                            <!-- <input type="radio" name="fillFilling" @change="fillFilling = !fillFilling"> -->
-                            <label for="filFilling">Width</label>
-                        </div>
-                        <div class="column is-3">
-                            <input :value="currentItem.border_width" @input="changeBorderWidth" type="number" min="0" max="50" oninput="validity.valid||(value='')" class="input">
-                        </div>
-                        <div class="column is-7 sidebar-header-radio-item1">
-                            <label for="">Color</label>
-                        </div>
-                        <div class="column is-4">
-                            <input :value="currentItem.border_color" @input="changeBorderColor" type="text" class="input">
-                        </div>
-                        <div class="column is-7 sidebar-header-radio-item1">
-                            <label for="">Style</label>
-                        </div>
-                        <div class="column is-4">
-                            <div class="select">
-                              <select :value="currentItem.border_style" @input="changeBorderStyle">
-                                    <option >None</option>
-                                    <option >Solid</option>
-                                    <option >Dotted</option>
-                                    <option >Dashed</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="column is-8 sidebar-header-radio-item1">
-                            <label for="">Radius</label>
-                        </div>
-                        <div class="column is-3">
-                            <input :value="currentItem.border_radius" @input="changeBorderRadius" type="number" min="0" max="500" oninput="validity.valid||(value='')" class="input">
-                        </div>
-                        <div class="column is-6 sidebar-header-radio-item1">
-                            <label for="">Opacity</label>
-                        </div>
-                        <div class="column is-5">
-                            <input type="range" class="input">
-                        </div>
-                    </div>
-                </template>
-            </li>
-            <hr>
-        </ul>
-    </aside>    
+    <el-row class="sidebar-format-edit">
+        <el-collapse class="border-collapse">
+            <el-collapse-item title="Border" class="border-collapse">
+                <el-col class="sidebar-format-column" :span="21">
+                    <h3 class="sidebar-format-title">No Border</h3>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="1">
+                    <el-checkbox :checked="currentItem.border_width === 0" @input="activateBorder"/>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="20">
+                    <h3 class="sidebar-format-title">Border Color</h3>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="1">
+                    <el-color-picker :value="currentItem.border_color" @change="updateBorderColor"></el-color-picker>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="10">
+                    <h3 class="sidebar-format-title">Border Width</h3>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="10">
+                    <el-input-number :value="currentItem.border_width" @change="updateBorderWidth" :min="0" :max="30"/>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="11">
+                    <h3 class="sidebar-format-title">Border Style</h3>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="13">
+                    <el-select :value="currentItem.border_style" @change="updateBorderStyle" placeholder="Select">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="10">
+                    <h3 class="sidebar-format-title">Border Radius</h3>
+                </el-col>
+                <el-col class="sidebar-format-column" :span="10">
+                    <el-input-number :value="currentItem.border_radius" @change="updateBorderRadius" :min="0" :max="30"/>
+                </el-col>
+            </el-collapse-item>
+        </el-collapse>
+    </el-row>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import debounce from '../../../../Helper/Project/LayoutHelper.js'
 export default {
-    data(){
-        return{
-           ceratBorder: false,
-        }
+    data() {
+      return {
+        options: [{
+          value: 'solid',
+          label: 'Solid'
+        }, {
+          value: 'dotted',
+          label: 'Dotted'
+        }, {
+          value: 'dashed',
+          label: 'Dashed'
+        }]
+      }
     },
     computed:{
         ...mapGetters({
@@ -74,37 +68,66 @@ export default {
         })
     },
     methods:{
-        rotateCeratBorder(){
-            console.log(this.currentItem.selected)
-            if(this.currentItem.selected){
-                if(!this.ceratBorder)
-                    this.$refs.sidebarCeratBorder1.style.transform = "rotate(45deg)"
-                else
-                    this.$refs.sidebarCeratBorder1.style.transform = "rotate(0deg)"
-                this.ceratBorder = !this.ceratBorder
-            }
-        },
-        noBorder(){
-            if(currentItem.border_style === 'none'){
+        activateBorder(){
+            let width = 0
+            if(this.currentItem.border_width === 0)
+                width = 1
+            else
+                width = 0
 
+            let payload = 
+            {
+                currentItem: this.currentItem,
+                event: width
             }
+            this.$store.commit('Layout/UPDATE_BORDER_WIDTH', payload)
         },
-        changeBorderWidth(event){
-            this.$store.commit('Layout/CHANGE_BORDER_WIDTH', event.target.value)
+        updateBorderWidth: debounce(function (event){
+            let payload =
+            {
+                currentItem: this.currentItem,
+                event: event
+            }
+            this.$store.commit('Layout/UPDATE_BORDER_WIDTH', payload)
+        },200),
+        updateBorderColor(event){
+            let payload =
+            {
+                currentItem: this.currentItem,
+                event: event
+            }
+            this.$store.commit('Layout/UPDATE_BORDER_COLOR', payload)
         },
-        changeBorderColor(event){
-            this.$store.commit('Layout/CHANGE_BORDER_COLOR', event.target.value)
+        updateBorderStyle(event){
+            let payload =
+            {
+                currentItem: this.currentItem,
+                event: event
+            }
+            this.$store.commit('Layout/UPDATE_BORDER_STYLE', payload)
         },
-        changeBorderStyle(event){
-            this.$store.commit('Layout/CHANGE_BORDER_STYLE', event.target.value)
-        },
-        changeBorderRadius(event){
-            this.$store.commit('Layout/CHANGE_BORDER_RADIUS', event.target.value)
-        }
+        updateBorderRadius: debounce(function(event){
+            let payload =
+            {
+                currentItem: this.currentItem,
+                event: event
+            }
+            this.$store.commit('Layout/UPDATE_BORDER_RADIUS', payload)
+        }, 200)
     }
 }
 </script>
 
 <style>
+.sidebar-format-edit{
+    padding-right: 0.25rem;
+    padding-left: 0.25rem;
+    background-color: #edeeef;
+}
 
+
+h3.sidebar-format-title{
+    padding: 0 0.25rem;
+    font-size: 16px;
+}
 </style>

@@ -1,10 +1,12 @@
 
 export const state = () => ({
     startMenu: {name: 'StartMenuDefault'},
+    startMenuIcons: [{activated: false},{activated: false},{activated: false},{activated: false},{activated: false}, {activated: false, shape: ''}]
 })
 
 export const getters = {
   getStartMenu: state => state.startMenu,
+  getStartMenuIcons: state => state.startMenuIcons
 }
 
 export const mutations = {
@@ -13,7 +15,19 @@ export const mutations = {
     },
     CLOSE_START_MENU (state, payload) {
         state.startMenu = ''
-    }
+    },
+
+    ACTIVATE_ICON(state, payload) {
+        let obj = 
+        {
+            activated: true,
+            shape: payload.shape
+        }
+        state.startMenuIcons.splice(payload.index, 1, {...obj})
+      },
+      SET_ICON_TO_FALSE(state, paylod) {
+        state.startMenuIcons[paylod.index].activated = false
+      }
 }
 
 export const actions = {

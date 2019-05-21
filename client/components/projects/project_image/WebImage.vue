@@ -1,5 +1,5 @@
 <template>
-    <img class="web-image" :style="{borderRadius: radius + 'px', opacity: opacity}" :src="url" @contextmenu.prevent="openContextMenu" @click="setCurrentItem"/>
+    <img class="web-image" :style="{zIndex: row, borderRadius: radius + 'px', opacity: opacity}" :src="url" @contextmenu.prevent="openContextMenu" @click="setCurrentItem"/>
 </template>
 
 <script>
@@ -58,5 +58,6 @@ img.web-image{
   width: 100%;
   height: 100%;
   display: table-row;
+  position: absolute;
 }
 </style>

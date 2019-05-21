@@ -25,18 +25,19 @@ import { faShieldAlt } from '@fortawesome/free-solid-svg-icons'
 import { faShapes } from '@fortawesome/free-solid-svg-icons'
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { faSquare } from '@fortawesome/free-solid-svg-icons'
-import { faTriangle } from '@fortawesome/free-solid-svg-icons'
 import { faYoutube } from '@fortawesome/free-solid-svg-icons'
 import { faVideo } from '@fortawesome/free-solid-svg-icons'
 import { faPlayCircle } from '@fortawesome/free-solid-svg-icons'
 import { faFillDrip } from '@fortawesome/free-solid-svg-icons'
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons'
+import { faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { faStream } from '@fortawesome/free-solid-svg-icons'
+import { faMinus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 library.add(faChartBar, faImage, faFont, faArrowRight, faArrowLeft, faTimes, faChevronRight, faChevronLeft, faCogs, faTable, faFileAlt, faChevronDown, faPlusCircle, faBold)
 library.add(faItalic, faSignature, faUnderline, faPlus, faEllipsisH, faSignOutAlt, faUser, faEnvelope, faShieldAlt, faShapes, faCircle, faSquare, faVideo, faPlayCircle)
-library.add(faFillDrip, faCaretRight, faStream)
+library.add(faFillDrip, faCaretRight, faStream, faMinus, faCaretUp)
 
 Vue.component('fa', FontAwesomeIcon)
 

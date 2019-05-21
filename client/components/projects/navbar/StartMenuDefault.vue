@@ -1,6 +1,9 @@
 <template>
     <el-row :gutter="3">
-      <el-col class="start-menu-column" :span="6" :offset="9">
+      <el-col class="start-menu-presentation-column" :span="2">
+        <el-button @click="startPresentationMode">Start Presentation</el-button>
+      </el-col>
+      <el-col class="start-menu-column" :span="6" :offset="7">
         <el-row class="start-menu-icon-columns">
           <el-col class="start-menu-icon-column" :span="4">
             <fa id="menu-icon-0" class="start-menu-icon" icon="font" @click="activateTextfieldIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
@@ -21,6 +24,7 @@
           </el-col>
           <el-col class="start-menu-icon-column" :span="4">
             <fa id="menu-icon-2" class="start-menu-icon" icon="shapes" @click="activateShapesIcon" v-bind:class="[creatorActivated ? menuItemActivated : '']"/>
+            <shape-picker @clicked="shapePickerActivated = !shapePickerActivated" v-show="shapePickerActivated"></shape-picker>
           </el-col>
         </el-row>
       </el-col>
@@ -34,12 +38,14 @@ import { Heading, Bold, Italic, Underline } from "tiptap-extensions";
 import { mapGetters } from 'vuex'
 import TableSizePicker from './table/TableSizePicker'
 import TableSizePickerInput from './table/TableSizePickerInput'
+import ShapePicker from './shapes/ShapePicker'
 import UrlInput from './general/UrlInput'
 export default {
     components: {
       EditorMenuBar,
       TableSizePicker,
       TableSizePickerInput,
+      ShapePicker,
       UrlInput
     },
     data(){
@@ -48,42 +54,48 @@ export default {
         creatorActivated: false,
         fieldActivated: false,
         tableSizePickerActivated: false,
+        shapePickerActivated: false,
       }
     },
     computed: {
     ...mapGetters({
-      content: 'StartMenus/StartMenuDefault/getEditor'
-
+      content: 'StartMenus/StartMenuDefault/getEditor',
+      currentLayout: 'Layout/getCurrentLayout'
     }),
   },
 
     methods: {
       activateTextfieldIcon(){
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 0)
+        this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 0})
       },
       activateWebImageIcon(){
+        this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'WebImageContainer', layoutId: this.currentLayout})
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 1)
+        this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 1})
       },
       activateChartIcon(){
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 2)
+        this.$store.commit('EditContainer/OPEN_EDIT_CONTAINER', {name: 'ChartContainer', layoutId: this.currentLayout})
+        this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 2})
       },
       activateTableIcon(){
         this.tableSizePickerActivated = !this.tableSizePickerActivated
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 3)
+        // this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', 3)
       },
       activateWebVideoIcon(){
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 4)
+        this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 4})
       },
       activateShapesIcon(){
+        this.shapePickerActivated =! this.shapePickerActivated
         this.creatorActivated = true
-        this.$store.commit('StartMenu/ACTIVATE_ICON', 5)
+        this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 5})
       },
-    
+      startPresentationMode(){
+        this.$store.commit('PresentationMode/SET_EDIT_MODE')
+      }
     }
 }
 </script>

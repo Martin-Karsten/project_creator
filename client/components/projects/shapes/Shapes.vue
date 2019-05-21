@@ -1,51 +1,68 @@
 <template>
-<svg xmlns="http://www.w3.org/2000/svg" width="255" height="255" viewBox="0 0 255 255">
-  <defs>
-    <style>
-      .cls-1 {
-        fill: #fff;
-        stroke: #707070;
-      }
-
-      .cls-2 {
-        stroke: none;
-      }
-
-      .cls-3 {
-        fill: none;
-      }
-    </style>
-  </defs>
-  <g id="Rectangle_1" data-name="Rectangle 1" class="cls-1">
-    <rect class="cls-2" width="width" height="height"/>
-    <rect class="cls-3" x="0.5" y="0.5" width="width" height="height"/>
-  </g>
-</svg>
+  <component class="project-shape" :is="shape" :width="width" :height="height" :color="color" :layoutId="layoutId" :id="id"></component>
 </template>
 
 <script>
-
+import RectangleShape from './Rectangle'
+import CircleShape from './Circle'
+import TriangleShape from './Triangle'
+import LineShape from './Line'
+import ArrowShape from './Arrow'
 export default {
+    props: {
+      layoutId:{
+
+      },
+      id:{
+
+      },
+      shape:{
+        type: String,
+        required: true
+      },
+      color: {
+        type: String,
+        default: 'violet',
+        required: false
+      },
+      strokeWidth: {
+        type: Number,
+        default: 5,
+        required: false
+      },
+      width: {
+        type: Number,
+        default: 200,
+        required: false
+      },
+      height: {
+        type: Number,
+        default: 300,
+        required: false,
+      }
+    },
   components: {
+    RectangleShape,
+    CircleShape,
+    TriangleShape,
+    LineShape,
+    ArrowShape
   },
-  props:['width', 'height'],
   data(){
       return{
-
+        rectangle: 'rectangle-shape',
+        circle: 'circle-shape',
+        triangle: 'triangle-shape',
+        line: 'line-shape',
+        arrow: 'arrow-shape'
       }
   },
-  mounted() {
-
+    mounted(){
     },
 }
 </script>
 
 <style>
-div.rectangle {
-    pointer-events: auto;
-}
-
-div.box {
-    position: absolute;
+.project-shape{
 }
 </style>

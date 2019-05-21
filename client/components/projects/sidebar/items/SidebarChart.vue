@@ -8,7 +8,7 @@
                 <el-input :value="currentItem.chart_settings.title.subtext" @input="updateSubTitle" placeholder="Subtitle"></el-input>
             </el-col>
 
-            <el-col :span="4">
+            <el-col :span="5">
                 <h3>Legend</h3>
             </el-col>
             <el-col :span="2">

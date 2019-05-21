@@ -1,5 +1,6 @@
 
 export const state = () => ({
+    editMode : true,
     currentMode: false,
     nomralMode: true,
     fullScreenMode: false,
@@ -9,15 +10,19 @@ export const state = () => ({
 })
 
 export const getters = {
-  getCurrentMode: state => state.currentMode,
-  getNormalMode: state => state.normalMode,
-  getFullScreenMode: state => state.fullScreenMode,
-  getPresentationMode: state => state.presentationMode,
-  getAnimationItmes: state => state.animationItems,
-  getAnimationOrder: state => state.animationOrder,
+    getEditMode: state => state.editMode,
+    getCurrentMode: state => state.currentMode,
+    getNormalMode: state => state.normalMode,
+    getFullScreenMode: state => state.fullScreenMode,
+    getPresentationMode: state => state.presentationMode,
+    getAnimationItmes: state => state.animationItems,
+    getAnimationOrder: state => state.animationOrder,
 }
 
 export const mutations = {
+    SET_EDIT_MODE(state, payload){
+        state.editMode = !state.editMode
+    },
     //payload = layout
     SET_ANIMATIONS(state, payload){
         //get arrays that contain the items (textfields, images, ...)

@@ -62,9 +62,10 @@ export const mutations = {
             }
         ,
         },
-        border_width: 1, border_radius: 0, opacity: 1.00, top:0,
+        border_width: 1, border_radius: 0, opacity: 1.00, top:0, z_index: 1,
         left:0, width:400, height:200}}
       
+        console.log(state.charts)
         Vue.set(state.charts, id, obj[payload.layoutId])
       },
 

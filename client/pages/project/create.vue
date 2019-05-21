@@ -1,8 +1,10 @@
 <template>
     <el-container class="create-project">
-        <el-aside class="project-sidebar" width="350px">
-            <sidebar class="main-project-sidebar" @clicked="activateAnimationList" v-show="true"/>
-        </el-aside>
+        <template v-if="editMode">
+            <el-aside class="project-sidebar" :width="sideBarWidth" :style="{display: dis, width: sideBarWidth}">
+                <sidebar class="main-project-sidebar" @clicked="activateAnimationList" :style="{display: dis, width: sideBarWidth}"/>
+            </el-aside>         
+        </template>
 
         <transition name="fade" mode="in-out">
             <el-aside  class="animation-list" width="200px" v-show="false">
@@ -11,12 +13,12 @@
         </transition>
 
         <transition name="fade">
-            <el-aside class="component-scroller" width="200px" v-show="true">
+            <el-aside class="component-scroller" width="200px" v-show="false">
                 <component-scroller></component-scroller>
             </el-aside>
         </transition>
 
-        <project v-show="true"/>
+        <project class="project" v-show="true" :editMode="editMode"/>
 
         <template v-if="editContainer.activated">
             <edit-container v-show="editContainer.activated" ></edit-container>
@@ -48,21 +50,37 @@ export default {
         return {
             activated : false,
             showAnimation: false,
+            sideBarWidth: '350px',
+            dis: 'none'
         }
     },
     computed: {
         ...mapGetters({
             sidebar: 'Sidebar/getSidebar',
             editContainer: 'EditContainer/getEditContainer',
-            currentMode: 'PresentationMode/getCurrentMode'
+            currentMode: 'PresentationMode/getCurrentMode',
+            editMode: 'PresentationMode/getEditMode',
         })
+    },
+    mounted(){
+        // this.dis = 'none'
+    },
+    watch:{
+        editMode: function(newVal){
+            if(newVal){
+                this.sideBarWidth = '350px'
+                this.dis = 'unset'
+            }
+            else{
+                this.sideBarWidth = '0px'
+                this.dis = 'none'
+            }
+        }
     },
     methods: {
         onClickChild(){
-            console.log('yes!')
         },
         closeContextMenu(){
-            console.log('close')
             this.$store.dispatch('ContextMenus/ContextMenu/closeContextMenu')
         },
         activateScroller(value) {
@@ -70,12 +88,15 @@ export default {
         },
         activateAnimationList(value){
             this.showAnimation = value
-        }
+        },
     }
 }
 </script>
 
 <style>
+
+.project{
+}
 
 .show-scroller-chevron {
     cursor: pointer;

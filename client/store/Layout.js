@@ -31,8 +31,6 @@ export const getters = {
 
     getLayoutList: state => state.layoutList,
     getLayoutSet: state => state.layoutList.map(id => state.realLayout[id]),
-
-    getTextfields: state => state.textfields
   }
 
 export const mutations = {
@@ -110,6 +108,32 @@ SET_LAYOUT(state, payload) {
 
 },
 
+SET_POSITION(state, payload) {
+  payload.currentItem.left = payload.left
+  payload.currentItem.top = payload.top
+},
+
+SET_SIZE(state, payload) {
+  payload.currentItem.width = payload.width
+  payload.currentItem.height = payload.height
+},
+
+MAKE_SMALL(state, payload){
+  let temp = 0
+  for (const [key, value] of Object.entries(state.web_images)) {
+    temp = value.width
+    value.width = 533
+    console.log(value.width)
+  }
+},
+
+MAKE_BIG(state, payload){
+  for (const [key, value] of Object.entries(state.web_images)) {
+    value.width = (value.width / 1850) * 1000
+    console.log('make big?')
+  }
+},
+
 ////// TEXTFIELD SETTINGS
   //we get our payload from store/LayoutItems/Textfield
 ADD_TEXTFIELD(state, payload) {
@@ -142,7 +166,11 @@ ADD_WEB_IMAGE(state, payload) {
 
 //////// WEB_VIDEO SETTINGS
 ADD_WEB_VIDEO(state, payload) {
-  state.layout[payload.layoutRow].web_videos.push({id: Date.now(), project_id: state.projectId, name: 'web_video', video_id:payload.video_id, animated:false, row:payload.Layoutrow, top:0, left:0, width:200, height:100})
+  // push obj key to web_images ids array
+  console.log(state.realLayout[payload.layoutId])
+  state.realLayout[payload.layoutId]['web_videos'].push(payload.id)
+
+  Vue.set(state.currentItem, 0, state['web_videos'][payload.id])
 },
 
 ///////// TABLE SETTINGS
@@ -155,8 +183,8 @@ ADD_TABLE(state, payload) {
 
 CREATE_TABLE(state, payload){
     // push obj key to tables ids array
-    if(state.realLayout[payload.layoutId]['tables'][0]  === undefined)
-      state.realLayout[payload.layoutId]['tables'].push(id)
+    if(state.realLayout[payload.layoutId]['tables'][payload.id]  === undefined)
+      state.realLayout[payload.layoutId]['tables'].push(payload.id)
 },
 
 //////////// CHART SETTINGS
@@ -170,6 +198,20 @@ ADD_CHART(state, payload) {
 
 RESIZE_CHART_CONTAINER(state, payload){
   //Chart.vue is subscribing to this mutation
+},
+
+//////////// SHAPES SETTINGS
+RESIZE_SHAPE_CONTAINER(state, payload) {
+  state.currentItem.width = payload.width
+  state.currentItem.height = payload.height
+},
+
+ADD_SHAPE(state, payload) {
+  // push obj key to textfields ids array
+  state.realLayout[payload.layoutId]['shapes'].push(payload.id)
+
+  // state.currentItem = state['shapes'][payload.id]
+  state.currentItem.selected = true
 },
 
 HIDE_TOOLBAR(state, payload) {
@@ -213,38 +255,35 @@ RESET_ANIMATOIN(state, payload){
 ///////////// FORMATING ///////////////////
 
   //////// COLOR
-CHANGE_BACKGROUND_COLOR(state, payload) {
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].background_color = payload
-},
-
-CHANGE_BORDER_COLOR(state, payload) {
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_color = payload
+UPDATE_BACKGROUND_COLOR(state, payload) {
+  payload.currentItem.background_color = payload.event
 },
 
   //////// OPACITY
-CHANGE_BACKGROUND_OPACITY(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].opacity = payload
+UPDATE_BACKGROUND_COLOR_OPACITY(state, payload){
+  console.log(payload)
+  payload.currentItem.opacity = payload.event
 },
 
   ///////// BORDER
-CHANGE_BORDER_WIDTH(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_width = payload
+UPDATE_BORDER_WIDTH(state, payload){
+  payload.currentItem.border_width = payload.event
 },
 
-CHANGE_BORDER_COLOR(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_color = payload
+UPDATE_BORDER_COLOR(state, payload){
+  payload.currentItem.border_color = payload.event
 },
 
-CHANGE_BORDER_STYLE(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_style = payload
+UPDATE_BORDER_STYLE(state, payload){
+  payload.currentItem.border_style = payload.event
 },
 
-CHANGE_BORDER_RADIUS(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_radius = payload
+UPDATE_BORDER_RADIUS(state, payload){
+  payload.currentItem.border_radius = payload.event
 },
 
-CHANGE_BORDER_OPACITY(state, payload){
-  state.layout[state.currentItem.row][state.currentItem.itemName][state.currentItem.itemRow].border_opacity = payload
+UPDATE_BORDER_OPACITY(state, payload){
+  payload.currentItem.border_opacity = payload.event
 }
 
 }
@@ -269,6 +308,8 @@ export const actions = {
     this.dispatch('LayoutItems/WebImage/initialize', state.web_images)
     this.dispatch('LayoutItems/Table/initialize', state.tables)
     this.dispatch('LayoutItems/Chart/initialize', state.charts)
+    this.dispatch('LayoutItems/Shapes/initialize', state.shapes)
+    this.dispatch('LayoutItems/WebVideo/initialize', state.web_videos)
   },
 
   async saveToDB ({state,commit}, payload) {

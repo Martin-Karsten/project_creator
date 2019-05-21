@@ -21,12 +21,17 @@ export const mutations = {
         let obj = {[payload.layoutId]: {id: id, project_id: state.projectId, name: 'web_image', itemName: 'web_images', url:payload.url, animated:false, 
         background_color: 'none', border_color: 'black', border_style: 'solid', animations:{},
         border_width: 1, border_radius: 0, opacity: 1.00, top:0,
-        left:0, width:400, height:200}}
+        left:0, width:400, height:200, z_index: 0}}
 
         // update web_image state
         Vue.set(state.web_images, id, obj[payload.layoutId])
-
       },
+      SET_SIZE(state, payload){
+      payload.currentItem. width = payload.width
+      payload.currentItem.height = payload.height
+      payload.currentItem.top = payload.top
+      payload.currentItem.left = payload.left
+    }
 }
 
 export const actions = {
@@ -42,5 +47,16 @@ export const actions = {
 
         commit('ADD_WEB_IMAGE', payload)
         commit('Layout/ADD_WEB_IMAGE', {layoutId: payload.layoutId, id: id, web_images: state.web_images}, {root: true})
+    },
+    setSize({state, commit, rootGetters}, payload){
+        let p = {
+            width: payload.width,
+            height: payload.height,
+            top: payload.top,
+            left: payload.left,
+            currentItem: rootGetters['Layout/getCurrentItem']
+        }
+        console.log(p)
+        commit('SET_SIZE', p)
     },
 }

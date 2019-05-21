@@ -36,7 +36,7 @@ export const mutations = {
      left:0, width:400, height:200}}
     
       // update tables state
-      // Vue.set(state.tables, 0, obj[payload.layoutId])
+      Vue.set(state.tables, 0, obj[payload.layoutId])
       console.log(JSON.stringify(state.tables, 2, null))
     },
 
@@ -56,7 +56,7 @@ export const actions = {
         let id = Object.keys(state.tables).length + 1
 
         commit('CREATE_TABLE', payload)
-        commit('Layout/CREATE_TABLE', {layoutId: 2, id: 0}, {root: true})
+        commit('Layout/CREATE_TABLE', {layoutId: 2, id: id}, {root: true})
     },
 
     // push obj key to tables ids array

@@ -1,9 +1,9 @@
 <template>
-  <div :style="{width: width + 'px', height: height + 'px', backgroundColor: 'red'}" @click="setCurrentItem" />
+    <div class="circle" :style="{width: width + 'px', height: height + 'px', backgroundColor: color}" @click="setCurrentItem" />
 </template>
 
 <script>
-  export default {
+export default {
     props: {
       layoutId:{
 
@@ -13,7 +13,7 @@
       },
       color: {
         type: String,
-        default: 'white', // green, green--outline, white
+        default: 'white',
         required: false
       },
       strokeWidth: {
@@ -46,17 +46,8 @@
 }
 </script>
 
-<style lang="css" scoped>
-      .cls-1 {
-        fill: violet;
-        stroke: #707070;
-      }
-
-      .cls-2 {
-        stroke: none;
-      }
-
-      .cls-3 {
-        fill: none;
-      }
+<style>
+    .circle{
+        border-radius: 50%;
+    }
 </style>

@@ -35,4 +35,7 @@ class LayoutItem extends Model
     public function charts() {
         return $this->hasMany('App\Models\Items\Chart');
     }
+    public function shapes() {
+        return $this->hasMany('App\Models\Items\Shape');
+    }
 }

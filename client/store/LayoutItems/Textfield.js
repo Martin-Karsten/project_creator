@@ -22,7 +22,7 @@ export const mutations = {
         font:'Calibri', font_size: 18, color: 'red', 
         row:state.currentLayout, background_color: 'none', border_color: 'black', border_style: 'solid', animations: {},
         border_width: 1, border_radius: 0, opacity: 1.00, top:0, left:0, width:200, height:100,
-        top:0, left:0, width:200, height:100}}
+        top:0, left:0, width:200, height:100, z_index: 1}}
       
         // update textfields state
         Vue.set(state.textfields, id, obj[payload])
