@@ -18,7 +18,7 @@
             </el-aside>
         </transition>
 
-        <project class="project" v-show="true" :editMode="editMode"/>
+        <project class="project" :editMode="editMode"/>
 
         <template v-if="editContainer.activated">
             <edit-container v-show="editContainer.activated" ></edit-container>
@@ -69,7 +69,7 @@ export default {
         editMode: function(newVal){
             if(newVal){
                 this.sideBarWidth = '350px'
-                this.dis = 'unset'
+                this.dis = ''
             }
             else{
                 this.sideBarWidth = '0px'

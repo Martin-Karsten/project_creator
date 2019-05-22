@@ -64,7 +64,7 @@
 
                 <vue-draggable-resizable
                     v-for="(textfield, textfieldIndex) in layoutTextfields(element)" :key="textfieldIndex+'t'"
-                    :w="textfield.width" :h="textfield.height" :x="textfield.left" :y="textfield.top" :z="textfield.z_index"
+                    :w="textfield.width * fac" :h="textfield.height * fac" :x="textfield.left * fac" :y="textfield.top * facLeft" :z="textfield.z_index"
                     :parent="true" :grid="[5,5]"
                     class-name="project-textfield-container"
                     :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
@@ -86,15 +86,15 @@
 
                 <vue-draggable-resizable
                     v-for="(web_image, webImageIndex) in layoutWebImages(element)" :key="webImageIndex+'wE'"
-                    :w="(web_image.width / 1850) * 1000" :h="web_image.height"
+                    :w="web_image.width * fac" :h="web_image.height * fac" :x="web_image.left * facLeft" :y="web_image.top * fac"
                     :z="webImageIndex"
                     @resizing="containerResizing"
                     @dragging="containerDragging"
-                    :parent="true" :grid="[5,5]"
+                    :parent="true"
                     class-name=project-web-image-container 
                     class-name-active="selected"
                     :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px',
-                    borderRadius: web_image.border_radius + 'px', top: '22%', left: '22%' 
+                    borderRadius: web_image.border_radius + 'px',
                     
                     }"
                 >
@@ -216,8 +216,8 @@ export default {
             dragging: false,
             imageData: '',
             isDraggable: true,
-            posX: 0,
-            posY: 0
+            fac: 1,
+            facLeft: 1
         }
     },
     computed: {
@@ -249,23 +249,16 @@ export default {
     watch:{
         editMode: function(newVal){
             if(newVal){
-                this.$store.commit('Layout/MAKE_SMALL')
+                this.fac = 1.0
+                this.facLeft = 1.0
             }
             else{
-                this.$store.commit('Layout/MAKE_BIG')
+                // this.fac = 1.2
+                // this.facLeft = 1.3
             }
         }
     },
     methods: {
-        scaleItem(){
-            // if(this.pos == 'absolute')
-            // {
-            //     this.pos = 'relative'
-            //     console.log(this.pos)
-            // }
-            // else
-            //     this.pos = 'absolute'
-        },
         layoutTextfields(layout) { 
             return layout.textfields.map(id => this.textfieldObj[id]) 
         },
@@ -291,7 +284,6 @@ export default {
             return 250
         },
         containerWidth(width,currentItem, index){
-            console.log((width / 1500) * 1000)
             if(this.editMode){
                 return (width / 1500) * 1000
             }
@@ -313,7 +305,6 @@ export default {
             return (top / 660) * 100
         },
         containerDragging: debounce(function (left, top, index){
-            console.log(left, top)
             let payload = 
             {
                 left: left,
