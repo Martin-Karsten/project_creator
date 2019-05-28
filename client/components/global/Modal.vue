@@ -1,40 +1,41 @@
 <template>
-  <transition name="modal" >
-    <div class="modal-mask" v-bind:class="{ 'is-active': showModal }">
+  <transition name="modal">
+    <div class="modal-mask" :class="{ 'is-active': showModal }">
       <div class="modal-wrapper">
         <div class="modal-container">
+          <slot name="form-container">
+            <div class="modal-card-head">
+              <slot name="header">
+                default header
+              </slot>
+            </div>
 
-        <slot name="form-container">
-          <div class="modal-card-head">
-            <slot name="header">
-              default header
-            </slot>
-          </div>
-
-          <div class="modal-card-body">
-            <slot name="body">
-              default body
-            </slot>
-          </div>
+            <div class="modal-card-body">
+              <slot name="body">
+                default body
+              </slot>
+            </div>
           </slot>
 
-            <slot name="footer">
+          <slot name="footer">
             <footer class="modal-card-foot">
-            <button class="button is-success" @click="$emit('close')">Save changes</button>
-            <button class="button is-danger" @click="$emit('close')">{{ $t('cancel') }}</button>
+              <button class="button is-success" @click="$emit('close')">
+                Save changes
+              </button>
+              <button class="button is-danger" @click="$emit('close')">
+                {{ $t("cancel") }}
+              </button>
             </footer>
-            </slot>
-
+          </slot>
         </div>
       </div>
     </div>
   </transition>
 </template>
 
-
 <script>
 export default {
-    name: 'Modal',
+  name: "Modal",
   props: {
     showModal: { type: Boolean, default: null }
   }
@@ -49,9 +50,9 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .5);
+  background-color: rgba(0, 0, 0, 0.5);
   display: table;
-  transition: opacity .3s ease;
+  transition: opacity 0.3s ease;
 }
 
 .modal-wrapper {
@@ -64,8 +65,8 @@ export default {
   margin: 0px auto;
   background-color: #fff;
   border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-  transition: all .3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
 }
 
@@ -76,13 +77,11 @@ export default {
 }
 
 .modal-card-body {
-  
 }
 
-.modal-card-foot{
-    margin-top: 30px;
+.modal-card-foot {
+  margin-top: 30px;
 }
-
 
 /*
  * The following styles are auto-applied to elements with
@@ -106,5 +105,4 @@ export default {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-
 </style>

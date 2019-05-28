@@ -21,8 +21,8 @@ class CreateShapesTable extends Migration
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedTinyInteger('row')->default(0);
-            $table->unsignedSmallInteger('top')->default(0);
-            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('top')->default(1);
+            $table->unsignedSmallInteger('left')->default(1);
             $table->unsignedSmallInteger('width')->default(150);
             $table->unsignedSmallInteger('height')->default(100);
             $table->unsignedSmallInteger('z_index')->default(0);

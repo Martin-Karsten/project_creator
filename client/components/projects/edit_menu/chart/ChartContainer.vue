@@ -1,45 +1,45 @@
 <template>
-    <div>
-        <div class="tabs">
-            <div class="close" @click="closeEditContainer" />
-        <ul>
-            <li :class="{ 'is-active': chartDefaultComponent.isActive }" @click="toChartDefault"><a>Chart</a></li>
-        </ul>
-        </div>
-        
-        <component :index="editContainer.row" :layoutId="editContainer.layoutId" :is="currentTab"></component>
-
+  <div>
+    <div class="tabs">
+      <div class="close" @click="closeEditContainer" />
+      <ul>
+        <li :class="{ 'is-active': chartDefaultComponent.isActive }" @click="toChartDefault">
+          <a>Chart</a>
+        </li>
+        </li>
+      </ul>
     </div>
+
+    <component :is="currentTab" :index="editContainer.row" :layout-id="editContainer.layoutId" />
+  </div>
 </template>
 
 <script>
-import ChartDefaultComponent from './ChartDefaultComponent'
-import { mapGetters } from 'vuex';
+import ChartDefaultComponent from "./ChartDefaultComponent"
+import { mapGetters } from "vuex"
 export default {
-    components:{
-        ChartDefaultComponent
-    },
-    computed:{
-        ...mapGetters({
-            editContainer: 'EditContainer/getEditContainer'
-        })
-    },
-    data(){
-        return{
-            currentTab: 'chartDefaultComponent',
-            chartDefaultComponent: {name: 'chartDefaultComponent', isActive: true},
-        }
-    },
-    methods:{
-        toChartDefault(){
-
-        },
-        closeEditContainer(){
-            this.$store.commit('EditContainer/CLOSE_EDIT_CONTAINER')
-            this.currentTab = this.chartDefaultComponent.name
-            this.chartDefaultComponent.isActive = true
-        }
+  components: {
+    ChartDefaultComponent
+  },
+  computed: {
+    ...mapGetters({
+      editContainer: "EditContainer/getEditContainer"
+    })
+  },
+  data() {
+    return {
+      currentTab: "chartDefaultComponent",
+      chartDefaultComponent: { name: "chartDefaultComponent", isActive: true }
     }
+  },
+  methods: {
+    toChartDefault() {},
+    closeEditContainer() {
+      this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")
+      this.currentTab = this.chartDefaultComponent.name
+      this.chartDefaultComponent.isActive = true
+    }
+  }
 }
 </script>
 
@@ -55,10 +55,11 @@ export default {
 .close:hover {
   opacity: 1;
 }
-.close:before, .close:after {
+.close:before,
+.close:after {
   position: absolute;
   left: 15px;
-  content: ' ';
+  content: " ";
   height: 33px;
   width: 2px;
   background-color: #333;

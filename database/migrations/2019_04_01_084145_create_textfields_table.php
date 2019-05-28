@@ -24,10 +24,10 @@ class CreateTextfieldsTable extends Migration
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedSmallInteger('font_size')->default(18);
-            $table->unsignedSmallInteger('top')->default(0);
-            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('top')->default(1);
+            $table->unsignedSmallInteger('left')->default(1);
             $table->unsignedSmallInteger('width')->default(150);
-            $table->unsignedSmallInteger('height')->default(100);
+            $table->unsignedSmallInteger('height')->default(50);
             $table->unsignedSmallInteger('z_index')->default(0);
             $table->string('background_image')->nullable();
             $table->string('background_color',100)->default('none');
