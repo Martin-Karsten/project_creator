@@ -1,34 +1,37 @@
 <template>
   <div class="editor-textfield" @contextmenu.prevent="openContextMenu">
-      <editor-menu-bubble :editor="ed">
-        <div
+    <editor-menu-bubble :editor="ed">
+      <div
         slot-scope="{ commands, isActive, menu }"
         class="menububble"
         :class="{ 'is-act': menu.isActive }"
         :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
+      >
+        <button :class="{ 'is-act': isActive.bold() }" @click="commands.bold">
+          Bold
+        </button>
+        <button
+          :class="{ 'is-act': isActive.heading({ level: 2 }) }"
+          @click="commands.heading({ level: 2 })"
         >
-          <button :class="{ 'is-act': isActive.bold() }" @click="commands.bold">
-            Bold
-          </button>
-          <button :class="{ 'is-act': isActive.heading({ level: 2 }) }" @click="commands.heading({ level: 2 })">
-            H2
-          </button>
-        </div>
-      </editor-menu-bubble>
-    <editor-content class="textfield editor__content" :editor="ed"/>
+          H2
+        </button>
+      </div>
+    </editor-menu-bubble>
+    <editor-content class="textfield editor__content" :editor="ed" />
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBubble } from "tiptap";
-import { Heading, Bold, Italic, Underline } from "tiptap-extensions";
-import { mapGetters } from 'vuex';
+import { Editor, EditorContent, EditorMenuBubble } from "tiptap"
+import { Heading, Bold, Italic, Underline } from "tiptap-extensions"
+import { mapGetters } from "vuex"
 export default {
-  props: ['text', 'opacity', 'layoutRow', 'row', 'layoutId', 'id'],
   components: {
     EditorContent,
-    EditorMenuBubble,
+    EditorMenuBubble
   },
+  props: ["text", "opacity", "layoutRow", "row", "layoutId", "id"],
   data() {
     return {
       ed: new Editor({
@@ -39,56 +42,56 @@ export default {
           new Italic(),
           new Underline()
         ],
-        onUpdate: ({ getJSON, getHTML }) => {
-          
-        },
+        onUpdate: ({ getJSON, getHTML }) => {},
         onFocus: () => {
           this.setCurrentItem()
         },
-        onBlur: ({event, state, view}) => {
-          this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed.getHTML());
+        onBlur: ({ event, state, view }) => {
+          this.$store.commit(
+            "Layout/UPDATE_TEXTFIELD",
+            this.ed.getHTML()
+          )
         }
       })
-    };
+    }
   },
-  computed:{
+  computed: {
     ...mapGetters({
-      computedEditor: 'StartMenus/StartMenuDefault/getEditor'
+      computedEditor: "StartMenus/StartMenuDefault/getEditor"
     })
   },
 
-  mounted(){
+  mounted() {
     // this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
   },
   methods: {
-    setCurrentItem(){
-      let payload = 
-      {
+    setCurrentItem() {
+      let payload = {
         id: this.id,
         layoutId: this.layoutId,
-        itemName: 'textfields'
+        itemName: "textfields"
       }
-      // this.$store.dispatch('Layout/setCurrentItem', payload)
-      this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
     },
-    setEditor(){
-      this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
+    setEditor() {
+      this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed)
     },
-    openContextMenu(){
-            let payload = {
-                name: 'TextfieldContextMenu',
-                x: event.pageX + 'px',
-                y: event.pageY + 'px',
-                row: this.row}
+    openContextMenu() {
+      let payload = {
+        name: "TextfieldContextMenu",
+        x: event.pageX + "px",
+        y: event.pageY + "px",
+        row: this.row
+      }
 
-            let payload2 = {
-              id: this.id,
-              layoutId: this.layoutId,
-              itemName: 'textfields'
-            }
-            this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
-            this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
+      let payload2 = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "textfields"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
+      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
     }
   }
-};
+}
 </script>

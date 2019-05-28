@@ -1,12 +1,12 @@
 <template>
-  <div >
+  <div>
     <div class="tabs">
       <ul>
         <li class="is-active">
           <router-link :to="{ name: 'settings.profile' }">
             Profile
           </router-link>
-          </li>
+        </li>
         <li><a>Projects</a></li>
         <li><a>General</a></li>
       </ul>
@@ -14,7 +14,7 @@
 
     <div>
       <transition name="fade" mode="out-in">
-        <router-view/>
+        <router-view />
       </transition>
     </div>
   </div>
@@ -22,21 +22,21 @@
 
 <script>
 export default {
-  layout: 'settings',
-  middleware: 'auth',
+  layout: "settings",
+  middleware: "auth",
 
   computed: {
-    tabs () {
+    tabs() {
       return [
         {
-          icon: 'user',
-          name: this.$t('profile'),
-          route: 'settings.profile'
+          icon: "user",
+          name: this.$t("profile"),
+          route: "settings.profile"
         },
         {
-          icon: 'lock',
-          name: this.$t('password'),
-          route: 'settings.password'
+          icon: "lock",
+          name: this.$t("password"),
+          route: "settings.password"
         }
       ]
     }

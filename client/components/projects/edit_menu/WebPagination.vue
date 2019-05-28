@@ -1,15 +1,15 @@
 <template>
-    <nav class="pagination is-rounded is-small" role="navigation" aria-label="pagination">
-        <slot></slot>
-    </nav>
+  <nav
+    class="pagination is-rounded is-small"
+    role="navigation"
+    aria-label="pagination"
+  >
+    <slot />
+  </nav>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
-</style>
+<style></style>

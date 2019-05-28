@@ -1,26 +1,23 @@
 <template>
   <div>
-    <img :src="imageData" />
+    <img :src="imageData" >
   </div>
 </template>
 
 <script>
-import twice from '/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg'
-import { mapGetters } from 'vuex'
+import twice from "/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg"
+import { mapGetters } from "vuex"
 export default {
-  props:['id', 'url', 'imageData'],
-  components: {
-  },
+  components: {},
+  props: ["id", "url", "imageData"],
   data() {
-      return {
-          image: twice
-      }
-},
+    return {
+      image: twice
+    }
+  },
 
   methods: {
-    showImage(){
-
-    }
+    showImage() {}
   }
 }
 </script>

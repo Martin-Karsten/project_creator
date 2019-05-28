@@ -1,15 +1,11 @@
 <template>
-   <div>
-       searchGif
-    </div> 
+  <div>
+    searchGif
+  </div>
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
-</style>
+<style></style>

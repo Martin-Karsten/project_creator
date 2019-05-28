@@ -1,44 +1,49 @@
 <template>
-    <img class="web-image" :style="{zIndex: row, borderRadius: radius + 'px', opacity: opacity}" :src="url" @contextmenu.prevent="openContextMenu" @click="setCurrentItem"/>
+  <img
+    class="web-image"
+    :style="{ zIndex: row, borderRadius: radius + 'px', opacity: opacity }"
+    :src="url"
+    @contextmenu.prevent="openContextMenu"
+    @click="setCurrentItem"
+  >
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex"
 export default {
-  props:['id', 'layoutId', 'url', 'radius', 'opacity', 'layoutRow', 'row'],
-  components: {
-  },
+  components: {},
+  props: ["id", "layoutId", "url", "radius", "opacity", "layoutRow", "row"],
   data() {
-      return {
-          image: '',
-          selected: false
-      }
-},
+    return {
+      image: "",
+      selected: false
+    }
+  },
 
   methods: {
-    setCurrentItem(){
-      let payload = 
-      {
+    setCurrentItem() {
+      let payload = {
         id: this.id,
         layoutId: this.layoutId,
-        itemName: 'web_images'
+        itemName: "web_images"
       }
-      this.$store.commit('Layout/SET_CURRENT_ITEM', payload)
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
     },
-    openContextMenu(){
-            let payload = {
-                name: 'WebImageContextMenu',
-                x: event.pageX + 'px',
-                y: event.pageY + 'px',
-                row: this.row}
+    openContextMenu() {
+      let payload = {
+        name: "WebImageContextMenu",
+        x: event.pageX + "px",
+        y: event.pageY + "px",
+        row: this.row
+      }
 
-            let payload2 = {
-              id: this.id,
-              layoutId: this.layoutId,
-              itemName: 'web_images'
-            }
-            this.$store.commit('Layout/SET_CURRENT_ITEM', payload2)
-            this.$store.dispatch('ContextMenus/ContextMenu/openContextMenu', payload)
+      let payload2 = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "web_images"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
+      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
     }
   }
 }
@@ -54,7 +59,7 @@ export default {
   overflow: hidden;
 }
 
-img.web-image{
+img.web-image {
   width: 100%;
   height: 100%;
   display: table-row;

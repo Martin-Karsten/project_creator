@@ -1,29 +1,28 @@
 <template>
   <el-container direction="vertical" class="layout" @click.native="closeContextMenu">
-      <project-navbar/>
-      <nuxt/>
+    <project-navbar />
+    <nuxt />
   </el-container>
 </template>
 
 <script>
+import "~/plugins/element-ui"
+import ProjectNavbar from "~/components/projects/navbar/ProjectNavbar"
+import { mapGetters } from "vuex"
 
-import '~/plugins/element-ui'
-import ProjectNavbar from '~/components/projects/navbar/ProjectNavbar'
-import { mapGetters } from 'vuex';
-
-export default {  
+export default {
   components: {
     ProjectNavbar
   },
-  computed:{
+  computed: {
     ...mapGetters({
-      contextMenu: 'ContextMenus/ContextMenu/getContextMenu'
+      contextMenu: "ContextMenus/ContextMenu/getContextMenu"
     })
   },
-  methods:{
-    closeContextMenu(){
-      if(this.contextMenu.activated)
-        this.$store.commit('ContextMenus/ContextMenu/CLOSE_CONTEXT_MENU')
+  methods: {
+    closeContextMenu() {
+      if (this.contextMenu.activated)
+        this.$store.commit("ContextMenus/ContextMenu/CLOSE_CONTEXT_MENU")
     }
   }
 }

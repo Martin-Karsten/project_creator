@@ -1,15 +1,15 @@
 <template>
   <div class="layout">
-    <navbar/>
+    <navbar />
 
     <div class="container">
-      <nuxt/>
+      <nuxt />
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from '~/components/Navbar'
+import Navbar from "~/components/Navbar"
 
 export default {
   components: {

@@ -22,8 +22,8 @@ class CreateTablesTable extends Migration
             $table->unsignedTinyInteger('rows')->default(2);
             $table->unsignedTinyInteger('columns')->default(3);
             $table->text('text');
-            $table->unsignedSmallInteger('top')->default(0);
-            $table->unsignedSmallInteger('left')->default(0);
+            $table->unsignedSmallInteger('top')->default(1);
+            $table->unsignedSmallInteger('left')->default(1);
             $table->unsignedSmallInteger('width')->default(150);
             $table->unsignedSmallInteger('height')->default(100);
             $table->unsignedSmallInteger('z_index')->default(0);

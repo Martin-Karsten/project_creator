@@ -1,15 +1,9 @@
 <template>
-    <div class="delete-something">
-        
-    </div>
+  <div class="delete-something" />
 </template>
 
 <script>
-export default {
-
-}
+export default {}
 </script>
 
-<style>
-
-</style>
+<style></style>

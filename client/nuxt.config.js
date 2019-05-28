@@ -61,6 +61,7 @@ module.exports = {
     '~plugins/fontawesome',
     {src: 'plugins/color-picker', ssr: false},
     { src: '~plugins/vue-echarts.js', ssr: false},
+    { src: '~/plugins/vuex-persist', ssr: false },
     // '~plugins/nuxt-client-init',
   ],
 
@@ -70,19 +71,23 @@ module.exports = {
     'vue-scrollto/nuxt',
   ],
 
+  lintOnSave: true,
+
   build: {
     transpile: ['vue-echarts', 'resize-detector'],
-    extend (config, { isServer }) {
-      // ...
-      if (isServer) {
-        config.externals = [
-          nodeExternals({
-            // default value for `whitelist` is
-            // [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
-            whitelist: [/es6-promise|\.(?!(?:js|json)$).{1,5}$/i]
-          })
-        ]
-      }
-    }
+    // extend(config, ctx) {
+    //   // Run ESLint on save
+    //   if (ctx.isDev && ctx.isClient) {
+    //     config.module.rules.push({
+    //       enforce: "pre",
+    //       test: /\.(js|vue)$/,
+    //       loader: "eslint-loader",
+    //       exclude: /(node_modules)/,
+    //       options : {
+    //         fix : true
+    //     }
+    //     })
+    //   }
+    // }
   }
 }

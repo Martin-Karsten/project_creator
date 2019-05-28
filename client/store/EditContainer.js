@@ -1,22 +1,25 @@
-
 export const state = () => ({
-    editContainer: {name: '', activated: false, layoutId:0, layoutRow:0, row: 0}
+  editContainer: {
+    name: "",
+    activated: false,
+    layoutId: 0,
+    layoutRow: 0,
+    row: 0
+  }
 })
 
 export const getters = {
-  getEditContainer: state => state.editContainer,
+  getEditContainer: state => state.editContainer
 }
 
 export const mutations = {
-    OPEN_EDIT_CONTAINER (state, payload) {
-        state.editContainer.layoutId = payload.layoutId
-        state.editContainer.activated = true
-        state.editContainer.name = payload.name
-    },
-    CLOSE_EDIT_CONTAINER (state, payload) {
-        state.editContainer.activated = false
-    }
+  OPEN_EDIT_CONTAINER(state, payload) {
+    state.editContainer.layoutId = payload.layoutId
+    state.editContainer.activated = true
+    state.editContainer.name = payload.name
+  },
+  CLOSE_EDIT_CONTAINER(state, payload) {
+    state.editContainer.activated = false
+  }
 }
-export const actions = {
-
-}
+export const actions = {}

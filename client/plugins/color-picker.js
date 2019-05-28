@@ -1,4 +1,4 @@
-import Vue from 'vue'
-import { Photoshop } from 'vue-color'
+import Vue from "vue"
+import { Photoshop } from "vue-color"
 
 Vue.use(Photoshop)
