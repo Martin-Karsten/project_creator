@@ -221,25 +221,12 @@ export const mutations = {
 
   ///////// TABLE SETTINGS
   ADD_TABLE(state, payload) {
-    state.layout[payload.layoutRow].tables.push({
-      id: Date.now(),
-      project_id: state.projectId,
-      name: "table",
-      columns: payload.columns,
-      rows: payload.rows,
-      row: payload.Layoutrow,
-      background_color: "none",
-      border_color: "black",
-      border_style: "solid",
-      animations: {},
-      border_width: 1,
-      border_radius: 0,
-      opacity: 1.0,
-      top: 0,
-      left: 0,
-      width: 400,
-      height: 200
-    })
+    state.realLayout[payload.layoutId]["tables"].push(payload.id)
+
+  },
+
+  UPDATE_TABLE(state, payload) {
+    state.currentItem.text = payload
   },
 
   CREATE_TABLE(state, payload) {

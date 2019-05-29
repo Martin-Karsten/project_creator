@@ -21,7 +21,7 @@ export const mutations = {
     let obj = {
       [payload.layoutId]: {
         id: id,
-        project_id: state.projectId,
+        project_id: payload.projectId,
         layout_item_id: payload.layoutId,
         name: "web_image",
         itemName: "web_images",
@@ -78,7 +78,6 @@ export const actions = {
       left: payload.left,
       currentItem: rootGetters["Layout/getCurrentItem"]
     }
-    console.log(p)
     commit("SET_SIZE", p)
   }
 }

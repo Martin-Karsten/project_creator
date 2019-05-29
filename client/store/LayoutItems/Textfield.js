@@ -39,8 +39,8 @@ export const mutations = {
         opacity: 1.0,
         top: 0,
         left: 0,
-        width: 200,
-        height: 100,
+        width: 100,
+        height: 25,
         z_index: 1
       }
     }

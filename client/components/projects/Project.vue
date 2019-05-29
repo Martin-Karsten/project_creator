@@ -65,7 +65,7 @@
               class-name="project-textfield-container"
               :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
                        borderRadius: textfield.border_radius + 'px', backgroundColor: textfield.background_color}"
-              
+              :handles="['ml', 'mr']"  
               @resizing="containerResizing"
               @dragging="containerDragging"
               @contextmenu="openContextMenu"
@@ -104,9 +104,17 @@
             <vue-draggable-resizable
               v-for="(table, tableIndex) in layoutTables(element)"
               :key="tableIndex+'table'" class-name="project-table-container"
-              :w="400" :h="200" :x="100" :y=" 100"
+              :w="table.width" :h="table.height" :x="table.left" :y="table.top"
+              :z="tableIndex"
+              :parent="true"
+              :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
+                       borderRadius: table.border_radius + 'px',}" 
+              :handles="['ml', 'mr']"     
+              @resizing="containerResizing"
+              @dragging="containerDragging"
+              @deactivated="onDeactivated"
             >
-              <!-- <table-editor :text="table.text"></table-editor> -->
+              <table-editor :text="table.text" :id="table.id" :layoutId="element.id" :row="tableIndex" :height="table.height"></table-editor>
             </vue-draggable-resizable>
 
               <vue-draggable-resizable
@@ -116,7 +124,6 @@
                 class-name-active="selected" 
                 :style="{borderStyle: web_video.border_style, borderColor: web_video.border_color, borderWidth: web_video.border_width + 'px',
                         borderRadius: web_video.border_radius + 'px', backgroundColor: web_video.background_color}"
-
                 @resizing="containerResizing"
                 @dragging="containerDragging"
               >
@@ -310,6 +317,11 @@ export default {
         })
       } else if (this.startMenuIcons[2].activated) {
       } else if (this.startMenuIcons[3].activated) {
+        console.log(layoutId)
+        this.$store.dispatch("LayoutItems/Table/addTable", layoutId)
+        this.$store.commit("StartMenus/StartMenu/SET_ICON_TO_FALSE", {
+          index: 3
+        })
       } else if (this.startMenuIcons[4].activated) {
       } else if (this.startMenuIcons[5].activated) {
         this.$store.dispatch("LayoutItems/Shapes/addShape", {
@@ -320,6 +332,9 @@ export default {
           index: 5
         })
       }
+    },
+    onDeactivated(){
+      console.log('deactivated')
     },
     openContextMenu(layoutRow, row) {
       let payload = {
@@ -430,7 +445,7 @@ div.grid-items {
   padding: 0;
   height: 667px;
   overflow-y: scroll;
-  /* overflow-x: hidden; */
+  overflow-x: hidden;
   position: relative;
 }
 div.item-container {

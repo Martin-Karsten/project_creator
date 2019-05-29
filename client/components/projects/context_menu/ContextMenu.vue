@@ -15,6 +15,7 @@ import TextfieldContextMenu from "./TextfieldContextMenu"
 import ChartContextMenu from "./ChartContextMenu"
 import SidebarScrollerContextMenu from './SidebarContextMenu'
 import WebVideoContextMenu from './WebVideoContextMenu'
+import TableContextMenu from './TableContextMenu'
 
 export default {
   components: {
@@ -22,7 +23,8 @@ export default {
     TextfieldContextMenu,
     ChartContextMenu,
     SidebarScrollerContextMenu,
-    WebVideoContextMenu
+    WebVideoContextMenu,
+    TableContextMenu
   },
   data() {
     return {}

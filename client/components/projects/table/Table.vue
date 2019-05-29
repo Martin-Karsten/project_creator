@@ -1,80 +1,130 @@
 <template>
-  <div class="table-editor">
-    <editor-menu-bar :editor="editor">
+  <div class="table-editor" @contextmenu.prevent="openContextMenu">
+    <editor-menu-bubble :editor="editor">
       <div
-        slot-scope="{ commands, isActive, focused }"
-        class="menubar"
-        :class="{ 'is-focused': focused }"
+        slot-scope="{ commands, isActive, menu }"
+        class="menububble"
+        :class="{ 'is-act': menu.isActive }"
+        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
       >
-        <div class="toolbar">
-          <button class="menubar__button" @click="commands.undo">
-            <h1>Undo</h1>
-          </button>
+        <button :class="{ 'is-act': isActive.bold() }" @click="commands.bold">
+          Bold
+        </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-act': isActive.heading({ level: 1 }) }"
+						@click="commands.heading({ level: 1 })"
+					>
+						H1
+					</button>
 
-          <button class="menubar__button" @click="commands.redo">
-            <h1>Redo</h1>
-          </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-act': isActive.heading({ level: 2 }) }"
+						@click="commands.heading({ level: 2 })"
+					>
+						H2
+					</button>
 
-          <button
-            class="menubar__button"
-            :class="{ 'is-active': isActive.bold() }"
-            @click="commands.bold"
-          >
-            <h1>Bold</h1>
-          </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-act': isActive.heading({ level: 3 }) }"
+						@click="commands.heading({ level: 3 })"
+					>
+						H3
+					</button>
 
-          <button
-            class="menubar__button"
-            :class="{ 'is-active': isActive.italic() }"
-            @click="commands.italic"
-          >
-            <h1>Italic</h1>
-          </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-active': isActive.bullet_list() }"
+						@click="commands.bullet_list"
+					>
+						<p>Ul</p>
+					</button>
 
-          <button
-            class="menubar__button"
-            @click="
-              commands.createTable({
-                rowsCount: 3,
-                colsCount: 3,
-                withHeaderRow: false
-              })
-            "
-          >
-            <fa icon="table" />
-          </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-active': isActive.ordered_list() }"
+						@click="commands.ordered_list"
+					>
+						<p>Ol</p>
+					</button>
 
-          <span v-if="isActive.table()">
-            <button class="menubar__button" @click="commands.deleteTable">
-              <h1>Delete Table</h1>
-            </button>
-            <button class="menubar__button" @click="commands.addColumnBefore">
-              <h1>Add Col</h1>
-            </button>
-            <button class="menubar__button" @click="commands.addColumnAfter">
-              <h1>Add After</h1>
-            </button>
+					<button
+						class="menubar__button"
+						:class="{ 'is-active': isActive.blockquote() }"
+						@click="commands.blockquote"
+					>
+						<p>Code</p>
+					</button>
 
-            <button class="menubar__button" @click="commands.addRowBefore">
-              <h1>Delete Col</h1>
-            </button>
-            <button class="menubar__button" @click="commands.addRowAfter">
-              <h1>Add Row After</h1>
-            </button>
-            <button class="menubar__button" @click="commands.deleteRow">
-              <h1>Delete Row</h1>
-            </button>
-          </span>
-        </div>
+					<button
+						class="menubar__button"
+						:class="{ 'is-active': isActive.code_block() }"
+						@click="commands.code_block"
+					>
+						<p>Code</p>
+					</button>
+
+					<button
+						class="menubar__button"
+						@click="commands.createTable({rowsCount: 3, colsCount: 3, withHeaderRow: false })"
+					>
+						<p>Table</p>
+					</button>
+
+					<span v-if="isActive.table()">
+						<button
+							class="menubar__button"
+							@click="commands.addColumnBefore"
+						>
+							<p>Col Before</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.addColumnAfter"
+						>
+							<p>Col After</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.deleteColumn"
+						>
+							<p>Delete Col</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.addRowBefore"
+						>
+							<p>Row Before</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.addRowAfter"
+						>
+							<p>Row After</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.deleteRow"
+						>
+							<p>Delete Row</p>
+						</button>
+						<button
+							class="menubar__button"
+							@click="commands.toggleCellMerge"
+						>
+							<p>Combine</p>
+						</button>
+					</span>
       </div>
-    </editor-menu-bar>
-
-    <editor-content class="editor__content" :editor="editor" />
+    </editor-menu-bubble>
+    <editor-content class="table editor__content" :editor="editor" />
   </div>
 </template>
 
 <script>
-import { Editor, EditorContent, EditorMenuBar } from "tiptap"
+import { Editor, EditorContent, EditorMenuBubble, EditorMenuBar } from "tiptap"
 import {
   Blockquote,
   CodeBlock,
@@ -100,9 +150,10 @@ import {
 export default {
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    EditorMenuBubble
   },
-  props: ["text"],
+  props: ["text", "id", "layoutId", "row", "height"],
   data() {
     return {
       editor: new Editor({
@@ -123,17 +174,54 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
-          new Table(),
+          new Table({
+            resizable: true,
+          }),
           new TableHeader(),
           new TableCell(),
           new TableRow()
         ],
         onUpdate: ({ getJSON, getHTML }) => {},
+        onFocus: () => {
+          this.setCurrentItem()
+        },
+        onBlur: ({ event, state, view }) => {
+          this.$store.commit(
+            "Layout/UPDATE_TABLE",
+            this.editor.getHTML()
+          )
+        },
         content: `
 					${this.text}
 					`
       })
     }
+  },
+  methods: {
+    setCurrentItem() {
+      let payload = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "tables"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
+    },
+    openContextMenu() {
+      let payload = {
+        name: "TableContextMenu",
+        x: event.pageX + "px",
+        y: event.pageY + "px",
+        row: this.row
+      }
+
+      let payload2 = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "tables"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
+      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
+    },
   },
   beforeDestroy() {
     this.editor.destroy()

@@ -92,7 +92,6 @@ export const mutations = {
       }
     }
 
-    console.log(state.charts)
     Vue.set(state.charts, id, obj[payload.layoutId])
   },
 

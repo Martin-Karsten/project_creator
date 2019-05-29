@@ -52,7 +52,7 @@
             :class="[creatorActivated ? menuItemActivated : '']"
             @click="activateTableIcon"
           />
-          <table-size-picker v-show="tableSizePickerActivated" />
+          <!-- <table-size-picker v-show="tableSizePickerActivated" /> -->
           <!-- <table-size-picker-input v-show="tableSizePickerActivated"  @clicked="tableSizePickerActivated = false"/> -->
         </el-col>
         <el-col class="start-menu-icon-column" :span="4">
@@ -140,9 +140,9 @@ export default {
       this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 2 })
     },
     activateTableIcon() {
-      this.tableSizePickerActivated = !this.tableSizePickerActivated
+      // this.tableSizePickerActivated = !this.tableSizePickerActivated
       this.creatorActivated = true
-      // this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', 3)
+      this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 3})
     },
     activateWebVideoIcon() {
       this.creatorActivated = true

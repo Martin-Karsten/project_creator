@@ -57,9 +57,16 @@
             <vue-draggable-resizable
               v-for="(table, tableIndex) in layoutTables(element)"
               :key="tableIndex+'table'" class-name="project-table-container"
-              :w="400" :h="200" :x="100" :y=" 100"
+              :w="table.width * facWidth" :h="table.height  * 0.85" :x="table.left * facLeft" :y="table.top * 2"
+              :z="tableIndex"
+              :parent="true"
+              :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
+                       borderRadius: table.border_radius + 'px',}" 
+              :handles="['ml', 'mr']"     
+              @resizing="containerResizing"
+              @dragging="containerDragging"
             >
-              <!-- <table-editor :text="table.text"></table-editor> -->
+              <table-editor :text="table.text" :id="table.id" :layoutId="element.id" :row="tableIndex"></table-editor>
             </vue-draggable-resizable>
 
             <vue-draggable-resizable

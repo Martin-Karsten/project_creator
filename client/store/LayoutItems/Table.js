@@ -32,12 +32,30 @@ export const mutations = {
     let id = length + 1
     let obj = {
       [payload.layoutId]: {
-        id: 0,
-        text: str,
+        id: id,
+        text: `
+        <table>
+          <tr>
+            <th colspan="3" data-colwidth="100,0,0">Wide header</th>
+          </tr>
+          <tr>
+            <td>One</td>
+            <td>Two</td>
+            <td>Three</td>
+          </tr>
+          <tr>
+            <td>Four</td>
+            <td>Five</td>
+            <td>Six</td>
+          </tr>
+        </table>
+      `,
         name: "table",
         itemName: "tables",
         columns: payload.columns,
         rows: payload.rows,
+        layout_item_id: payload.layoutId,
+        row: payload.layoutId,
         background_color: "none",
         border_color: "black",
         border_style: "solid",
@@ -48,16 +66,61 @@ export const mutations = {
         top: 0,
         left: 0,
         width: 400,
-        height: 200
+        height: 10
       }
     }
 
     // update tables state
-    Vue.set(state.tables, 0, obj[payload.layoutId])
-    console.log(JSON.stringify(state.tables, 2, null))
+    Vue.set(state.tables, id, obj[payload.layoutId])
   },
 
-  ADD_TABLE(state, payload) {}
+  ADD_TABLE(state, payload) {
+    let length = Object.keys(state.tables).length
+    let id = length + 1
+    let obj = {
+      [payload]: {
+        id: id,
+        project_id: payload.projectId,
+        text: `
+        <table>
+        <tr>
+          <th colspan="3" data-colwidth="100,0,0">Wide header</th>
+        </tr>
+        <tr>
+          <td>One</td>
+          <td>Two</td>
+          <td>Three</td>
+        </tr>
+        <tr>
+          <td>Four</td>
+          <td>Five</td>
+          <td>Six</td>
+        </tr>
+      </table>
+      `,
+        name: "table",
+        itemName: "tables",
+        // columns: payload.columns,
+        // rows: payload.rows,
+        layout_item_id: payload,
+        row: payload,
+        background_color: "none",
+        border_color: "black",
+        border_style: "solid",
+        animations: {},
+        border_width: 1,
+        border_radius: 0,
+        opacity: 1.0,
+        top: 0,
+        left: 0,
+        width: 400,
+        height: 120
+      }
+    }
+
+    // update tables state
+    Vue.set(state.tables, id, obj[payload])
+  }
 }
 
 export const actions = {
@@ -79,6 +142,6 @@ export const actions = {
     let id = Object.keys(state.tables).length + 1
 
     commit("ADD_TABLE", payload)
-    // commit('Layout/ADD_TABLE', {layoutId: payload, id: id, tables: state.tables}, {root: true})
+    commit('Layout/ADD_TABLE', {layoutId: payload, id: id, tables: state.tables}, {root: true})
   }
 }

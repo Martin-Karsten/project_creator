@@ -50,12 +50,20 @@ export const actions = {
         break
 
         case "WebVideoContextMenu":
-        commit("ContextMenus/WebVideoContextMenu/OPEN_CONTEXT_MENU", payload, {
-          root: true
-        })
-        let webVideo = rootGetters["ContextMenus/WebVideoContextMenu/getContextMenu"]
-        commit("OPEN_CONTEXT_MENU", webVideo)
-        break    
+          commit("ContextMenus/WebVideoContextMenu/OPEN_CONTEXT_MENU", payload, {
+            root: true
+          })
+          let webVideo = rootGetters["ContextMenus/WebVideoContextMenu/getContextMenu"]
+          commit("OPEN_CONTEXT_MENU", webVideo)
+          break    
+
+        case "TableContextMenu":
+          commit("ContextMenus/TableContextMenu/OPEN_CONTEXT_MENU", payload, {
+            root: true
+          })
+          let table = rootGetters["ContextMenus/TableContextMenu/getContextMenu"]
+          commit("OPEN_CONTEXT_MENU", table)
+          break
     }
   },
 
