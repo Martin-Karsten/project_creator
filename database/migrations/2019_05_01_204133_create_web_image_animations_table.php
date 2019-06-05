@@ -15,7 +15,7 @@ class CreateWebImageAnimationsTable extends Migration
     {
         Schema::create('web_image_animations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('web_image_id');
+            $table->string('web_image_id', 128);
             $table->string('animation_name', 30)->default('fadeIn');
             $table->double('animation_duration', 3,2)->default(0.5);
             $table->unsignedSmallInteger('animation_order')->default(0);

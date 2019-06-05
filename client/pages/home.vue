@@ -2,51 +2,48 @@
   <el-container>
     <el-aside>
       <el-menu
-        default-active="2"
+        default-active="1"
         class="el-menu-vertical-demo"
         background-color="#545c64"
         text-color="#fff"
         active-text-color="#ffd04b"
+        @select="handleSelect"
       >
-        <el-submenu index="1">
-          <template slot="title">
-            <i class="el-icon-location" />
-            <span>Navigator One</span>
-          </template>
-          <el-menu-item-group title="Group One">
-            <el-menu-item index="1-1">
-              item one
-            </el-menu-item>
-            <el-menu-item index="1-2">
-              item one
-            </el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="Group Two">
-            <el-menu-item index="1-3">
-              item three
-            </el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
+        <template v-if="projectsClicked.length === 0">
+          <el-submenu index="create">
             <template slot="title">
-              item four
+              <i class="el-icon-location"></i>
+              <span>Create Project</span>
+              </template>
+                <el-menu-item
+                  index="create-input"
+                >
+                  <el-input
+                  placeholder="Project Name"
+                  @keyup.enter.native="createProject"
+                  />
+                </el-menu-item>
+              </el-submenu>
             </template>
-            <el-menu-item index="1-4-1">
-              item one
-            </el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="2">
-          <i class="el-icon-menu" />
-          <span>Navigator Two</span>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <i class="el-icon-document" />
-          <span>Navigator Three</span>
-        </el-menu-item>
-        <el-menu-item index="4">
-          <i class="el-icon-setting" />
-          <span>Navigator Four</span>
-        </el-menu-item>
+        <template v-else-if="projectsClicked.length === 1">
+          <el-menu-item
+            index="rename"
+          >
+          Rename
+          </el-menu-item>
+          <el-menu-item
+            index="delete"
+          >
+          Delete
+          </el-menu-item>
+        </template>
+        <template v-else-if="projectsClicked.length > 1">
+          <el-menu-item
+            index="deleteMultiple"
+          >
+          Delete
+          </el-menu-item>
+        </template>
       </el-menu>
     </el-aside>
 
@@ -72,12 +69,17 @@
             />
             <div class="cptn">
               <div>
-                <h3>
-                  {{ project.project_name }} ({{ user.first_name }},{{
-                    user.last_name
-                  }})
-                </h3>
-                <p>{{ project.created_at }}</p>
+                <template v-if="!project.rename">
+                  <h3>
+                    {{ project.project_name }} ({{ user.first_name }},{{
+                      user.last_name
+                    }})
+                  </h3>
+                  <p>{{ project.updated_at }}</p>
+                </template>
+                <template v-else>
+                  <el-input :value="project.project_name" @keyup.enter.native="changeProjectName($event, index)" />
+                </template>
               </div>
               <a @click="viewProject(project.id)">
                 <fa class="fa" icon="arrow-right" />
@@ -128,7 +130,9 @@ export default {
       user_id: "",
       private: true
     }),
-    deleteForm: new Form({})
+    patchForm: new Form({id: '', project_name: ''}),
+    deleteForm: new Form({id: ''}),
+    deleteMultipleForm: new Form({projects: []})
   }),
   computed: {
     ...mapGetters({
@@ -149,7 +153,44 @@ export default {
       this.$store.commit("Project/HIDE_EDITABLE", index)
     },
     selectProject(index) {
-      this.$store.commit("Project/SELECT_PROJECT", index)
+      if(!this.projectsClicked.includes(this.projects[index].id)){
+        this.$store.commit("Project/SELECT_PROJECT", index)
+        this.projectsClicked.push(this.projects[index].id)
+      }
+      else{
+        const newI = this.projectsClicked.indexOf(this.projects[index].id)
+        this.projectsClicked.splice(newI, 1)
+        this.$store.commit("Project/DESELECT_PROJECT", index)
+      }
+    },
+    async changeProjectName(event,index){
+      const id = this.projects[index].id
+      this.patchForm.id = id
+      this.patchForm.project_name = event.target.value
+      try{
+        await this.patchForm.patch(`user/project/${id}/update`)
+      }
+      catch (e){
+        console.log(e)
+      }
+      this.$store.commit("Project/CHANGE_PROJECT_NAME", {value: event.target.value, index})
+
+    },
+    handleSelect(key){
+      switch(key){
+        case 'rename':
+          const newI = this.projectsClicked.indexOf(this.projects[0].id)
+          this.$store.commit('Project/MAKE_RENAMEABLE', newI)
+          break;
+
+        case 'delete':
+          this.deleteProject()
+          break;
+        
+        case 'deleteMultiple':
+          this.deleteProjects()
+          break;
+      }
     },
     async changeNumber() {
       axios
@@ -162,14 +203,15 @@ export default {
           console.log(error.response.data)
         })
     },
-    async createProject() {
+    async createProject(event) {
       this.form.user_id = this.user.id
+      this.form.project_name = event.target.value
       const { data } = await this.form.post("user/project/create")
 
       this.$store.commit("Layout/CREATE_LAYOUT")
-      this.$store.dispatch("project/createProject", {
+      this.$store.dispatch("Project/createProject", {
         project_id: data.id,
-        project_name: "Project 1",
+        project_name: data.project_name,
         user_id: data.user_id,
         private: data.private
       })
@@ -181,21 +223,46 @@ export default {
       // Redirect to project
       this.$router.push({ name: "project.view", params: { id: id } })
     },
-    changeProjectName() {},
-    async deleteProject(id) {
-      this.deleteForm.id = id
+    async deleteProject() {
+      const id = this.projectsClicked[0]
+      this.deleteForm.id = this.projectsClicked[0]
+      this.projectsClicked.splice(0, 1)
       try {
-        await this.deleteForm.delete(`user/Project/${id}/delete`, id)
+        await this.deleteForm.delete(`user/project/${id}/delete`)
       } catch (e) {
         console.log(e)
+        this.$message({
+          message: 'Sorry something went wrong!',
+          type: 'error'
+        });
+        return
       }
       this.$store.commit("Project/DELETE_PROJECT", id)
+
+      this.$message({
+        message: 'Project Deleted',
+        type: 'success'
+      });
     },
-    cancelProject() {
-      this.form.project_name = ""
-      this.inputActivated = false
-      this.iconAcitvated = true
-      this.inputName = "column has-text-centered is-3 project-container"
+    async deleteProjects(){
+      this.deleteMultipleForm.projects = [...this.projectsClicked]
+      try{
+        await this.deleteMultipleForm.post('user/projects/delete')
+      } catch (e) {
+          console.log(e)
+          this.$message({
+          message: 'Sorry something went wrong!',
+          type: 'error'
+        });
+          return
+      }
+      this.$store.commit('Project/DELETE_PROJECTS', this.projectsClicked)
+      this.projectsClicked.splice(0, this.projectsClicked.length)
+
+        this.$message({
+          message: 'Projects Deleted',
+          type: 'success'
+        });
     }
   }
 }

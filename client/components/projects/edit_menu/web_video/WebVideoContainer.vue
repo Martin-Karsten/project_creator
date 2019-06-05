@@ -27,20 +27,15 @@ export default {
   data() {
     return {
       currentTab: "urlInput",
-      urlInput: { name: "urlInput", isActive: true }
     }
   },
   methods: {
-    toUrl() {
-      this.currentTab = this.urlInput.name
-      this.urlInput.isActive = true
-      this.searchImageComponent.isActive = false
-      this.searchGifComponent.isActive = false
+    handleClick(key){
+
     },
     closeEditContainer() {
       this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")
       this.currentTab = this.urlInput.name
-      this.urlInput.isActive = true
     }
   }
 }

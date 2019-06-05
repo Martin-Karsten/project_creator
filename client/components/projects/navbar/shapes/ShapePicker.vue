@@ -3,57 +3,58 @@
     <el-col :span="6" class="shape-picker-column">
       <fa
         icon="square"
-        class="shape-picker-triangle-icon"
+        class="shape-picker-icon"
         @click="addRectangle"
       />
     </el-col>
     <el-col :span="6" class="shape-picker-column">
-      <fa icon="circle" class="shape-picker-triangle-icon" @click="addCircle" />
+      <fa icon="circle" class="shape-picker-icon" @click="addCircle" />
     </el-col>
     <el-col :span="6" class="shape-picker-triangle-column">
       <img
         src="./Triangle.svg"
-        class="shape-picker-triangle-icon"
+        class="shape-picker-icon"
         @click="addTriangle"
       />
     </el-col>
     <el-col :span="2" :offset="2" class="shape-picker-column">
-      <fa icon="minus" class="shape-picker-triangle-icon" @click="addLine" />
+      <fa icon="minus" class="shape-picker-icon" @click="addLine" />
     </el-col>
   </el-row>
 </template>
 
 <script>
 export default {
+  props: ['currentLayout'],
   data() {
     return {}
   },
   methods: {
     addRectangle() {
       this.$emit("clicked")
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", {
-        index: 5,
+      this.$store.dispatch("LayoutItems/Shapes/addShape", {
+        layoutId: this.currentLayout,
         shape: "rectangle"
       })
     },
     addCircle() {
       this.$emit("clicked")
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", {
-        index: 5,
+      this.$store.dispatch("LayoutItems/Shapes/addShape", {
+        layoutId: this.currentLayout,
         shape: "circle"
       })
     },
     addTriangle() {
       this.$emit("clicked")
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", {
-        index: 5,
+      this.$store.dispatch("LayoutItems/Shapes/addShape", {
+        layoutId: this.currentLayout,
         shape: "triangle"
       })
     },
     addLine() {
       this.$emit("clicked")
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", {
-        index: 5,
+      this.$store.dispatch("LayoutItems/Shapes/addShape", {
+        layoutId: this.currentLayout,
         shape: "line"
       })
     }
@@ -76,11 +77,14 @@ export default {
 }
 
 .shape-picker-triangle-column {
-  width: 40px;
+  width: 35px;
   padding-top: 0.25rem;
 }
 
-.shape-picker-triangle-icon {
+.shape-picker-icon {
   cursor: pointer;
+  width: 95%;
+  height: 95%;
+  margin-top: 0.1rem;
 }
 </style>

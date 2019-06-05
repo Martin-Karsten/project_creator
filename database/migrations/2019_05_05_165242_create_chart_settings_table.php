@@ -15,7 +15,7 @@ class CreateChartSettingsTable extends Migration
     {
         Schema::create('chart_settings', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('chart_id');
+            $table->string('chart_id', 128);
             $table->string('chart_type');
             $table->timestamps();
         });

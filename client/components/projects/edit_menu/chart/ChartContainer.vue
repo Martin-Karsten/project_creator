@@ -1,19 +1,12 @@
 <template>
   <div>
-    <div class="tabs">
-      <div class="close" @click="closeEditContainer" />
-      <ul>
-        <li :class="{ 'is-active': chartDefaultComponent.isActive }" @click="toChartDefault">
-          <a>Chart</a>
-        </li>
-        </li>
-      </ul>
-    </div>
-
+    <div class="close" @click="closeEditContainer" />
+      <el-tabs v-model="currentTab" @tab-click="handleClick">
+        <el-tab-pane label="Chart" name="chartDefaultComponent"></el-tab-pane>
+      </el-tabs>
     <component :is="currentTab" :index="editContainer.row" :layout-id="editContainer.layoutId" />
   </div>
 </template>
-
 <script>
 import ChartDefaultComponent from "./ChartDefaultComponent"
 import { mapGetters } from "vuex"
@@ -33,18 +26,23 @@ export default {
     }
   },
   methods: {
-    toChartDefault() {},
+    handleClick(tab, event){
+      switch(tab.name){
+        case 'chartDefaultComponent':
+          this.currentTab = "chartDefaultComponent"
+          break;
+      }
+    },
     closeEditContainer() {
       this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")
-      this.currentTab = this.chartDefaultComponent.name
-      this.chartDefaultComponent.isActive = true
+      this.currentTab = 'chartDefaultComponent'
     }
   }
 }
 </script>
 
 <style>
-.close {
+/* .close {
   position: absolute !important;
   right: 10px;
   top: 10px;
@@ -69,5 +67,5 @@ export default {
 }
 .close:after {
   transform: rotate(-45deg);
-}
+} */
 </style>

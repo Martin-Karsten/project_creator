@@ -3,8 +3,6 @@
     :ref="'chart' + id"
     :options="chart"
     autoresize
-    @click="setCurrentItem"
-    @contextmenu="openContextMenu"
   />
 </template>
 
@@ -52,30 +50,6 @@ export default {
       let opts = { width: w, height: h }
       this.$refs[id].resize(opts)
     },
-    setCurrentItem() {
-      let payload = {
-        layoutId: this.layoutId,
-        id: this.id,
-        itemName: "charts"
-      }
-      this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
-    },
-    openContextMenu() {
-      let payload = {
-        name: "ChartContextMenu",
-        x: event.pageX + "px",
-        y: event.pageY + "px",
-        row: this.row
-      }
-
-      let payload2 = {
-        layoutId: this.layoutId,
-        id: this.id,
-        itemName: "charts"
-      }
-      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
-      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
-    }
   }
 }
 </script>

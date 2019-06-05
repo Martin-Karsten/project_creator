@@ -1,7 +1,7 @@
 <template>
-  <el-menu mode="vertical">
-    <el-menu-item index="1">Save</el-menu-item>
-    <el-menu-item index="1">Second</el-menu-item>
+  <el-menu mode="vertical" @select="handleSelect">
+    <el-menu-item index="save">Save</el-menu-item>
+    <el-menu-item index="second">Second</el-menu-item>
   </el-menu>
 </template>
 
@@ -12,7 +12,14 @@ export default {
   data: function() {
     return {}
   },
-  methods: {}
+  methods: {
+    handleSelect(key, path){
+      switch(key){
+        case 'save':
+        this.$store.dispatch('Layout/saveToDB')
+      }
+    }
+  }
 }
 </script>
 

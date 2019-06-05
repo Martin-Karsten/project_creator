@@ -25,22 +25,22 @@ export const mutations = {
   //payload = layout
   SET_ANIMATIONS(state, payload) {
     //get arrays that contain the items (textfields, images, ...)
-    let arr1 = []
-    for (let i = 0; i < payload.length; i++) {
-      if (typeof payload[i] === "object") {
-        Object.keys(payload[i]).map(function(key) {
-          if (Array.isArray(payload[i][key])) {
-            arr1.push(payload[i][key])
-          }
-        })
-      }
-    }
-    //loop through item arrays and check if animation_name is set
-    for (let j = 0; j < arr1.length; j++) {
-      for (let k = 0; k < arr1[j].length; k++) {
-        if (arr1[j][k].animations != null) state.animationItems.push(arr1[j][k])
-      }
-    }
+    // let arr1 = []
+    // for (let i = 0; i < payload.length; i++) {
+    //   if (typeof payload[i] === "object") {
+    //     Object.keys(payload[i]).map(function(key) {
+    //       if (Array.isArray(payload[i][key])) {
+    //         arr1.push(payload[i][key])
+    //       }
+    //     })
+    //   }
+    // }
+    // //loop through item arrays and check if animation_name is set
+    // for (let j = 0; j < arr1.length; j++) {
+    //   for (let k = 0; k < arr1[j].length; k++) {
+    //     if (arr1[j][k].animations != null) state.animationItems.push(arr1[j][k])
+    //   }
+    // }
   },
   ADD_ANIMATIONS(state, payload) {
     //if array is empty push to array, else only insert unique values

@@ -9,20 +9,25 @@ export const getters = {
 }
 
 export const mutations = {
+  SET_PROJECT_ID(state, payload) {
+    state.project_id = payload
+  },
+  
   SET_SHAPES(state, payload) {
     state.shapes = payload
   },
 
   ADD_RECTANGLE(state, payload) {
     //we need a variable obj key, because that is how it is defined in the layout schema
-    let id = Object.keys(state.shapes).length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "rectangle",
         shape_name: "rectangle-shape",
+        row: length,
         itemName: "shapes",
         background_color: "none",
         border_color: "black",
@@ -34,22 +39,23 @@ export const mutations = {
         top: 1,
         left: 0,
         width: 200,
-        height: 100
+        height: 100,
+        z_index: 0,
       }
     }
 
     // update shapes state
-    Vue.set(state.shapes, id, obj[payload.layoutId])
+    Vue.set(state.shapes, payload.id, obj[payload.layoutId])
   },
 
   ADD_CIRCLE(state, payload) {
     //we need a variable obj key, because that is how it is defined in the layout schema
-    let id = Object.keys(state.shapes).length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "circle",
         shape_name: "circle-shape",
         itemName: "shapes",
@@ -68,17 +74,17 @@ export const mutations = {
     }
 
     // update shapes state
-    Vue.set(state.shapes, id, obj[payload.layoutId])
+    Vue.set(state.shapes, payload.id, obj[payload.layoutId])
   },
 
   ADD_TRIANGLE(state, payload) {
     //we need a variable obj key, because that is how it is defined in the layout schema
-    let id = Object.keys(state.shapes).length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "triangle",
         shape_name: "triangle-shape",
         itemName: "shapes",
@@ -97,17 +103,17 @@ export const mutations = {
     }
 
     // update shapes state
-    Vue.set(state.shapes, id, obj[payload.layoutId])
+    Vue.set(state.shapes, payload.id, obj[payload.layoutId])
   },
 
   ADD_LINE(state, payload) {
     //we need a variable obj key, because that is how it is defined in the layout schema
-    let id = Object.keys(state.shapes).length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "line",
         shape_name: "line-shape",
         itemName: "shapes",
@@ -126,18 +132,23 @@ export const mutations = {
     }
 
     // update shapes state
-    Vue.set(state.shapes, id, obj[payload.layoutId])
+    Vue.set(state.shapes, payload.id, obj[payload.layoutId])
   }
 }
 
 export const actions = {
-  initialize({ state, commit }, payload) {
+  initialize({ state, commit, rootGetters }, payload) {
+    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
     commit("SET_SHAPES", payload)
   },
 
   // decide which shape and push obj key to shapes ids array
-  addShape({ state, commit }, payload) {
-    let id = Object.keys(state.shapes).length + 1
+  async addShape({ state, commit }, payload) {
+    try{
+      payload.id = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+    }
+    catch(e){
+    }    
     switch (payload.shape) {
       case "rectangle":
         commit("ADD_RECTANGLE", payload)
@@ -154,7 +165,7 @@ export const actions = {
     }
     commit(
       "Layout/ADD_SHAPE",
-      { layoutId: payload.layoutId, id: id },
+      { layoutId: payload.layoutId, id: payload.id },
       { root: true }
     )
   }

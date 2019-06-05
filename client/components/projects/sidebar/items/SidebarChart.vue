@@ -16,11 +16,11 @@
         />
       </el-col>
 
-      <el-col :span="5">
+      <el-col :span="18">
         <h3>Legend</h3>
       </el-col>
       <el-col :span="2">
-        <el-checkbox
+        <el-checkbox class="sidebar-chart-legend-checkbox"
           :checked="currentItem.chart_settings.legend.show"
           @input="showLegend"
         />
@@ -32,12 +32,12 @@
     </el-row>
 
     <el-row class="y-axis-title">
-      <el-col :span="4">
-        <h3 class="sidebar-axis-title">
+      <el-col :span="5">
+        <h4 class="sidebar-axis-title">
           Y-Axis
-        </h3>
+        </h4>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="15">
         <el-input placeholder="Title" @input="updateYAxisTitle" />
       </el-col>
       <el-col :span="4">
@@ -49,13 +49,15 @@
           @input="updateYAxisTitleSize"
         />
       </el-col>
+    </el-row>
 
-      <el-col :span="4">
-        <h3 class="sidebar-axis-title">
+    <el-row>
+      <el-col :span="5">
+        <h4 class="sidebar-axis-title">
           X-Axis
-        </h3>
+        </h4>
       </el-col>
-      <el-col :span="16">
+      <el-col :span="15">
         <el-input placeholder="Title" @input="updateXAxisTitle" />
       </el-col>
       <el-col :span="4">
@@ -71,22 +73,19 @@
 
     <el-collapse class="coordinates-collapse">
       <el-collapse-item title="Coordinates">
-        <el-row
+        <el-row 
           v-for="(series, index) in currentItem.chart_settings.series"
           :key="index"
         >
-          <el-col :span="1">
-            <strong>{{ series.name }}</strong>
-          </el-col>
-          <el-col :span="16">
-            <el-input
+          <el-col :span="16" class="chart-line-name-input">
+            <el-input 
               :value="currentItem.chart_settings.series[index].name"
               size="small"
               placeholder="Name"
-              @input="updateSeriesName"
+              @input="updateSeriesName(index, $event)"
             />
           </el-col>
-          <el-col :span="7">
+          <el-col :span="7" class="chart-line-name-input">
             <el-color-picker
               :value="currentItem.chart_settings.series[index].itemStyle.color"
               size="small"
@@ -99,15 +98,14 @@
               <el-collapse-item title="Y-Axis">
                 <el-row>
                   <el-col
-                    v-for="(yItem, yIndex) in currentItem.chart_settings
-                      .series[0].data"
+                    v-for="(yItem, yIndex) in series.data"
                     :key="yIndex"
                     :span="4"
                   >
                     <el-input
                       size="small"
-                      :value="currentItem.chart_settings.series[0].data[yIndex]"
-                      @input="updateYAxisValue(yIndex, $event)"
+                      :value="yItem"
+                      @input="updateYAxisValue(index, yIndex, $event)"
                     />
                   </el-col>
                 </el-row>
@@ -141,6 +139,7 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import { mapGetters } from "vuex"
 import debounce from "../../../../Helper/Project/LayoutHelper.js"
 export default {
@@ -212,10 +211,11 @@ export default {
       this.$store.commit("LayoutItems/Chart/UPDATE_XAXIS_TITLE_SIZE", payload)
     }, 300),
 
-    updateYAxisValue: debounce(function(index, event) {
+    updateYAxisValue: debounce(function(index, yIndex, event) {
       let payload = {
         currentItem: this.currentItem,
         index: index,
+        yIndex: yIndex,
         value: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_YAXIS_VALUE", payload)
@@ -246,14 +246,14 @@ export default {
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_SERIES_COLOR", payload)
     },
-    updateSeriesName(index, event) {
+    updateSeriesName: debounce(function (index, event) {
       let payload = {
         index: index,
         currentItem: this.currentItem,
         name: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_SERIES_NAME", payload)
-    }
+    },300)
   }
 }
 </script>
@@ -266,6 +266,14 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
+}
+
+.sidebar-chart-legend-checkbox{
+  margin-top: 1.35rem;
+}
+
+.chart-line-name-input{
+  margin-top: 0.5rem;
 }
 
 .el-input__inner {

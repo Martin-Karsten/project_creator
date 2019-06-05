@@ -22,23 +22,36 @@ export const mutations = {
   },
 
   SELECT_PROJECT(state, payload) {
-    state.projects[payload].selected = !state.projects[payload].selected
+    state.projects[payload].selected = true
+  },
+
+  DESELECT_PROJECT(state, payload){
+    state.projects[payload].selected = false
+  },
+
+  MAKE_RENAMEABLE(state, payload) {
+    state.projects[payload].rename = true
+  },
+
+  CHANGE_PROJECT_NAME(state, payload) {
+    state.projects[payload.index].project_name = payload.value
+    state.projects[payload.index].rename = false
   },
 
   CREATE_PROJECT(state, payload) {
     state.projects.unshift(payload)
-    // state.projects.unshift(payload.id, {project_name: payload.project_name, user_id: payload.user_id, private: payload.private, textfields: [], images: [], tables: [], charts: [], shapes: []})
   },
 
   FETCH_PROJECTS_SUCCESS(state, payload) {
-    console.log(payload.data)
     let newP = payload.data.map(function(project) {
       return {
         id: project.id,
         project_name: project.project_name,
         created_at: project.created_at,
+        updated_at: project.updated_at,
         clicked: false,
-        editable: false
+        editable: false,
+        rename: false,
       }
     })
     state.projects = newP
@@ -56,6 +69,10 @@ export const mutations = {
         return
       }
     }
+  },
+
+  DELETE_PROJECTS(state, payload) {
+    state.projects = state.projects.filter( ( el ) => !payload.includes( el.id ) );
   }
 }
 

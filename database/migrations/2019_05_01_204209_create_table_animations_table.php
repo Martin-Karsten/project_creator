@@ -15,7 +15,7 @@ class CreateTableAnimationsTable extends Migration
     {
         Schema::create('table_animations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('table_id');
+            $table->string('table_id', 128);
             $table->string('animation_name', 30)->default('fadeIn');
             $table->double('animation_duration', 3,2)->default(0.5);
             $table->unsignedSmallInteger('animation_order')->default(0);

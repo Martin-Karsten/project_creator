@@ -75,6 +75,7 @@
           <shape-picker
             v-show="shapePickerActivated"
             @clicked="shapePickerActivated = !shapePickerActivated"
+            :currentLayout="currentLayout"
           />
         </el-col>
       </el-row>
@@ -109,8 +110,6 @@ export default {
   },
   computed: {
     ...mapGetters({
-      content: "StartMenus/StartMenuDefault/getEditor",
-      // id: 'Layout/'
       currentLayout: "Layout/getCurrentLayout"
     })
   },
@@ -120,38 +119,34 @@ export default {
       this.$store.commit("PresentationMode/SET_EDIT_MODE")
     },
     activateTextfieldIcon() {
-      this.creatorActivated = true
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 0 })
+      this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
     },
     activateWebImageIcon() {
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "WebImageContainer",
-        layoutId: this.currentLayout
+        layoutId: this.currentLayout,
+        id: ''
       })
-      this.creatorActivated = true
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 1 })
     },
     activateChartIcon() {
-      this.creatorActivated = true
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "ChartContainer",
-        layoutId: this.currentLayout
+        layoutId: this.currentLayout,
+        id: ''
       })
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 2 })
     },
     activateTableIcon() {
-      // this.tableSizePickerActivated = !this.tableSizePickerActivated
-      this.creatorActivated = true
-      this.$store.commit('StartMenus/StartMenu/ACTIVATE_ICON', {index: 3})
+      this.$store.dispatch('LayoutItems/Table/addTable', {layoutId: this.currentLayout, id: ''})
     },
     activateWebVideoIcon() {
-      this.creatorActivated = true
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 4 })
+      this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
+        name: "WebVideoContainer",
+        layoutId: this.currentLayout,
+        id: ''
+      })
     },
     activateShapesIcon() {
       this.shapePickerActivated = !this.shapePickerActivated
-      this.creatorActivated = true
-      this.$store.commit("StartMenus/StartMenu/ACTIVATE_ICON", { index: 5 })
     },
     startPresentationMode() {
       this.$store.commit("PresentationMode/SET_EDIT_MODE")

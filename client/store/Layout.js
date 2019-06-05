@@ -5,9 +5,8 @@ import layoutSchema from "./schema"
 
 export const state = () => ({
   realLayout: "",
-  layout: [],
   layoutList: [], // keep array of the ids
-  currentLayout: 0,
+  currentLayout: 2,
   currentItem: {},
   currentSelectedItem: {},
   projectId: "",
@@ -18,7 +17,7 @@ export const state = () => ({
   tables: "",
   charts: "",
   shapes: "",
-  imagesForm: []
+  deletedLayoutItems:{textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []},
 })
 
 export const getters = {
@@ -26,6 +25,7 @@ export const getters = {
   getCurrentLayout: state => state.currentLayout,
   getCurrentItem: state => state.currentItem,
   getCurrentSelectedItem: state => state.currentSelectedItem,
+  getProjectId: state => state.projectId,
   getAnimated: state => state.animated,
   getColor: state => state.color,
 
@@ -40,7 +40,16 @@ export const mutations = {
 
   ///// LAYOUT SETTINGS
   SET_CURRENT_LAYOUT(state, payload) {
+    state.realLayout[state.currentLayout].active = false
     state.currentLayout = payload
+    state.realLayout[payload].active = true
+  },
+
+  SET_CURRENT_LAYOUT_SCROLL(state, payload){
+    let id = state.layoutList[payload]
+    state.realLayout[state.currentLayout].active = false
+    state.currentLayout = id
+    state.realLayout[id].active = true
   },
 
   SET_CURRENT_ITEM(state, payload) {
@@ -52,7 +61,6 @@ export const mutations = {
     state.currentSelectedItem.selected = true
     state.currentSelectedItem.itemName = payload.itemName
 
-    // console.log(JSON.stringify(state.currentItem))
   },
 
   DESELECT_ITEM(state, payload) {
@@ -75,19 +83,29 @@ export const mutations = {
 
     Vue.delete(state.realLayout[state.currentItem.layout_item_id][state.currentItem.itemName], index) //from arr
     Vue.delete(state[state.currentItem.itemName], state.currentItem.id)
+
+    state.deletedLayoutItems[state.currentItem['itemName']].push(state.currentItem)
+    state.currentItem = ''
+
+    console.log(state.deletedLayoutItems)
   },
 
   DELETE_LAYOUT_ITEM(state, payload) {
-    console.log(payload.element)
     if(state.layoutList.length <= 1)
       return
 
     // Vue.delete(state.realLayout, payload.element)
 
-    Vue.delete(state.layoutList, payload.element)
+    state.deletedLayoutItems.layouts.push(payload.element)
 
-    console.log(state.layoutList)
+    let index = state.layoutList.indexOf(payload.element)
 
+    Vue.delete(state.layoutList, index)
+
+    state.currentLayout = state.layoutList[index-1]
+    state.realLayout[state.currentLayout].active = true
+
+    console.log(state.deletedLayoutItems.layouts)
   },
 
   CREATE_LAYOUT(state, payload) {
@@ -108,9 +126,17 @@ export const mutations = {
   },
 
   SET_LAYOUT(state, payload) {
-    const temp = normalize(payload, layoutSchema)
-
+    let temp = normalize(payload, layoutSchema)
     state.layoutList = temp.result
+
+    //add prop active, which actives when the element is in use, alwyas set first element to active at start
+    Object.keys(temp.entities.layouts).forEach(key => {
+      temp.entities.layouts[key].active = false;
+    });
+    temp.entities.layouts[Object.keys(temp.entities.layouts)[0]].active = true
+
+    state.currentLayout = Object.keys(temp.entities.layouts)[0]
+
     state.realLayout = temp.entities.layouts
 
     state.textfields = temp.entities.textfields
@@ -159,6 +185,7 @@ export const mutations = {
   ////// TEXTFIELD SETTINGS
   //we get our payload from store/LayoutItems/Textfield
   ADD_TEXTFIELD(state, payload) {
+    console.log(payload)
     // push obj key to textfields ids array
     state.realLayout[payload.layoutId]["textfields"].push(payload.id)
 
@@ -207,8 +234,8 @@ export const mutations = {
     // push obj key to web_images ids array
     state.realLayout[payload.layoutId]["web_images"].push(payload.id)
 
-    Vue.set(state.currentItem, 0, state["web_images"][payload.id])
-    state.currentItem.selected = true
+    // Vue.set(state.currentItem, 0, state["web_images"][payload.id])
+    // state.currentItem.selected = true
   },
 
   //////// WEB_VIDEO SETTINGS
@@ -216,7 +243,7 @@ export const mutations = {
     // push obj key to web_images ids array
     state.realLayout[payload.layoutId]["web_videos"].push(payload.id)
 
-    Vue.set(state.currentItem, 0, state["web_videos"][payload.id])
+    // Vue.set(state.currentItem, 0, state["web_videos"][payload.id])
   },
 
   ///////// TABLE SETTINGS
@@ -257,11 +284,11 @@ export const mutations = {
   },
 
   ADD_SHAPE(state, payload) {
-    // push obj key to textfields ids array
+    // push obj key to shapes ids array
     state.realLayout[payload.layoutId]["shapes"].push(payload.id)
 
     // state.currentItem = state['shapes'][payload.id]
-    state.currentItem.selected = true
+    // state.currentItem.selected = true
   },
 
   HIDE_TOOLBAR(state, payload) {
@@ -280,8 +307,8 @@ export const mutations = {
 
     state.realLayout = {
       ...state.realLayout,
-      [state.layoutList.length]: {
-        id: state.layoutList.length,
+      [payload]: {
+        id: payload,
         project_id: state.projectId,
         textfields: [],
         images: [],
@@ -295,7 +322,7 @@ export const mutations = {
       }
     }
 
-    state.layoutList.push(state.layoutList.length)
+    state.layoutList.push(payload)
   },
 
   /////// ANIMATION SETTINGS
@@ -385,29 +412,30 @@ export const actions = {
   },
 
   async saveToDB({ state, commit }, payload) {
-    state.projectId = payload.id
-    let id = payload.id
-    axios.put(`user/project/${id}/images`, state.imagesForm)
-    try {
-      const { data } = await axios.put(`user/project/${id}/textfields`, {
-        data: {
-          textfields: state.textfields
-        }
-      })
-    } catch (e) {
-      console.log(e)
-      alert("AN ERROR OCCURRED")
+    axios.put('user/project/{id}/updateLayout',{
+      data: {
+        projectId: state.projectId,
+        layouts: state.layoutList,
+        textfields: state.textfields,
+        web_images: state.web_images,
+        tables: state.tables,
+        web_videos: state.web_videos,
+        charts: state.charts,
+        shapes: state.shapes,
+        deletedLayoutItems: state.deletedLayoutItems
+      }
+    })
+  },
+
+  async addItem({state, commit}){
+    let id = ''
+    try{
+      id  = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
     }
-    try {
-      const { data } = await axios.put(`user/project/${id}/web-images`, {
-        data: {
-          web_images: state.web_images
-        }
-      })
-    } catch (e) {
-      console.log(e)
-      alert("AN ERROR OCCURRED")
+    catch(e){
     }
+
+    commit('ADD_ITEM', id)
   },
 
   animate({ state, commit, rootGetters }, payload) {

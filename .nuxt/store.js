@@ -19,75 +19,75 @@ void (function updateModules() {
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('../client/store/ColorPicker.js'), 'ColorPicker.js')
+  resolveStoreModules(require('../client/store/LayoutHelpers.js'), 'LayoutHelpers.js')
   resolveStoreModules(require('../client/store/auth.js'), 'auth.js')
+  resolveStoreModules(require('../client/store/SidebarImage.js'), 'SidebarImage.js')
+  resolveStoreModules(require('../client/store/EditContainer.js'), 'EditContainer.js')
   resolveStoreModules(require('../client/store/lang.js'), 'lang.js')
   resolveStoreModules(require('../client/store/Layout.js'), 'Layout.js')
-  resolveStoreModules(require('../client/store/LayoutHelpers.js'), 'LayoutHelpers.js')
+  resolveStoreModules(require('../client/store/SidebarTextfield.js'), 'SidebarTextfield.js')
   resolveStoreModules(require('../client/store/LayoutItem.js'), 'LayoutItem.js')
-  resolveStoreModules(require('../client/store/EditContainer.js'), 'EditContainer.js')
+  resolveStoreModules(require('../client/store/ColorPicker.js'), 'ColorPicker.js')
   resolveStoreModules(require('../client/store/PresentationMode.js'), 'PresentationMode.js')
   resolveStoreModules(require('../client/store/Project.js'), 'Project.js')
   resolveStoreModules(require('../client/store/schema.js'), 'schema.js')
   resolveStoreModules(require('../client/store/sidebar-default.js'), 'sidebar-default.js')
   resolveStoreModules(require('../client/store/Sidebar.js'), 'Sidebar.js')
-  resolveStoreModules(require('../client/store/SidebarImage.js'), 'SidebarImage.js')
-  resolveStoreModules(require('../client/store/SidebarTextfield.js'), 'SidebarTextfield.js')
   resolveStoreModules(require('../client/store/LayoutItems/Chart.js'), 'LayoutItems/Chart.js')
-  resolveStoreModules(require('../client/store/ContextMenus/WebImageContextMenu.js'), 'ContextMenus/WebImageContextMenu.js')
+  resolveStoreModules(require('../client/store/StartMenus/StartMenuDefault.js'), 'StartMenus/StartMenuDefault.js')
   resolveStoreModules(require('../client/store/LayoutItems/Table.js'), 'LayoutItems/Table.js')
   resolveStoreModules(require('../client/store/LayoutItems/Textfield.js'), 'LayoutItems/Textfield.js')
   resolveStoreModules(require('../client/store/LayoutItems/WebImage.js'), 'LayoutItems/WebImage.js')
   resolveStoreModules(require('../client/store/LayoutItems/WebVideo.js'), 'LayoutItems/WebVideo.js')
-  resolveStoreModules(require('../client/store/ContextMenus/WebVideoContextMenu.js'), 'ContextMenus/WebVideoContextMenu.js')
+  resolveStoreModules(require('../client/store/StartMenus/StartMenuAnimations.js'), 'StartMenus/StartMenuAnimations.js')
+  resolveStoreModules(require('../client/store/StartMenus/StartMenu.js'), 'StartMenus/StartMenu.js')
   resolveStoreModules(require('../client/store/StartMenus/StartMenuTable.js'), 'StartMenus/StartMenuTable.js')
-  resolveStoreModules(require('../client/store/ContextMenus/ChartContextMenu.js'), 'ContextMenus/ChartContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/ContextMenu.js'), 'ContextMenus/ContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/SidebarScrollerContextMenu.js'), 'ContextMenus/SidebarScrollerContextMenu.js')
-  resolveStoreModules(require('../client/store/ContextMenus/TableContextMenu.js'), 'ContextMenus/TableContextMenu.js')
-  resolveStoreModules(require('../client/store/ContextMenus/TextfieldContextMenu.js'), 'ContextMenus/TextfieldContextMenu.js')
-  resolveStoreModules(require('../client/store/StartMenus/StartMenu.js'), 'StartMenus/StartMenu.js')
-  resolveStoreModules(require('../client/store/StartMenus/StartMenuAnimations.js'), 'StartMenus/StartMenuAnimations.js')
-  resolveStoreModules(require('../client/store/StartMenus/StartMenuDefault.js'), 'StartMenus/StartMenuDefault.js')
   resolveStoreModules(require('../client/store/LayoutItems/Shapes.js'), 'LayoutItems/Shapes.js')
+  resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/WebVideoContextMenu.js'), 'ContextMenus/LayoutItems/WebVideoContextMenu.js')
+  resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/WebImageContextMenu.js'), 'ContextMenus/LayoutItems/WebImageContextMenu.js')
+  resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/TextfieldContextMenu.js'), 'ContextMenus/LayoutItems/TextfieldContextMenu.js')
+  resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/TableContextMenu.js'), 'ContextMenus/LayoutItems/TableContextMenu.js')
+  resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/ChartContextMenu.js'), 'ContextMenus/LayoutItems/ChartContextMenu.js')
 
   // If the environment supports hot reloading...
 
   if (process.client && module.hot) {
     // Whenever any Vuex module is updated...
     module.hot.accept([
-      '../client/store/ColorPicker.js',
+      '../client/store/LayoutHelpers.js',
       '../client/store/auth.js',
+      '../client/store/SidebarImage.js',
+      '../client/store/EditContainer.js',
       '../client/store/index.js',
       '../client/store/lang.js',
       '../client/store/Layout.js',
-      '../client/store/LayoutHelpers.js',
+      '../client/store/SidebarTextfield.js',
       '../client/store/LayoutItem.js',
-      '../client/store/EditContainer.js',
+      '../client/store/ColorPicker.js',
       '../client/store/PresentationMode.js',
       '../client/store/Project.js',
       '../client/store/schema.js',
       '../client/store/sidebar-default.js',
       '../client/store/Sidebar.js',
-      '../client/store/SidebarImage.js',
-      '../client/store/SidebarTextfield.js',
       '../client/store/LayoutItems/Chart.js',
-      '../client/store/ContextMenus/WebImageContextMenu.js',
+      '../client/store/StartMenus/StartMenuDefault.js',
       '../client/store/LayoutItems/Table.js',
       '../client/store/LayoutItems/Textfield.js',
       '../client/store/LayoutItems/WebImage.js',
       '../client/store/LayoutItems/WebVideo.js',
-      '../client/store/ContextMenus/WebVideoContextMenu.js',
+      '../client/store/StartMenus/StartMenuAnimations.js',
+      '../client/store/StartMenus/StartMenu.js',
       '../client/store/StartMenus/StartMenuTable.js',
-      '../client/store/ContextMenus/ChartContextMenu.js',
       '../client/store/ContextMenus/ContextMenu.js',
       '../client/store/ContextMenus/SidebarScrollerContextMenu.js',
-      '../client/store/ContextMenus/TableContextMenu.js',
-      '../client/store/ContextMenus/TextfieldContextMenu.js',
-      '../client/store/StartMenus/StartMenu.js',
-      '../client/store/StartMenus/StartMenuAnimations.js',
-      '../client/store/StartMenus/StartMenuDefault.js',
       '../client/store/LayoutItems/Shapes.js',
+      '../client/store/ContextMenus/LayoutItems/WebVideoContextMenu.js',
+      '../client/store/ContextMenus/LayoutItems/WebImageContextMenu.js',
+      '../client/store/ContextMenus/LayoutItems/TextfieldContextMenu.js',
+      '../client/store/ContextMenus/LayoutItems/TableContextMenu.js',
+      '../client/store/ContextMenus/LayoutItems/ChartContextMenu.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

@@ -5,11 +5,12 @@
     handle=".scroll-handle"
   >
     <a
-      v-for="element in layout"
-      :key="element + 'element'"
-      :href="'#item' + element"
-      class="scroll-item"
+      v-for="(element, index) in layout"
+      :key="index + 'element'"
+      :class="[layoutSet[index].active ? activeClass : '', notActiveClass]"
       @contextmenu.prevent="openContextMenu(element)"
+      @click="setCurrentLayout(element)"
+      v-scroll-to="{ element: '#item' + element, duration: 75 , container: '.grid-items', easing: 'ease',}"
     >
     {{element}}
       <div class="scroll-handle" />
@@ -18,10 +19,9 @@
 </template>
 
 <script>
+import ScrollTo from '~/plugins/vue-scrollto'
 import draggable from "vuedraggable"
 import { mapGetters } from "vuex"
-import { mapState } from "vuex"
-import { mapMutations } from "vuex"
 export default {
   components: {
     draggable
@@ -29,9 +29,14 @@ export default {
   props: ["newItem"],
   data() {
     return {
+      activeClass: 'scroll-item-active',
+      notActiveClass: 'scroll-item'
     }
   },
   computed: {
+    ...mapGetters({
+      layoutSet: "Layout/getLayoutSet"
+    }),
     layout: {
       get() {
         return this.$store.getters["Layout/getLayoutList"]
@@ -42,6 +47,9 @@ export default {
     }
   },
   methods: {
+    setCurrentLayout(element){
+      this.$store.commit('Layout/SET_CURRENT_LAYOUT', element)
+    },
     openContextMenu(element){
       let payload = {
         name: "SidebarScrollerContextMenu",
@@ -49,6 +57,7 @@ export default {
         y: event.pageY + 50 + "px",
         element: element
       }
+      this.$store.commit('Layout/SET_CURRENT_LAYOUT', element)
       this.$store.dispatch('ContextMenus/ContextMenu/openSidebarScrollerContextMenu', payload)
     }
   }
@@ -72,6 +81,16 @@ a.scroll-item {
   margin-bottom: 1rem;
   display: block;
   position: relative;
+}
+
+a.scroll-item-active {
+  background: lightgray;
+  height: 22%;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  display: block;
+  position: relative;
+  border: 5px solid lightblue;
 }
 
 div.scroll-handle {

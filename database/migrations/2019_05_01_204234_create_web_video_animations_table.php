@@ -15,7 +15,7 @@ class CreateWebVideoAnimationsTable extends Migration
     {
         Schema::create('web_video_animations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('web_video_id');
+            $table->string('web_video_id', 128);
             $table->string('animation_name', 30)->default('fadeIn');
             $table->double('animation_duration', 3,2)->default(0.5);
             $table->unsignedSmallInteger('animation_order')->default(0);

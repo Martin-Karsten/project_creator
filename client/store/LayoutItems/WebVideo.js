@@ -9,24 +9,26 @@ export const getters = {
 }
 
 export const mutations = {
+  SET_PROJECT_ID(state, payload) {
+    state.project_id = payload
+  },
+  
   SET_WEB_VIDEOS(state, payload) {
     state.web_videos = payload
   },
 
   ADD_WEB_VIDEO(state, payload) {
     //we need a variable obj key, because that is how it is defined in the layout schema
-    let id = Object.keys(state.web_videos).length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
         name: "web_video",
         itemName: "web_videos",
         video_id: payload.video_id,
         layout_item_id: payload.layoutId,
-        row: payload,
-        background_color: "none",
+        row: payload.layoutId,
         border_color: "black",
         border_style: "solid",
         animations: {},
@@ -42,24 +44,29 @@ export const mutations = {
     }
 
     // update web_video state
-    Vue.set(state.web_videos, id, obj[payload.layoutId])
+    Vue.set(state.web_videos, payload.id, obj[payload.layoutId])
   }
 }
 
 export const actions = {
-  initialize({ state, commit }, payload) {
+  initialize({ state, commit, rootGetters }, payload) {
+    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
     commit("SET_WEB_VIDEOS", payload)
   },
 
   // push obj key to web_videos ids array
-  addWebVideo({ state, commit }, payload) {
+  async addWebVideo({ state, commit }, payload) {
     //this is the id that is going to be assigned to the newly created web_video
-    let id = Object.keys(state.web_videos).length + 1
+    try{
+      payload.id = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+    }
+    catch(e){
+    }    
 
     commit("ADD_WEB_VIDEO", payload)
     commit(
       "Layout/ADD_WEB_VIDEO",
-      { layoutId: payload.layoutId, id: id, web_videos: state.web_videos },
+      { layoutId: payload.layoutId, id: payload.id, web_videos: state.web_videos },
       { root: true }
     )
   }

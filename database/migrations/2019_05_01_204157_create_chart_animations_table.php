@@ -15,7 +15,7 @@ class CreateChartAnimationsTable extends Migration
     {
         Schema::create('chart_animations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('chart_id');
+            $table->string('chart_id', 128);
             $table->string('animation_name', 30)->default('fadeIn');
             $table->double('animation_duration', 3,2)->default(0.5);
             $table->unsignedSmallInteger('animation_order')->default(0);

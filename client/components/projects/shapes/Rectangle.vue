@@ -6,6 +6,7 @@
       backgroundColor: 'red'
     }"
     @click="setCurrentItem"
+    @contextmenu.prevent="openContextMenu"
   />
 </template>
 
@@ -43,6 +44,22 @@ export default {
         itemName: "shapes"
       }
       this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
+    },
+    openContextMenu() {
+      let payload = {
+        name: "ShapesContextMenu",
+        x: event.pageX + "px",
+        y: event.pageY + "px",
+        row: this.row
+      }
+
+      let payload2 = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "shapes"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
+      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
     }
   }
 }

@@ -1,72 +1,59 @@
 <template>
-  <div class="box">
-    <form @submit.prevent="login" @keydown="form.onKeydown($event)">
-      <div class="columns form form1">
-        <div class="column is-6">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input
-                v-model="form.email"
-                class="input is-medium"
-                :class="{ 'is-invalid': form.errors.has('email') }"
-                type="email"
-                placeholder="Email"
-                name="email"
-              >
-              <has-error :form="form" field="email" />
-              <span class="icon is-small is-left">
-                <fa icon="envelope" />
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
+  <el-col :offset="6" class="login-form-col">
+    <el-form class="login-form" label-position="top" ref="form" :model="form" label-width="120px">
+      <el-form-item 
+          prop="email"
+          label="EMail Address"
+          :rules="[
+            { required: true, message: 'Please input your email address', trigger: 'blur' },
+            { type: 'email', message: 'Please input a correct email address', trigger: ['blur', 'change'] }
+          ]"    
+      >
+      <el-col :span="24">
+        <el-input 
+          v-model="form.email"
+          class="input is-medium"
+          type="email"
+          placeholder="Email"
+          name="email"
+          autocomplete="on"
+        />
+        <has-error :form="form" field="email" />
+      </el-col>
 
-      <div class="columns form">
-        <div class="column is-6">
-          <div class="field">
-            <p class="control has-icons-left">
-              <input
-                v-model="form.password"
-                class="input is-medium"
-                :class="{ 'is-invalid': form.errors.has('password') }"
-                type="password"
-                placeholder="Password"
-                name="password"
-              >
-              <has-error :form="form" field="password" />
-              <span class="icon is-small is-left">
-                <fa icon="shield-alt" />
-              </span>
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="check has-text-centered">
-        <checkbox v-model="remember" name="remember">
+      </el-form-item
+      
+      >
+      <el-form-item 
+        label="Password"
+        prop="password"
+        :rules="[
+          { required: true, message: 'Please input your password', trigger: 'blur' },
+        ]"       
+      >
+        <el-col :span="24">
+          <el-input 
+            v-model="form.password"
+            class="input is-medium"
+            :class="{ 'is-invalid': form.errors.has('password') }"
+            type="password"
+            placeholder="Password"
+            name="password"    
+          />
+            <has-error :form="form" field="password" />
+        </el-col>
+      </el-form-item>
+      <el-form-item>
+        <el-checkbox v-model="remember">
           {{ $t("remember_me") }}
-        </checkbox>
-      </div>
-
-      <div class="has-text-centered">
-        <button class="button is-success">
-          {{ $t("login") }}
-        </button>
-        <router-link :to="{ name: 'register' }">
-          <button class="button is-success">
-            {{ $t("register") }}
-          </button>
-        </router-link>
-      </div>
-    </form>
-
-    <div class="forgot-pw has-text-centered">
-      <router-link :to="{ name: 'password.request' }">
-        {{ $t("forgot_password") }}
-      </router-link>
-    </div>
-  </div>
+        </el-checkbox>
+      </el-form-item>
+      <el-form-item>
+      <el-button type="primary" @click="submitForm">Login</el-button>
+      <router-link to="/register"> <el-button>Register</el-button> </router-link>
+    </el-form-item>
+    </el-form>
+  </el-col>
 </template>
 
 <script>
@@ -82,10 +69,23 @@ export default {
       email: "",
       password: ""
     }),
-    remember: false
+    remember: false,
+    rules: {
+      email: [],
+      password: [],
+    }
   }),
 
   methods: {
+    submitForm(){
+        this.$refs.form.validate((valid) => {
+          if (!valid) {
+            return false
+          } else {
+            this.login()
+          }
+        });
+    },
     async login() {
       // Submit the form.
       const { data } = await this.form.post("/login")
@@ -107,31 +107,14 @@ export default {
 </script>
 
 <style>
-div.form {
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+.login-form-col {
+  margin-top: 9%;
+  width: 1000px;
+  padding: 1rem;
+  /* border: 1px solid black; */
 }
 
-div.form1 {
-  margin-top: 1rem;
-}
+.login-form{
 
-div.check {
-  margin-bottom: 1rem;
-}
-
-.forgot-pw {
-  margin-top: 1.8rem;
-  margin-bottom: 0.5rem;
-}
-
-input:focus,
-select:focus,
-textarea:focus,
-button:focus {
-  outline: none;
 }
 </style>

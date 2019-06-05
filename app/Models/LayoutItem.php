@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class LayoutItem extends Model
 {
+    public $incrementing = false;
     protected $table = 'layout_items';
 
     protected $fillable = [
-        'project_id', 'textfield_id', 'image_id', 'web_image_id', 'table_id', 'chart_id', 'web_video_id', 'shapes_id' 
+        'id', 'project_id', 'textfield_id', 'image_id', 'web_image_id', 'table_id', 'chart_id', 'web_video_id', 'shapes_id' 
     ];
 
     public function projectLayout()

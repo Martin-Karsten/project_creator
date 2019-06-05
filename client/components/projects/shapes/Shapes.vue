@@ -25,10 +25,13 @@ export default {
     ArrowShape
   },
   props: {
-    layoutId: {},
-    id: {},
+    layoutId: {
+      required: true
+    },
+    id: {
+      required: true
+    },
     shape: {
-      type: String,
       required: true
     },
     color: {

@@ -30,7 +30,12 @@ import {
   CollapseItem,
   ColorPicker,
   Option,
-  Popover
+  Popover,
+  Tree,
+  Form,
+  FormItem,
+  Notification,
+  Message
 } from "element-ui"
 
 Vue.component(Container.name, Container)
@@ -64,3 +69,14 @@ Vue.component(Option.name, Option)
 Vue.component(Slider.name, Slider)
 Vue.component(Cascader.name, Cascader)
 Vue.component(Popover.name, Popover)
+Vue.component(Tree.name, Tree)
+Vue.component(Form.name, Form)
+Vue.component(FormItem.name, FormItem)
+
+// Vue.prototype.$loading = Loading.service;
+// Vue.prototype.$msgbox = MessageBox;
+// Vue.prototype.$alert = MessageBox.alert;
+// Vue.prototype.$confirm = MessageBox.confirm;
+// Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$notify = Notification;
+Vue.prototype.$message = Message;

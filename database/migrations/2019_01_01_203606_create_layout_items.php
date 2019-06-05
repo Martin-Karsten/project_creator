@@ -14,15 +14,8 @@ class CreateLayoutItems extends Migration
     public function up()
     {
         Schema::create('layout_items', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id')->primary();
             $table->string('project_id');
-            $table->unsignedBigInteger('textfield_id')->nullable();
-            $table->unsignedBigInteger('image_id')->nullable();
-            $table->unsignedBigInteger('web_image_id')->nullable();
-            $table->unsignedBigInteger('table_id')->nullable();
-            $table->unsignedBigInteger('chart_id')->nullable();
-            $table->unsignedBigInteger('web_video_id')->nullable();
-            $table->unsignedBigInteger('shapes_id')->nullable();
             $table->timestamps();
 
             $table->foreign('project_id')

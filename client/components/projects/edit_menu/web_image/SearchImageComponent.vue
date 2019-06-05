@@ -71,7 +71,8 @@ export default {
     selectImage(url) {
       let payload = {
         url: url,
-        layoutId: this.layoutId
+        layoutId: this.layoutId,
+        id: ''
       }
       this.$store.dispatch("LayoutItems/WebImage/addWebImage", payload)
     },

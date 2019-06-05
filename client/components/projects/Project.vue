@@ -1,11 +1,17 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
-      <el-col :span="24">
+      <el-col :span="24"
+      >
+        <div 
+          ref="gridItems"
+          class="grid-items-hidden"
+        >
         <draggable
           :disabled="true"
           :list="layoutSet"
           class="grid-items"
+            @scroll.native="handleScroll($event, layoutSet)"          
         >
           <div
             v-for="(element, index) in layoutSet"
@@ -51,9 +57,9 @@
                   trigger="click"
                 >
                   <div style="text-align: right; margin: 0">
-                    <shape-picker />
+                    <shape-picker :currentLayout="element.id" />
                   </div>
-                  <fa slot="reference" class="tooltip-icon" icon="shapes" @click="toShapes(index, element.id)" />
+                  <fa slot="reference" class="tooltip-icon" icon="shapes" />
                 </el-popover>
               </el-tooltip>
             </el-row>
@@ -68,7 +74,6 @@
               :handles="['ml', 'mr']"  
               @resizing="containerResizing"
               @dragging="containerDragging"
-              @contextmenu="openContextMenu"
             >
               <textfield-editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layout-row="index" :row="textfieldIndex" :layout-id="element.id" />
             </vue-draggable-resizable>
@@ -141,12 +146,11 @@
               :draggable="isDraggable"
               @resizing="chartResizing"
               @dragging="containerDragging"
-              @contextmenu="openContextMenu"
             >
               <!-- Echarts needs an extra container to set the current element and to resize the table to the size of its parent, 
                     thats why we set the currentItem by clicking the container here, instead of doing it inside the component
                  -->
-              <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex)">
+              <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex, element.id, chart.id)">
                 <chart :id="chart.id" :width="chart.width" :height="chart.height" :settings="chart.chart_settings" :layout-id="element.id" />
               </div>
             </vue-draggable-resizable>
@@ -166,6 +170,7 @@
             </vue-draggable-resizable>
           </div>
         </draggable>
+        </div>
         <context-menu />
       </el-col>
 
@@ -175,8 +180,10 @@
 </template>
 
 <script>
+
 import { mapGetters, mapState } from "vuex"
 import debounce from "../../Helper/Project/LayoutHelper.js"
+import ScrollTo from '~/plugins/vue-scrollto'
 //Items
 import TextfieldEditor from "./textfield/TipTapEditor"
 import TableEditor from "./table/Table"
@@ -212,7 +219,7 @@ export default {
         Rectangle,
         UrlInput,
         ShapePicker,
-        ContextMenu
+        ContextMenu,
     },
     props: ['editMode'],
   data() {
@@ -220,12 +227,13 @@ export default {
       isEmpty: true,
       dragging: false,
       imageData: "",
-      isDraggable: true
+      isDraggable: true,
     }
   },
   computed: {
     ...mapGetters({
       currentItem: "Layout/getCurrentItem",
+      currentLayout: "Layout/getCurrentLayout",
       toolboxes: "LayoutHelpers/getToolboxes",
       startMenuIcons: "StartMenus/StartMenu/getStartMenuIcons",
       currentMode: "PresentationMode/getCurrentMode",
@@ -302,41 +310,21 @@ export default {
       if (this.currentItem != "") {
         this.$store.commit("Layout/DESELECT_ITEM")
       }
-      //check if item creation icon was selected, if yes create new item
-      if (this.startMenuIcons[0].activated == true) {
-        this.$store.dispatch("LayoutItems/Textfield/addTextfield", layoutId)
-        this.$store.commit("StartMenus/StartMenu/SET_ICON_TO_FALSE", {
-          index: 0
-        })
-      } else if (this.startMenuIcons[1].activated) {
-        this.$store.commit("Layout/SET_CURRENT_LAYOUT", row)
-        this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", row)
-        // this.$store.commit('Layout/ADD_WEB_IMAGE', {row: row, icon: i})
-        this.$store.commit("StartMenus/StartMenu/SET_ICON_TO_FALSE", {
-          index: 1
-        })
-      } else if (this.startMenuIcons[2].activated) {
-      } else if (this.startMenuIcons[3].activated) {
-        console.log(layoutId)
-        this.$store.dispatch("LayoutItems/Table/addTable", layoutId)
-        this.$store.commit("StartMenus/StartMenu/SET_ICON_TO_FALSE", {
-          index: 3
-        })
-      } else if (this.startMenuIcons[4].activated) {
-      } else if (this.startMenuIcons[5].activated) {
-        this.$store.dispatch("LayoutItems/Shapes/addShape", {
-          layoutId: layoutId,
-          shape: this.startMenuIcons[5].shape
-        })
-        this.$store.commit("StartMenus/StartMenu/SET_ICON_TO_FALSE", {
-          index: 5
-        })
-      }
+      this.$store.commit('Layout/SET_CURRENT_LAYOUT', layoutId)
     },
+    handleScroll: debounce(function (event, layoutSet) {
+      //layout item has height of 663px, we divide the size of all layout items by scrollTop and get position of the current item
+      let pos = 0
+      let height = 663 * layoutSet.length
+      if(event.target.scrollTop % 663 === 0)
+        pos = event.target.scrollTop / 663
+
+    this.$store.commit('Layout/SET_CURRENT_LAYOUT_SCROLL', pos)
+    },300),
     onDeactivated(){
       console.log('deactivated')
     },
-    openContextMenu(layoutRow, row) {
+    openContextMenu(layoutRow, row, layoutId, id) {
       let payload = {
         name: "ChartContextMenu",
         x: event.pageX + "px",
@@ -347,7 +335,9 @@ export default {
       let payload2 = {
         layoutRow: layoutRow,
         itemRow: row,
-        itemName: "charts"
+        itemName: "charts",
+        id: id,
+        layoutId: layoutId,
       }
       this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
       this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
@@ -367,7 +357,7 @@ export default {
       this.$store.commit("Layout/RESIZE_SHAPE_CONTAINER", { width, height })
     }, 25),
     toTextfield(index, layoutId) {
-      this.$store.dispatch("LayoutItems/Textfield/addTextfield", layoutId)
+      this.$store.dispatch("LayoutItems/Textfield/addTextfield", {layoutId: layoutId, id: ''})
     },
     toChart(row, layoutId) {
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
@@ -376,25 +366,24 @@ export default {
         layoutId: layoutId
       })
     },
-    toImage(row, $event) {
-      this.imageData = event.target
-      // create a new FileReader to read this image and convert to base64 format
-      let reader = new FileReader()
-      // Define a callback function to run, when FileReader finishes its job
-      reader.onload = e => {
-        // Read image as base64 and set to imageData
-        this.imageData = e.target.result
-      }
-      reader.readAsDataURL(this.imageData.files[0])
+    // toImage(row, $event) {
+    //   this.imageData = event.target
+    //   // create a new FileReader to read this image and convert to base64 format
+    //   let reader = new FileReader()
+    //   // Define a callback function to run, when FileReader finishes its job
+    //   reader.onload = e => {
+    //     // Read image as base64 and set to imageData
+    //     this.imageData = e.target.result
+    //   }
+    //   reader.readAsDataURL(this.imageData.files[0])
 
-      this.$store.commit("Layout/ADD_IMAGE", {
-        row: row,
-        file: this.imageData.files[0],
-        name: this.imageData.files[0].name
-      })
-    },
+    //   this.$store.commit("Layout/ADD_IMAGE", {
+    //     row: row,
+    //     file: this.imageData.files[0],
+    //     name: this.imageData.files[0].name
+    //   })
+    // },
     toWebImage(row, layoutId) {
-      this.$store.commit("Layout/SET_CURRENT_LAYOUT", row)
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "WebImageContainer",
         row: row,
@@ -402,21 +391,21 @@ export default {
       })
     },
     toWebVideo(row, layoutId) {
-      this.$store.commit("Layout/SET_CURRENT_LAYOUT", row)
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "WebVideoContainer",
         row: row,
-        layoutId: layoutId
+        layoutId: layoutId,
+        id: 'id'
       })
     },
-    toTable(row) {
-      // this.$store.commit('Layout/ADD_TABLE', {layoutRow: row, rows: 2,  columns: 3})
+    toTable(row, layoutId) {
+      this.$store.dispatch("LayoutItems/Table/addTable", {layoutId: layoutId, id: ''})
     },
-    toShapes(row) {
-      console.log("hoho")
-    },
-    addItem() {
-      this.$store.commit("Layout/ADD_ITEM")
+    // toShapes(row, layoutId) {
+    //   console.log("hoho")
+    // },
+    addItem(row, layoutId) {
+      this.$store.dispatch("Layout/addItem")
       // this.$store.commit('LayoutHelpers/ADD_TOOLBOX', this.layout.length)
     },
     hideOrShowToolbar(row) {
@@ -447,14 +436,23 @@ div.grid-items {
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
+  scroll-snap-type: y mandatory;
+}
+
+div.grid-items-hidden{
+  padding: 0;
+  height: 673px;
+  overflow: hidden;
+  position: relative;  
 }
 div.item-container {
-  height: 659px;
+  height: 657px;
   width: 99.8%;
   border: 1px solid black;
   position: relative;
   margin-bottom: 0.25rem;
   margin-top: 0.25rem;
+  scroll-snap-align: center;
 }
 
 div.animation-number {

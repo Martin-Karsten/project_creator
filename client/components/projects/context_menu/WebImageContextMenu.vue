@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contextMenu: "ContextMenus/WebImageContextMenu/getContextMenu"
+      contextMenu: "ContextMenus/LayoutItems/WebImageContextMenu/getContextMenu"
     })
   },
   methods: {

@@ -27,10 +27,13 @@ Route::group(['middleware' => 'auth:api'], function () {
     //Project Settings
     Route::get('/user/projects', 'Project\ProjectsController@index');
 
+    // Route::resource('project', 'ProjectsController');
     Route::get('user/project/{id}', 'Project\ProjectsController@show');
     Route::post('user/project/create', 'Project\ProjectsController@create');
     Route::patch('user/project/{id}/update', 'Project\ProjectsController@update');
+    Route::put('user/project/{id}/updateLayout', 'Project\ProjectsController@updateLayout');
     Route::delete('user/project/{id}/delete', 'Project\ProjectsController@delete');
+    Route::post('user/projects/delete', 'Project\ProjectsController@deleteMultiple');   //post multiple projects and delete them
 
     //Project Components
         //Textfields

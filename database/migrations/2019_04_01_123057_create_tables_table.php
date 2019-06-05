@@ -14,8 +14,10 @@ class CreateTablesTable extends Migration
     public function up()
     {
         Schema::create('tables', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('layout_item_id');
+            $table->string('id', 128)->primary();
+            $table->string('name', 100)->default('default');
+            $table->string('project_id');
+            $table->string('layout_item_id', 128);
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedTinyInteger('row')->default(0);

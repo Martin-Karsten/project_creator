@@ -1,5 +1,19 @@
 <template>
-  <div class="columns">
+  <el-row class="chart-default-component-list">
+    <el-col :span="4">
+      <el-menu mode="vertical" class="chart-default-component-menu">
+        <el-menu-item index="1" @click="showLineChart">Line Chart</el-menu-item>
+        <el-menu-item index="1" @click="showBarChart">Bar Chart</el-menu-item>
+      </el-menu>
+    </el-col>
+    <el-col :span="20" class="chart-default-component-image-column"
+    >
+      <img :src="currentChart" class="chart-default-component-image"
+      @click="createChart"      
+      >
+    </el-col>
+  </el-row>
+  <!-- <div class="columns">
     <div class="column is-2 chart-default-component-list">
       <div class="list is-hoverable">
         <a class="list-item" @click="showLineChart">
@@ -17,7 +31,7 @@
     >
       <img :src="currentChart">
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -41,7 +55,7 @@ export default {
         layoutId: this.layoutId,
         name: "Chart Name?"
       }
-
+      console.log(this.currentChart)
       switch (this.currentChart) {
         case this.lineChart:
           payload.type = "line"
@@ -77,12 +91,18 @@ export default {
 <style>
 div.chart-default-component-list {
   margin-top: 2rem;
-  height: 38rem;
+}
+.chart-default-component-menu{
+  margin-top: 2rem;
 }
 div.chart-default-component-image-column {
   transition: transform 0.2s;
 }
 div.chart-default-component-image-column:hover {
   transform: scale(1.1);
+}
+img.chart-default-component-image{
+  width: 95%;
+  margin-bottom: 1rem;
 }
 </style>

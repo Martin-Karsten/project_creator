@@ -18,6 +18,7 @@ import nuxt_plugin_i18n_56ca5e75 from 'nuxt_plugin_i18n_56ca5e75' // Source: ../
 import nuxt_plugin_vform_f95cee7a from 'nuxt_plugin_vform_f95cee7a' // Source: ../client/plugins/vform (mode: 'all')
 import nuxt_plugin_axios_fb9c9a02 from 'nuxt_plugin_axios_fb9c9a02' // Source: ../client/plugins/axios (mode: 'all')
 import nuxt_plugin_fontawesome_773d88fd from 'nuxt_plugin_fontawesome_773d88fd' // Source: ../client/plugins/fontawesome (mode: 'all')
+import nuxt_plugin_vuescrollto_15afb874 from 'nuxt_plugin_vuescrollto_15afb874' // Source: ../client/plugins/vue-scrollto (mode: 'all')
 import nuxt_plugin_colorpicker_dc745d86 from 'nuxt_plugin_colorpicker_dc745d86' // Source: ../client/plugins/color-picker (mode: 'client')
 import nuxt_plugin_vueecharts_06f390fb from 'nuxt_plugin_vueecharts_06f390fb' // Source: ../client/plugins/vue-echarts.js (mode: 'client')
 import nuxt_plugin_vuexpersist_13f465a2 from 'nuxt_plugin_vuexpersist_13f465a2' // Source: ../client/plugins/vuex-persist (mode: 'client')
@@ -186,6 +187,10 @@ async function createApp(ssrContext) {
 
   if (typeof nuxt_plugin_fontawesome_773d88fd === 'function') {
     await nuxt_plugin_fontawesome_773d88fd(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuescrollto_15afb874 === 'function') {
+    await nuxt_plugin_vuescrollto_15afb874(app.context, inject)
   }
 
   if (process.client && typeof nuxt_plugin_colorpicker_dc745d86 === 'function') {

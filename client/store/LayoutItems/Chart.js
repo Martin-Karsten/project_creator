@@ -25,6 +25,10 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  SET_PROJECT_ID(state, payload) {
+    state.project_id = payload
+  },
+  
   SET_CHARTS(state, payload) {
     state.charts = payload
   },
@@ -37,7 +41,8 @@ export const mutations = {
     let obj = {
       [payload.layoutId]: {
         id: id,
-        project_id: payload.projectId,
+        project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "chart",
         background_color: "none",
         border_color: "black",
@@ -62,7 +67,7 @@ export const mutations = {
               type: "line",
               stack: "",
               itemStyle: { color: state.colors[state.lineColorIndex] },
-              data: [0, 20, 40, 60, 80, 100, 0]
+              data: [0, 20, 40, 60, 80, 100, 10]
             }
           ],
           xAxis: {
@@ -88,7 +93,8 @@ export const mutations = {
         z_index: 1,
         left: 0,
         width: 400,
-        height: 200
+        height: 200,
+        z_index: 0
       }
     }
 
@@ -104,6 +110,7 @@ export const mutations = {
       [payload.layoutId]: {
         id: id,
         project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         name: "chart",
         background_color: "none",
         border_color: "black",
@@ -127,7 +134,7 @@ export const mutations = {
               type: "bar",
               stack: "",
               itemStyle: { color: state.colors[state.lineColorIndex] },
-              data: [0, 20, 40, 60, 80, 100, 0]
+              data: [0, 20, 40, 60, 80, 100, 10]
             }
           ],
           xAxis: {
@@ -152,7 +159,8 @@ export const mutations = {
         top: 0,
         left: 0,
         width: 400,
-        height: 200
+        height: 200,
+        z_index: 0
       }
     }
 
@@ -204,8 +212,8 @@ export const mutations = {
       payload.fontSize
   },
   UPDATE_YAXIS_VALUE(state, payload) {
-    payload.currentItem.chart_settings.series[0].data.splice(
-      payload.index,
+    payload.currentItem.chart_settings.series[payload.index].data.splice(
+      payload.yIndex,
       1,
       payload.value
     )
@@ -239,12 +247,14 @@ export const mutations = {
       payload.color
   },
   UPDATE_SERIES_NAME(state, payload) {
+    payload.currentItem.chart_settings.legend.data[payload.index] = payload.name
     payload.currentItem.chart_settings.series[payload.index].name = payload.name
   }
 }
 
 export const actions = {
-  initialize({ state, commit }, payload) {
+  initialize({ state, commit, rootGetters }, payload) {
+    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
     commit("SET_CHARTS", payload)
   },
 

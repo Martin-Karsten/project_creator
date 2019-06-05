@@ -41,7 +41,8 @@ export default {
     handleSubmit() {
       let payload = {
         video_id: getYouTubeID(this.urlInput),
-        layoutId: this.layoutId
+        layoutId: this.layoutId,
+        id: ''
       }
       this.$store.dispatch("LayoutItems/WebVideo/addWebVideo", payload)
       this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Image extends Model
 {
     protected $fillable = [
-        'name', 'project_id', 'url', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
+        'id', 'name', 'project_id', 'url', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
     ];
 
     public function LayoutItem(){

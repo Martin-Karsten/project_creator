@@ -40,7 +40,8 @@ export default {
     handleSubmit() {
       let payload = {
         url: this.urlInput,
-        layoutId: this.layoutId
+        layoutId: this.layoutId,
+        id: ''
       }
       this.$store.dispatch("LayoutItems/WebImage/addWebImage", payload)
       this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")

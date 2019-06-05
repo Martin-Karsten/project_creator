@@ -14,8 +14,9 @@ class CreateImagesTable extends Migration
     public function up()
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->unsignedBigInteger('layout_item_id');
+            $table->string('id', 128)->primary();
+            $table->string('project_id');
+            $table->string('layout_item_id', 128);
             $table->string('name')->default('picture.jpeg');
             $table->string('url');
             $table->string('animation_name', 25)->nullable();

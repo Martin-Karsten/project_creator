@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Shape extends Model
 {
     protected $fillable = [
-        'name', 'project_id', 'shape_name', 'color', 'top', 'left', 'width', 'height'
+        'id', 'name', 'project_id', 'layout_item_id', 'shape_name', 'row', 'animation_name', 'animated',
+        'background_image', 'background_color', 'border_color', 'border_width', 'border_style', 'border_radius', 'opacity',
+        'font_size', 'color', 'top', 'left', 'width', 'height', 'z_index'
     ];
 
     public function layoutItem()

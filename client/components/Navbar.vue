@@ -42,21 +42,17 @@
       </el-submenu>
     </el-submenu>
 
-    <el-menu-item index="3" disabled>
-      Info
-    </el-menu-item>
-
-    <el-submenu v-if="user" index="4" style="float: right;">
+    <el-submenu v-if="user" index="3" style="float: right;">
       <template slot="title">
         <i class="el-icon-menu" />
       </template>
-      <el-menu-item index="4-1">
+      <el-menu-item index="3-1">
         <i class="el-icon-setting" /> Settings
       </el-menu-item>
-      <el-menu-item index="4-2">
+      <el-menu-item index="3-2">
         <i class="el-icon-information" /> About
       </el-menu-item>
-      <el-menu-item index="4-3">
+      <el-menu-item index="logout">
         <i class="el-icon-circle-close" /> Logout
       </el-menu-item>
     </el-submenu>
@@ -100,7 +96,10 @@ export default {
 
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath)
+      switch(key){
+        case 'logout':
+        this.logout()
+      }
     },
     async logout() {
       // Log out the user.

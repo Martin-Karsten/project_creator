@@ -14,7 +14,7 @@ const layout = new schema.Entity("layouts", {
   textfields: [textfield],
   web_images: [webImage],
   web_videos: [webVideo],
-  shapes: [shapes]
+  shapes: [shapes],
 })
 
 export default [layout]

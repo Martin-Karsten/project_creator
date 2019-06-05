@@ -6,14 +6,28 @@ use App\Models\Project;
 use App\Models\ProjectLayout;
 use App\Models\LayoutItem;
 use App\Models\User;
+use App\Models\Items\Textfield;
+use App\Models\Items\WebImage;
+use App\Models\Items\Table;
+use App\Models\Items\WebVideo;
+use App\Models\Items\Shape;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectStoreRequest;
+use App\Services\ProjectService;
 
 class ProjectsController extends Controller
 {
+    protected $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     protected function index(){
 
         $projects = Auth::user()->projects()->latest('updated_at')->paginate(17);
@@ -35,11 +49,6 @@ class ProjectsController extends Controller
     {
         return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')->with('charts')
         ->with('webVideos')->with('shapes')->get();
-
-        // return ProjectLayout::where([['project_id', '=', $id]])->layoutItems;
-            // ->with('projectLayout')->with(['projectLayout.textfields', 'projectLayout.textfields.animations'])
-            // ->with('projectLayout')->with(['projectLayout.webImages', 'projectLayout.webImages.animations'])
-            // ->get();
     }
     protected function create(ProjectStoreRequest $request)
     {
@@ -56,15 +65,85 @@ class ProjectsController extends Controller
             ]);
         
        return LayoutItem::create([
+           'id' => (string) Str::uuid(),
             'project_id' => $project->id
         ]);
     }
 
-    protected function update() {
+    protected function updateLayout(Request $request) {
+        $textfields = $request->data['textfields'];
+        $web_images = $request->data['web_images'];
+        $tables = $request->data['tables'];
+        $charts = $request->data['charts'];
+        $web_videos = $request->data['web_videos'];
+        $shapes = $request->data['shapes'];
+        $deletedLayoutItems = $request->data['deletedLayoutItems'];
 
+        $layouts = $request->data['layouts'];
+        $id = $request->data['projectId'];
+
+        //save layout items
+        if(!empty($deletedLayoutItems['layouts'])){
+            foreach($deletedLayoutItems['layouts'] as $deleted){
+                print_r($deletedLayoutItems['layouts']);
+                echo $deleted;
+                if(LayoutItem::where('id', $deleted)->exists()){
+                    LayoutItem::destroy($deleted);
+                }
+            }
+        }
+
+        foreach($layouts as $layout){
+            LayoutItem::updateOrCreate(
+                ['id' => $layout],
+                [
+                    'id' => $layout,
+                    'project_id' => $id
+                ]
+            );
+        }
+
+        if(!empty($textfields) || !empty($deletedLayoutItems['textfields'])){
+            $this->projectService->editTextfields($textfields, $deletedLayoutItems['textfields']);
+        }
+
+        if(!empty($web_images) || !empty($deletedLayoutItems['web_images'])){
+            $this->projectService->editWebImages($web_images, $deletedLayoutItems['web_images']);
+        }
+
+        if(!empty($tables || !empty($deletedLayoutItems['tables']))){
+            $this->projectService->editTables($tables, $deletedLayoutItems['tables']);
+        }
+
+        if(!empty($web_videos || !empty($deletedLayoutItems['web_videos']))){
+            $this->projectService->editWebVideos($web_videos, $deletedLayoutItems['web_videos']);
+        }
+
+        if(!empty($shapes) || !empty($deletedLayoutItems['shapes'])){
+            $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
+        }
+
+        Project::where('id', $id)->update(['updated_at' => Carbon::now()->toDateTimeString()]);
+
+    }
+
+    protected function update($id, Request $request) {
+        $project = Project::findOrFail($id)->update(['project_name' => $request->project_name]);
     }
 
     protected function delete($id) {
         Project::destroy($id);
+    }
+
+    protected function deleteMultiple(Request $request){
+        if(sizeof($request->projects) <= 0){
+            return 'empty array';
+        }
+
+        foreach($request->projects as $project){
+            Project::destroy($project);
+        }
+
+        return 'success';
     }
 }

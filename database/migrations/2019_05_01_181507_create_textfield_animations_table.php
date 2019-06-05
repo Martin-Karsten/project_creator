@@ -15,7 +15,7 @@ class CreateTextfieldAnimationsTable extends Migration
     {
         Schema::create('textfield_animations', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedBigInteger('textfield_id');
+            $table->string('textfield_id', 128);
             $table->string('animation_name', 30)->default('fadeIn');
             $table->double('animation_duration', 3,2)->default(0.5);
             $table->unsignedSmallInteger('animation_order')->default(0);

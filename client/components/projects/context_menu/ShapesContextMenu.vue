@@ -1,31 +1,29 @@
 <template>
-  <div>
     <aside
-      v-show="contextMenu.activated"
-      ref="contextMenu"
-      :style="{ top: contextMenu.style.top, left: contextMenu.style.left }"
-      class="context-menu"
+        v-show="contextMenu.activated"
+        ref="contextMenu"
+        :style="{ top: contextMenu.style.top, left: contextMenu.style.left }"
+        class="context-menu"
     >
-      <ul class="menu-list">
+        <ul class="menu-list">
         <li>
-          <ul class="context-menu-list">
+            <ul class="context-menu-list">
             <li class="context-menu-item" @click="copyItem">
-              <a>Copy</a>
+                <a>Copy</a>
             </li>
             <li class="context-menu-item" @click="openStartMenuAnimations">
-              <a>Add Animation</a>
+                <a>Add Animation</a>
             </li>
             <li class="context-menu-item">
-              <a>Format Form</a>
+                <a>Format Form</a>
             </li>
             <li class="context-menu-item" @click="deleteItem">
-              <a>Delete</a>
+                <a>Delete</a>
             </li>
-          </ul>
+            </ul>
         </li>
-      </ul>
+        </ul>
     </aside>
-  </div>
 </template>
 
 <script>
@@ -36,7 +34,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contextMenu: "ContextMenus/LayoutItems/TextfieldContextMenu/getContextMenu"
+      contextMenu: "ContextMenus/LayoutItems/ShapesContextMenu/getContextMenu"
     })
   },
   methods: {

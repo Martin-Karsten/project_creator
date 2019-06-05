@@ -12,6 +12,10 @@ export const getters = {
 
 // mutations
 export const mutations = {
+  SET_PROJECT_ID(state, payload) {
+    state.project_id = payload
+  },
+  
   SET_TABLES(state, payload) {
     state.tables = payload
   },
@@ -54,6 +58,7 @@ export const mutations = {
         itemName: "tables",
         columns: payload.columns,
         rows: payload.rows,
+        project_id: state.projectId,
         layout_item_id: payload.layoutId,
         row: payload.layoutId,
         background_color: "none",
@@ -75,12 +80,11 @@ export const mutations = {
   },
 
   ADD_TABLE(state, payload) {
-    let length = Object.keys(state.tables).length
-    let id = length + 1
     let obj = {
-      [payload]: {
-        id: id,
-        project_id: payload.projectId,
+      [payload.layoutId]: {
+        id: payload.id,
+        project_id: state.projectId,
+        layout_item_id: payload.layoutId,
         text: `
         <table>
         <tr>
@@ -100,11 +104,11 @@ export const mutations = {
       `,
         name: "table",
         itemName: "tables",
-        // columns: payload.columns,
-        // rows: payload.rows,
-        layout_item_id: payload,
-        row: payload,
+        columns: 1,
+        rows: 1,
+        row: 1,
         background_color: "none",
+        background_images : 'none',
         border_color: "black",
         border_style: "solid",
         animations: {},
@@ -114,17 +118,19 @@ export const mutations = {
         top: 0,
         left: 0,
         width: 400,
-        height: 120
+        height: 120,
+        z_index: 0
       }
     }
 
     // update tables state
-    Vue.set(state.tables, id, obj[payload])
+    Vue.set(state.tables, payload.id, obj[payload.layoutId])
   }
 }
 
 export const actions = {
-  initialize({ state, commit }, payload) {
+  initialize({ state, commit, rootGetters }, payload) {
+    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
     commit("SET_TABLES", payload)
   },
 
@@ -137,11 +143,15 @@ export const actions = {
   },
 
   // push obj key to tables ids array
-  addTable({ state, commit }, payload) {
+  async addTable({ state, commit }, payload) {
     //this is the id that is going to be assigned to the newly created table
-    let id = Object.keys(state.tables).length + 1
+    try{
+      payload.id = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+    }
+    catch(e){
+    }    
 
     commit("ADD_TABLE", payload)
-    commit('Layout/ADD_TABLE', {layoutId: payload, id: id, tables: state.tables}, {root: true})
+    commit('Layout/ADD_TABLE', {layoutId: payload.layoutId, id: payload.id, tables: state.tables}, {root: true})
   }
 }

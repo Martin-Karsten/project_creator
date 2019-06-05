@@ -6,26 +6,6 @@
       <el-tab-pane label="Search Image" name="searchImageComponent"></el-tab-pane>
       <el-tab-pane label="Search Gif" name="searchGifComponent"></el-tab-pane>
     </el-tabs>
-    <!-- <div class="tabs">
-      <div class="close" @click="closeEditContainer" />
-      <ul>
-        <li :class="{ 'is-active': urlInput.isActive }" @click="toUrl">
-          <a>URL</a>
-        </li>
-        <li
-          :class="{ 'is-active': searchImageComponent.isActive }"
-          @click="toSearchImage"
-        >
-          <a>Search Image</a>
-        </li>
-        <li
-          :class="{ 'is-active': searchGifComponent.isActive }"
-          @click="toSearchGif"
-        >
-          <a>Search Gif</a>
-        </li>
-      </ul>
-    </div> -->
 
     <component
       :is="currentTab"
@@ -75,30 +55,9 @@ export default {
           break;
       }
     },
-    toUrl() {
-      this.currentTab = this.urlInput.name
-      this.urlInput.isActive = true
-      this.searchImageComponent.isActive = false
-      this.searchGifComponent.isActive = false
-    },
-    toSearchImage() {
-      this.currentTab = this.searchImageComponent.name
-      this.urlInput.isActive = false
-      this.searchImageComponent.isActive = true
-      this.searchGifComponent.isActive = false
-    },
-    toSearchGif() {
-      this.currentTab = this.searchGifComponent.name
-      this.urlInput.isActive = false
-      this.searchImageComponent.isActive = false
-      this.searchGifComponent.isActive = true
-    },
     closeEditContainer() {
       this.$store.commit("EditContainer/CLOSE_EDIT_CONTAINER")
       this.currentTab = this.urlInput.name
-      this.urlInput.isActive = true
-      this.searchImageComponent.isActive = false
-      this.searchGifComponent.isActive = false
     }
   }
 }

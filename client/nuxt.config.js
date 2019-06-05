@@ -59,6 +59,7 @@ module.exports = {
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/fontawesome',
+    '~plugins/vue-scrollto',
     {src: 'plugins/color-picker', ssr: false},
     { src: '~plugins/vue-echarts.js', ssr: false},
     { src: '~/plugins/vuex-persist', ssr: false },

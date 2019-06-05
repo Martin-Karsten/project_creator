@@ -14,7 +14,7 @@ class Project extends Model
      * @var array
      */
     protected $fillable = [
-        'project_name', 'user_id', 'private'
+        'project_name', 'user_id', 'private', 'update_at'
     ];
 
     /**
@@ -30,8 +30,8 @@ class Project extends Model
     {
         parent::boot();
 
-        static::creating(function ($post) {
-            $post->{$post->getKeyName()} = (string) Str::uuid();
+        static::creating(function ($project) {
+            $project->{$project->getKeyName()} = (string) Str::uuid();
         });
     }
 

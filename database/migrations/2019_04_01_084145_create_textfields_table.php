@@ -14,9 +14,10 @@ class CreateTextfieldsTable extends Migration
     public function up()
     {
         Schema::create('textfields', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->string('id', 128)->primary();
             $table->string('name', 100)->default('default');
-            $table->unsignedBigInteger('layout_item_id');
+            $table->string('project_id');
+            $table->string('layout_item_id', 128);
             $table->unsignedTinyInteger('row')->default(0);
             $table->text('text')->nullable();
             $table->string('font', 225)->default('Calibri');
