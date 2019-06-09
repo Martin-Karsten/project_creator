@@ -2,16 +2,20 @@ import axios from "axios"
 
 export const state = () => ({
   toolboxes: [],
-  webVideoUrl: ""
+  webVideoUrl: "",
 })
 
 // getters
 export const getters = {
-  getToolboxes: state => state.toolboxes
+  getToolboxes: state => state.toolboxes,
+  getReady: state => state.ready
 }
 
 // mutations
 export const mutations = {
+  TAKE_SCREENSHOT(){
+
+  },
   SET_TOOLBOXES(state, payload) {
     state.toolboxes = payload.map(item => ({
       isEmpty: item.isEmpty,

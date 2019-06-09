@@ -1,6 +1,7 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
+      {{currentItem}}
       <el-col :span="24"
       >
         <div 
@@ -16,10 +17,13 @@
           <div
             v-for="(element, index) in layoutSet"
             :key="index"
-            ref="itemContainer" class="item-container" @click.self="layoutItemClicked(index, element.id)"
+            class="item-container" @click.self="layoutItemClicked(index, element.id)"
             :id="'item' + element.id"
           >
-            <el-row class="toolbox">
+
+            <el-row class="toolbox"
+            v-show="element.isEmpty"
+            >
               <el-tooltip class="tooltip-item" effect="dark" content="Text" placement="top-start">
                 <el-col :span="4">
                   <fa class="tooltip-icon" icon="font" @click="toTextfield(index, element.id)" />
@@ -147,9 +151,6 @@
               @resizing="chartResizing"
               @dragging="containerDragging"
             >
-              <!-- Echarts needs an extra container to set the current element and to resize the table to the size of its parent, 
-                    thats why we set the currentItem by clicking the container here, instead of doing it inside the component
-                 -->
               <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex, element.id, chart.id)">
                 <chart :id="chart.id" :width="chart.width" :height="chart.height" :settings="chart.chart_settings" :layout-id="element.id" />
               </div>
@@ -183,6 +184,8 @@
 
 import { mapGetters, mapState } from "vuex"
 import debounce from "../../Helper/Project/LayoutHelper.js"
+import domtoimage from 'dom-to-image';
+import Form from "vform"
 import ScrollTo from '~/plugins/vue-scrollto'
 //Items
 import TextfieldEditor from "./textfield/TipTapEditor"
@@ -200,7 +203,6 @@ import ShapePicker from "./navbar/shapes/ShapePicker.vue"
 //Draggables
 import draggable from "vuedraggable"
 import VueDraggableResizable from "vue-draggable-resizable"
-import Form from "vform"
 
 // optionally import default styles
 import "vue-draggable-resizable/dist/VueDraggableResizable.css"
@@ -239,7 +241,8 @@ export default {
       currentMode: "PresentationMode/getCurrentMode",
       animationList: "PresentationMode/getAnimationItmes",
 
-      layoutSet: "Layout/getLayoutSet"
+      layoutSet: "Layout/getLayoutSet",
+
     }),
     ...mapState({
       textfieldObj: state => state.Layout.textfields,
@@ -250,11 +253,14 @@ export default {
       webVideoObj: state => state.Layout.web_videos
     })
   },
-  async mounted() {
-    await this.$store.dispatch("Layout/initialize", this.$route.params)
+  async beforeCreate(){
+  },
+  mounted() {
   },
   beforeDestroy() {
-    this.$store.dispatch("Layout/resetLayout")
+    // this.$store.commit("Layout/RESET_LAYOUT")
+  },
+  destroyed(){
   },
   methods: {
     layoutTextfields(layout) {
@@ -358,6 +364,7 @@ export default {
     }, 25),
     toTextfield(index, layoutId) {
       this.$store.dispatch("LayoutItems/Textfield/addTextfield", {layoutId: layoutId, id: ''})
+      this.$store.commit('Layout/HIDE_TOOLBAR', layoutId)
     },
     toChart(row, layoutId) {
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
@@ -366,23 +373,6 @@ export default {
         layoutId: layoutId
       })
     },
-    // toImage(row, $event) {
-    //   this.imageData = event.target
-    //   // create a new FileReader to read this image and convert to base64 format
-    //   let reader = new FileReader()
-    //   // Define a callback function to run, when FileReader finishes its job
-    //   reader.onload = e => {
-    //     // Read image as base64 and set to imageData
-    //     this.imageData = e.target.result
-    //   }
-    //   reader.readAsDataURL(this.imageData.files[0])
-
-    //   this.$store.commit("Layout/ADD_IMAGE", {
-    //     row: row,
-    //     file: this.imageData.files[0],
-    //     name: this.imageData.files[0].name
-    //   })
-    // },
     toWebImage(row, layoutId) {
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "WebImageContainer",
@@ -401,17 +391,9 @@ export default {
     toTable(row, layoutId) {
       this.$store.dispatch("LayoutItems/Table/addTable", {layoutId: layoutId, id: ''})
     },
-    // toShapes(row, layoutId) {
-    //   console.log("hoho")
-    // },
     addItem(row, layoutId) {
       this.$store.dispatch("Layout/addItem")
-      // this.$store.commit('LayoutHelpers/ADD_TOOLBOX', this.layout.length)
     },
-    hideOrShowToolbar(row) {
-      this.urlInputActivated = false
-      // this.$store.commit('Layout/HIDE_OR_SHOW_TOOLBAR', row)
-    }
   }
 }
 </script>

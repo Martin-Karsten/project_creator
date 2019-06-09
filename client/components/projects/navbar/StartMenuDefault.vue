@@ -1,13 +1,8 @@
 <template>
-  <el-row :gutter="3">
-    <el-col class="start-menu-presentation-column" :span="2">
-      <el-button @click="startPresentationMode">
-        Start Presentation
-      </el-button>
-    </el-col>
-    <el-col :span="1">
+  <el-row :gutter="3" class="start-menu-row">
+    <el-col :span="3" class="start-menu-presentation-column">
       <router-link
-        :to="{ name: 'project.show', params: { data: 123 } }"
+        :to="{ name: 'project.show', params: { id: projectId }  }"
         target="_blank"
       >
         <el-button @click="showPreview">
@@ -110,6 +105,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      projectId: "Layout/getProjectId",
       currentLayout: "Layout/getCurrentLayout"
     })
   },
@@ -162,6 +158,11 @@ div.start-menu {
   border-bottom: 1px solid black;
   position: relative;
   z-index: 10;
+}
+
+.start-menu-presentation-column{
+  padding: 1.2rem;
+  padding-left: 0.5rem !important;
 }
 
 .start-menu-icon-columns {

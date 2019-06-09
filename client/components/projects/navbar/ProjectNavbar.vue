@@ -5,7 +5,7 @@
         class="el-menu-demo"
         mode="horizontal"
         background-color="#edeeef"
-        text-color="#fff"
+        text-color="#303139"
         active-text-color="black"
       >
         <el-menu-item index="1">

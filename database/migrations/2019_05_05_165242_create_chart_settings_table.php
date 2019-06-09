@@ -14,10 +14,15 @@ class CreateChartSettingsTable extends Migration
     public function up()
     {
         Schema::create('chart_settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('chart_id', 128);
-            $table->string('chart_type');
+            $table->string('id')->primary();
+            $table->string('chart_id');
+            $table->json('chart_settings');
             $table->timestamps();
+
+            $table->foreign('chart_id')
+            ->references('id')
+            ->on('charts')
+            ->onDelete('cascade');
         });
     }
 

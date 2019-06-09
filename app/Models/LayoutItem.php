@@ -13,9 +13,9 @@ class LayoutItem extends Model
         'id', 'project_id', 'textfield_id', 'image_id', 'web_image_id', 'table_id', 'chart_id', 'web_video_id', 'shapes_id' 
     ];
 
-    public function projectLayout()
+    public function project()
     {
-        return $this->belongTo('App\Models\ProjectLayout');
+        return $this->belongTo('App\Models\Project');
     }
 
     public function textfields() {

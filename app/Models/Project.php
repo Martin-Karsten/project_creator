@@ -50,7 +50,7 @@ class Project extends Model
         return $this->belongsTo('App\Models\User');
     }
 
-    public function projectLayout() {
-        return $this->hasOne('App\Models\ProjectLayout');
+    public function projectItems() {
+        return $this->hasMany('App\Models\LayoutItem');
     }
 }

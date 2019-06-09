@@ -1,9 +1,8 @@
 <template>
-  <el-menu
+  <el-menu :router="true"
     :default-active="activeIndex"
-    class="el-menu-demo"
     mode="horizontal"
-    background-color="#989da2"
+    background-color="#e6e6e6"
     text-color="#fff"
     active-text-color="#ffd04b"
     @select="handleSelect"
@@ -12,35 +11,6 @@
       Processing Center
     </el-menu-item>
 
-    <el-submenu index="2">
-      <template slot="title">
-        Workspace
-      </template>
-      <el-menu-item index="2-1">
-        item one
-      </el-menu-item>
-      <el-menu-item index="2-2">
-        item two
-      </el-menu-item>
-      <el-menu-item index="2-3">
-        item three
-      </el-menu-item>
-      <el-submenu index="2-4">
-        <template slot="title">
-          item four
-        </template>
-        >
-        <el-menu-item index="2-4-1">
-          item one
-        </el-menu-item>
-        <el-menu-item index="2-4-2">
-          item two
-        </el-menu-item>
-        <el-menu-item index="2-4-3">
-          item three
-        </el-menu-item>
-      </el-submenu>
-    </el-submenu>
 
     <el-submenu v-if="user" index="3" style="float: right;">
       <template slot="title">
@@ -58,7 +28,15 @@
     </el-submenu>
 
     <template v-else>
-      <router-link
+      <el-menu-item index="register" :route="{name: 'register'}" style="float: right;">
+        {{ $t("register") }}
+      </el-menu-item>
+
+      <el-menu-item index="login" :route="{name: 'login'}" style="float: right;">
+        {{ $t("login") }}      
+      </el-menu-item>
+
+      <!-- <router-link
         :to="{ name: 'login' }"
         class="navbar-item"
         active-class="active"
@@ -71,7 +49,7 @@
         active-class="active"
       >
         {{ $t("register") }}
-      </router-link>
+      </router-link> -->
     </template>
   </el-menu>
 </template>
@@ -91,7 +69,8 @@ export default {
   }),
 
   computed: mapGetters({
-    user: "auth/user"
+    user: "auth/user",
+    authenticated: "auth/check"
   }),
 
   methods: {

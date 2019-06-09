@@ -1,8 +1,9 @@
 import Vue from "vue"
 
 export const state = () => ({
-  tables: "",
-  tableCandidate: { text: "" }
+  tables: {},
+  tableCandidate: { text: "" },
+  projectId: ''
 })
 
 // getters
@@ -13,7 +14,7 @@ export const getters = {
 // mutations
 export const mutations = {
   SET_PROJECT_ID(state, payload) {
-    state.project_id = payload
+    state.projectId = payload
   },
   
   SET_TABLES(state, payload) {
@@ -130,7 +131,7 @@ export const mutations = {
 
 export const actions = {
   initialize({ state, commit, rootGetters }, payload) {
-    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
+    commit("SET_PROJECT_ID", rootGetters['Layout/getProjectId'])
     commit("SET_TABLES", payload)
   },
 
@@ -146,11 +147,10 @@ export const actions = {
   async addTable({ state, commit }, payload) {
     //this is the id that is going to be assigned to the newly created table
     try{
-      payload.id = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+      payload.id  = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
     }
     catch(e){
     }    
-
     commit("ADD_TABLE", payload)
     commit('Layout/ADD_TABLE', {layoutId: payload.layoutId, id: payload.id, tables: state.tables}, {root: true})
   }

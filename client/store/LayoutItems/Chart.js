@@ -15,7 +15,8 @@ export const state = () => ({
     "#546570",
     "#c4ccd3"
   ],
-  lineColorIndex: [0]
+  lineColorIndex: [0],
+  projectId: ''
 })
 
 // getters
@@ -26,7 +27,7 @@ export const getters = {
 // mutations
 export const mutations = {
   SET_PROJECT_ID(state, payload) {
-    state.project_id = payload
+    state.projectId = payload
   },
   
   SET_CHARTS(state, payload) {
@@ -34,13 +35,10 @@ export const mutations = {
   },
 
   ADD_LINE_CHART(state, payload) {
-    let length = Object.keys(state.charts).length
-
-    let id = length + 1
-
+    
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
         layout_item_id: payload.layoutId,
         name: "chart",
@@ -50,8 +48,8 @@ export const mutations = {
         animations: {},
         itemName: "charts",
         chart_settings: {
-          id: id,
-          chart_id: id,
+          id: payload.id,
+          chart_id: payload.id,
           title: { text: "Your Chart", subtext: "Your Subtext", x: "center" },
           legend: {
             show: true,
@@ -98,17 +96,15 @@ export const mutations = {
       }
     }
 
-    Vue.set(state.charts, id, obj[payload.layoutId])
+    Vue.set(state.charts, payload.id, obj[payload.layoutId])
+
   },
 
   ADD_BAR_CHART(state, payload) {
-    let length = Object.keys(state.charts).length
-
-    let id = length + 1
 
     let obj = {
       [payload.layoutId]: {
-        id: id,
+        id: payload.id,
         project_id: state.projectId,
         layout_item_id: payload.layoutId,
         name: "chart",
@@ -118,8 +114,8 @@ export const mutations = {
         animations: {},
         itemName: "charts",
         chart_settings: {
-          id: id,
-          chart_id: id,
+          id: payload.id,
+          chart_id: payload.id,
           title: { text: "Your Chart", subtext: "Your Subtext", x: "center" },
           legend: {
             show: true,
@@ -164,7 +160,7 @@ export const mutations = {
       }
     }
 
-    Vue.set(state.charts, id, obj[payload.layoutId])
+    Vue.set(state.charts, payload.id, obj[payload.layoutId])
   },
   ADD_PIE_CHART() {},
 
@@ -254,30 +250,35 @@ export const mutations = {
 
 export const actions = {
   initialize({ state, commit, rootGetters }, payload) {
-    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
+    commit("SET_PROJECT_ID", rootGetters['Layout/getProjectId'])
     commit("SET_CHARTS", payload)
   },
 
   // push obj key to charts ids array
-  addLineChart({ state, commit }, payload) {
-    //this is the id that is going to be assigned to the newly created table
-    let id = Object.keys(state.charts).length + 1
-
+  async addLineChart({ state, commit }, payload) {
+    try{
+      payload.id  = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+    }
+    catch(e){
+    }
+    
     commit("ADD_LINE_CHART", payload)
     commit(
       "Layout/ADD_CHART",
-      { layoutId: payload.layoutId, id: id },
+      { layoutId: payload.layoutId, id: payload.id },
       { root: true }
     )
   },
-  addBarChart({ state, commit }, payload) {
-    //this is the id that is going to be assigned to the newly created table
-    let id = Object.keys(state.charts).length + 1
-
+  async addBarChart({ state, commit }, payload) {
+    try{
+      payload.id  = await this.dispatch("LayoutHelpers/createUuid", 'empty' ,{root: true})
+    }
+    catch(e){
+    }
     commit("ADD_BAR_CHART", payload)
     commit(
       "Layout/ADD_CHART",
-      { layoutId: payload.layoutId, id: id },
+      { layoutId: payload.layoutId, id: payload.id },
       { root: true }
     )
   }

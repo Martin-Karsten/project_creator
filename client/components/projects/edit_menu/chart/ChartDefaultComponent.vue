@@ -13,25 +13,6 @@
       >
     </el-col>
   </el-row>
-  <!-- <div class="columns">
-    <div class="column is-2 chart-default-component-list">
-      <div class="list is-hoverable">
-        <a class="list-item" @click="showLineChart">
-          LineChart
-        </a>
-        <a class="list-item" @click="showBarChart">
-          BarChart
-        </a>
-      </div>
-    </div>
-
-    <div
-      class="column chart-default-component-image-column is-8"
-      @click="createChart"
-    >
-      <img :src="currentChart">
-    </div>
-  </div> -->
 </template>
 
 <script>
@@ -55,7 +36,7 @@ export default {
         layoutId: this.layoutId,
         name: "Chart Name?"
       }
-      console.log(this.currentChart)
+      
       switch (this.currentChart) {
         case this.lineChart:
           payload.type = "line"

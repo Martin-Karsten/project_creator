@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Project;
 
 use App\Models\Project;
-use App\Models\ProjectLayout;
 use App\Models\LayoutItem;
 use App\Models\User;
 use App\Models\Items\Textfield;
@@ -30,24 +29,14 @@ class ProjectsController extends Controller
 
     protected function index(){
 
-        $projects = Auth::user()->projects()->latest('updated_at')->paginate(17);
+        $projects = Auth::user()->projects()->latest('updated_at')->simplePaginate(18);
 
-        $response = [
-            'pagination' => [
-                'total' => $projects->total(),
-                'per_page' => $projects->perPage(),
-                'current_page' => $projects->currentPage(),
-                'last_page' => $projects->lastPage(),
-                'from' => $projects->firstItem(),
-                'to' => $projects->lastItem()
-            ],
-            'data' => $projects
-        ];
-        return response()->json($response);
+        return $projects;
     }
     protected function show($id)
     {
-        return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')->with('charts')
+        return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')
+        ->with(['charts', 'charts.chartSettings'])
         ->with('webVideos')->with('shapes')->get();
     }
     protected function create(ProjectStoreRequest $request)
@@ -59,13 +48,9 @@ class ProjectsController extends Controller
                 'user_id' => $request->user_id,
                 'private' => $request->private
             ]);
-
-        $layout = ProjectLayout::create([
-                'project_id' => $project->id
-            ]);
         
        return LayoutItem::create([
-           'id' => (string) Str::uuid(),
+            'id' => (string) Str::uuid(),
             'project_id' => $project->id
         ]);
     }
@@ -107,20 +92,25 @@ class ProjectsController extends Controller
             $this->projectService->editTextfields($textfields, $deletedLayoutItems['textfields']);
         }
 
-        if(!empty($web_images) || !empty($deletedLayoutItems['web_images'])){
-            $this->projectService->editWebImages($web_images, $deletedLayoutItems['web_images']);
-        }
+        // if(!empty($web_images) || !empty($deletedLayoutItems['web_images'])){
+        //     $this->projectService->editWebImages($web_images, $deletedLayoutItems['web_images']);
+        // }
 
-        if(!empty($tables || !empty($deletedLayoutItems['tables']))){
-            $this->projectService->editTables($tables, $deletedLayoutItems['tables']);
-        }
+        // if(!empty($tables || !empty($deletedLayoutItems['tables']))){
+        //     $this->projectService->editTables($tables, $deletedLayoutItems['tables']);
+        // }
 
-        if(!empty($web_videos || !empty($deletedLayoutItems['web_videos']))){
-            $this->projectService->editWebVideos($web_videos, $deletedLayoutItems['web_videos']);
-        }
+        // if(!empty($web_videos || !empty($deletedLayoutItems['web_videos']))){
+        //     $this->projectService->editWebVideos($web_videos, $deletedLayoutItems['web_videos']);
+        // }
 
-        if(!empty($shapes) || !empty($deletedLayoutItems['shapes'])){
-            $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
+        // if(!empty($shapes) || !empty($deletedLayoutItems['shapes'])){
+        //     $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
+        // }
+
+
+        if(!empty($charts) || !empty($deletedLayoutItems['charts'])){
+            $this->projectService->editCharts($charts, $deletedLayoutItems['charts']);
         }
 
         Project::where('id', $id)->update(['updated_at' => Carbon::now()->toDateTimeString()]);

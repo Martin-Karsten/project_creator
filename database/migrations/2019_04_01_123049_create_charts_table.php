@@ -14,9 +14,10 @@ class CreateChartsTable extends Migration
     public function up()
     {
         Schema::create('charts', function (Blueprint $table) {
-            $table->string('id', 128)->primary();
+            $table->string('id')->primary();
             $table->string('project_id');
-            $table->string('layout_item_id', 128);
+            $table->string('name')->default('default');
+            $table->string('layout_item_id');
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
             $table->unsignedTinyInteger('row')->default(0);

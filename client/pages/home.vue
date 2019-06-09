@@ -3,8 +3,8 @@
     <el-aside>
       <el-menu
         default-active="1"
-        class="el-menu-vertical-demo"
-        background-color="#545c64"
+        class="home-sidebar"
+        background-color="#e6e6e6"
         text-color="#fff"
         active-text-color="#ffd04b"
         @select="handleSelect"
@@ -21,6 +21,7 @@
                   <el-input
                   placeholder="Project Name"
                   @keyup.enter.native="createProject"
+                  v-model="projectName"
                   />
                 </el-menu-item>
               </el-submenu>
@@ -47,8 +48,9 @@
       </el-menu>
     </el-aside>
 
-    <el-main>
+    <el-main class="home-content">
       <el-row class="home-content-row">
+        <p></p>
         <el-col
           v-for="(project, index) in projects"
           :key="index"
@@ -60,7 +62,8 @@
             @mouseover="showEditable(index)"
             @mouseleave="hideEditable(index)"
           >
-            <img src="http://lorempixel.com/350/263/" alt="" />
+            <img src="./default-project-image.png" alt="" style="height: 215px"/>
+            <!-- <img :src="image" alt="" /> -->
             <el-checkbox
               v-show="project.editable || project.selected"
               class="home-column-checkbox"
@@ -78,7 +81,7 @@
                   <p>{{ project.updated_at }}</p>
                 </template>
                 <template v-else>
-                  <el-input :value="project.project_name" @keyup.enter.native="changeProjectName($event, index)" />
+                  <el-input :placeholder="project.project_name" v-model="projectName" @keyup.enter.native="changeProjectName($event, index)" />
                 </template>
               </div>
               <a @click="viewProject(project.id)">
@@ -88,43 +91,37 @@
           </div>
         </el-col>
       </el-row>
-
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :hide-on-single-page="true"
-        :total="projects.length"
-      />
+      <no-ssr>
+        <infinite-loading @infinite="changeNumber"></infinite-loading>
+      </no-ssr>
     </el-main>
   </el-container>
 </template>
 
 <script>
+import axios from 'axios'
 import { mapGetters } from "vuex"
-import axios from "axios"
 import Form from "vform"
-// import HomeSidebar from '../components/home/HomeSidebar'
-import Checkbox from "../components/global/Checkbox"
-import Pagination from "../components/global/Pagination"
+import twice from "/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg"
 
 export default {
   layout: "default",
   middleware: "auth",
 
   components: {
-    // HomeSidebar,
-    Checkbox,
-    Pagination
   },
 
   head() {
     return { title: this.$t("home") }
   },
   data: () => ({
+    image: twice,
     checked: false,
     projectsClicked: [],
     editable: false,
     ready: false,
+    currentPage: 0,
+    projectName: '',
     form: new Form({
       project_name: "Project 1",
       user_id: "",
@@ -143,7 +140,6 @@ export default {
   async mounted() {
     await this.$store.dispatch("Project/fetchProjects")
 
-    this.ready = true
   },
   methods: {
     showEditable(index) {
@@ -153,12 +149,13 @@ export default {
       this.$store.commit("Project/HIDE_EDITABLE", index)
     },
     selectProject(index) {
-      if(!this.projectsClicked.includes(this.projects[index].id)){
+      if(!this.projectsClicked.includes(index)){
+        this.projectName = this.projects[index].project_name
         this.$store.commit("Project/SELECT_PROJECT", index)
-        this.projectsClicked.push(this.projects[index].id)
+        this.projectsClicked.push(index)
       }
       else{
-        const newI = this.projectsClicked.indexOf(this.projects[index].id)
+        const newI = this.projectsClicked.indexOf(index)
         this.projectsClicked.splice(newI, 1)
         this.$store.commit("Project/DESELECT_PROJECT", index)
       }
@@ -174,13 +171,14 @@ export default {
         console.log(e)
       }
       this.$store.commit("Project/CHANGE_PROJECT_NAME", {value: event.target.value, index})
-
+      // this.projectsClicked[0].editable = false
+      this.projectName = ''
+      this.projectsClicked.splice(0, 1)
     },
     handleSelect(key){
       switch(key){
         case 'rename':
-          const newI = this.projectsClicked.indexOf(this.projects[0].id)
-          this.$store.commit('Project/MAKE_RENAMEABLE', newI)
+          this.$store.commit('Project/MAKE_RENAMEABLE',  this.projectsClicked[0])
           break;
 
         case 'delete':
@@ -192,41 +190,55 @@ export default {
           break;
       }
     },
-    async changeNumber() {
-      axios
-        .get("user/projects?page=" + this.pagination.current_page)
+    async changeNumber($state) {
+      let last = false
+      this.currentPage += 1
+      axios.get("user/projects?page=" + this.currentPage)
         .then(response => {
-          this.$store.dispatch("Project/changeNumber", response)
-          this.pagination = response.data.pagination
+          if(response.data.next_page_url != null){
+            this.$store.dispatch("Project/changeNumber", response)
+            $state.loaded()
+          }
+          else{
+            $state.complete()
+          }
         })
         .catch(error => {
-          console.log(error.response.data)
+          console.log(error)
         })
     },
     async createProject(event) {
       this.form.user_id = this.user.id
       this.form.project_name = event.target.value
-      const { data } = await this.form.post("user/project/create")
 
-      this.$store.commit("Layout/CREATE_LAYOUT")
+      let data = ''
+      try{
+        data = await this.form.post("user/project/create")
+      }
+      catch(e){
+        return
+      }
+      data = data.data
+
       this.$store.dispatch("Project/createProject", {
-        project_id: data.id,
-        project_name: data.project_name,
-        user_id: data.user_id,
-        private: data.private
+        project_id: data.project_id,
+        project_name: this.form.project_name,
+        user_id: this.user.id,
+        private: this.form.private
       })
 
+      this.$store.dispatch('Layout/initialize', {id: data.project_id})
+
       // Redirect to project creation.
-      this.$router.push({ name: "project.create", params: data })
+      this.$router.push({ name: "project.create", params: {id: data.project_id} })
     },
     async viewProject(id) {
       // Redirect to project
       this.$router.push({ name: "project.view", params: { id: id } })
     },
     async deleteProject() {
-      const id = this.projectsClicked[0]
-      this.deleteForm.id = this.projectsClicked[0]
-      this.projectsClicked.splice(0, 1)
+      const id = this.projects[this.projectsClicked[0]].id
+      this.deleteForm.id = id
       try {
         await this.deleteForm.delete(`user/project/${id}/delete`)
       } catch (e) {
@@ -237,15 +249,17 @@ export default {
         });
         return
       }
-      this.$store.commit("Project/DELETE_PROJECT", id)
+      this.$store.commit("Project/DELETE_PROJECT", this.projectsClicked[0])
 
       this.$message({
         message: 'Project Deleted',
         type: 'success'
       });
+
+      this.projectsClicked.splice(0, 1)
     },
     async deleteProjects(){
-      this.deleteMultipleForm.projects = [...this.projectsClicked]
+      this.projectsClicked.forEach((i) => this.deleteMultipleForm.projects.push(this.projects[i].id))
       try{
         await this.deleteMultipleForm.post('user/projects/delete')
       } catch (e) {
@@ -256,7 +270,7 @@ export default {
         });
           return
       }
-      this.$store.commit('Project/DELETE_PROJECTS', this.projectsClicked)
+      this.$store.commit('Project/DELETE_PROJECTS', this.deleteMultipleForm.projects)
       this.projectsClicked.splice(0, this.projectsClicked.length)
 
         this.$message({
@@ -269,14 +283,21 @@ export default {
 </script>
 
 <style lang="scss">
-.el-menu-vertical-demo {
-  margin-left: 1.4rem;
+
+.home-sidebar {
   height: 88vh;
   margin-top: 1.4rem;
 }
+
+.home-content{
+  height: 90vh;
+  overflow-y: auto;
+  padding-bottom: 0
+}
 .home-content-row {
-  margin-bottom: 20px;
-  min-height: 86%;
+  margin-bottom: 0rem !important;
+  padding-bottom: 0px;
+  min-height: 93%;
 }
 .home-content-column {
   padding: 0 0.5rem 1rem 0.5rem;
@@ -304,16 +325,15 @@ export default {
 }
 
 .cptn03 .cptn {
-  background: #545c64;
-  width: 100%;
-  height: 23%;
+  background: rgba(84, 92, 100, 0.5);
+  width: 95%;
+  height: 30%;
   position: absolute;
   left: 0;
   overflow: auto;
-  padding: 0 15px;
+  padding: 0 10px 0 10px;
   border-radius: 4px;
-  opacity: 0.75;
-  top: 214px;
+  top: 68%;
 }
 .cptn03 .cptn div {
   float: left;
@@ -352,4 +372,9 @@ export default {
   color: fff;
   font-size: 14px;
 }
+
+.home-pagination{
+  margin-top: 1rem;
+}
+
 </style>

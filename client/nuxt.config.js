@@ -63,6 +63,7 @@ module.exports = {
     {src: 'plugins/color-picker', ssr: false},
     { src: '~plugins/vue-echarts.js', ssr: false},
     { src: '~/plugins/vuex-persist', ssr: false },
+    { src: '~/plugins/infinite-loading', ssr: false },
     // '~plugins/nuxt-client-init',
   ],
 

@@ -1,7 +1,8 @@
 import Vue from "vue"
 
 export const state = () => ({
-  shapes: ""
+  shapes: "",
+  projectId: ''
 })
 
 export const getters = {
@@ -10,7 +11,7 @@ export const getters = {
 
 export const mutations = {
   SET_PROJECT_ID(state, payload) {
-    state.project_id = payload
+    state.projectId = payload
   },
   
   SET_SHAPES(state, payload) {
@@ -69,7 +70,8 @@ export const mutations = {
         top: 1,
         left: 0,
         width: 200,
-        height: 100
+        height: 100,
+        z_index: 0
       }
     }
 
@@ -98,7 +100,8 @@ export const mutations = {
         top: 1,
         left: 0,
         width: 200,
-        height: 100
+        height: 100,
+        z_index: 0
       }
     }
 
@@ -127,7 +130,8 @@ export const mutations = {
         top: 1,
         left: 0,
         width: 150,
-        height: 2
+        height: 2,
+        z_index: 0
       }
     }
 
@@ -138,7 +142,7 @@ export const mutations = {
 
 export const actions = {
   initialize({ state, commit, rootGetters }, payload) {
-    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
+    commit("SET_PROJECT_ID", rootGetters['Layout/getProjectId'])
     commit("SET_SHAPES", payload)
   },
 

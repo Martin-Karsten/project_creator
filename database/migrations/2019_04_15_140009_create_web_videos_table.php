@@ -14,9 +14,9 @@ class CreateWebVideosTable extends Migration
     public function up()
     {
         Schema::create('web_videos', function (Blueprint $table) {
-            $table->string('id', 128)->primary();
+            $table->string('id')->primary();
             $table->string('project_id');
-            $table->string('layout_item_id', 128);
+            $table->string('layout_item_id');
             $table->string('name')->default('picture.jpeg');
             $table->string('video_id')->nullable();
             $table->string('animation_name', 25)->nullable();

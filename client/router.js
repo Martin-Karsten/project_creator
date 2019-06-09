@@ -63,7 +63,6 @@ const routes = [
     component: Project,
     children: [
       //  { path: '', redirect: { name: 'project.create'} },
-      //  { path: 'show/:id', name: 'project.show', component: ProjectShow},
       { path: "create", name: "project.create", component: Project },
       { path: ":id", name: "project.view", component: Project }
     ]

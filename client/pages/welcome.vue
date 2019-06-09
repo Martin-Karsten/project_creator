@@ -3,136 +3,91 @@
     <div class="ribbon ribbon-top-left">
       <span> ALPHA </span>
     </div>
-    <div class="top-right links">
-      <template v-if="authenticated">
-        <router-link :to="{ name: 'home' }">
-          {{ $t("home") }}
-        </router-link>
-      </template>
-      <template v-else>
-        <router-link :to="{ name: 'login' }">
-          {{ $t("login") }}
-        </router-link>
-        <router-link :to="{ name: 'register' }">
-          {{ $t("register") }}
-        </router-link>
-      </template>
-    </div>
 
-    <div class="container">
-      <div class="columns is-multiline landingpage-content">
-        <div class="column is-6 landingpage-column title-column">
-          <h1 class="title is-1">
+    <el-main class="landingpage">
+      <el-row>
+        <el-col :span="12" class="title-column">
+          <h1 class="title">
             Create Beautfil Presentations
           </h1>
-          <h2 class="subtitle is-1">
+          <h2 class="subtitle">
             <a @click="scrollToEnd">Learn More</a>
           </h2>
-        </div>
+        </el-col>
 
-        <div class="column is-6 landingpage-column sign-up-box">
-          <form @submit.prevent="register" @keydown="form.onKeydown($event)">
-            <div class="field">
-              <label class="label">First Name</label>
-              <div class="control">
-                <input
-                  v-model="form.first_name"
-                  class="input is-large"
-                  :class="{ 'is-invalid': form.errors.has('name') }"
-                  type="text"
-                  placeholder="First Name"
-                  name="first_name"
-                />
-                <has-error :form="form" field="name" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Last Name</label>
-              <div class="control">
-                <input
-                  v-model="form.last_name"
-                  class="input is-medium"
-                  :class="{ 'is-invalid': form.errors.has('name') }"
-                  type="text"
-                  placeholder="Last Name"
-                  name="last_name"
-                />
-                <has-error :form="form" field="name" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input
-                  v-model="form.email"
-                  class="input is-medium"
-                  :class="{ 'is-invalid': form.errors.has('email') }"
-                  type="email"
-                  placeholder="Email"
-                  name="email"
-                />
-                <has-error :form="form" field="email" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input
-                  v-model="form.password"
-                  class="input is-medium"
-                  :class="{ 'is-invalid': form.errors.has('password') }"
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                />
-                <has-error :form="form" field="password" />
-                <p>Your Password has to be at least 8 Characters long</p>
-              </div>
-            </div>
-
-            <div class="field">
-              <label class="label">Password Confirmation</label>
-              <div class="control">
-                <input
-                  v-model="form.password_confirmation"
-                  class="input is-medium"
-                  :class="{
-                    'is-invalid': form.errors.has('password_confirmation')
-                  }"
-                  type="password"
-                  placeholder="Confirm Password"
-                  name="password_confirmation"
-                />
-                <has-error :form="form" field="password_confirmation" />
-              </div>
-            </div>
-
-            <div class="field terms-of-service-field">
-              <div class="control">
-                <button class="button is-large is-success">
-                  Sign Up
-                </button>
-                <p>
-                  By clicking <b>"Sign up"</b> you are agreeing to our
-                  <a>"Terms of Service"</a>
-                </p>
-              </div>
-            </div>
-          </form>
-        </div>
-
-        <div ref="section1" class="column is-6 landingpage-column">
-          text her
-        </div>
-
-        <div class="column is-6 landingpage-column">
-          <img :src="image">
-        </div>
-      </div>
-    </div>
+        <el-col :span="12" class="sign-up-box">
+          <el-form label-position="top" ref="form" :rules="rules" :model="form">
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-form-item
+                  label="First Name"
+                  prop="first_name"
+                >
+                  <el-input 
+                    v-model="form.first_name"
+                    :class="{ 'is-invalid': form.errors.has('name') }"
+                    type="text"
+                    placeholder="First Name"
+                    name="first_name" 
+                    autocomplete="on"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item
+                  label="Last Name"
+                  prop="last_name"
+                >
+                  <el-input 
+                    v-model="form.last_name"
+                    :class="{ 'is-invalid': form.errors.has('name') }"
+                    type="text"
+                    placeholder="Last Name"
+                    name="last_name"
+                    autocomplete="on"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item
+                  label="EMail Address"
+                  prop="email"
+                >
+                  <el-input v-model="form.email" type="email" autocomplete="on"/>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item
+                  label="Password"
+                  prop="password"
+                >
+                  <el-input v-model="form.password" 
+                    type="password"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item
+                  label="Confirm Password"
+                  prop="password_confirmation"
+                >
+                  <el-input v-model="form.password_confirmation" 
+                    type="password"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-button type="primary" @click="submitForm">Register</el-button>
+          </el-form>
+        </el-col>
+      </el-row>
+    </el-main>
   </div>
 </template>
 
@@ -148,19 +103,60 @@ export default {
     return { title: this.$t("home") }
   },
 
-  data: () => ({
-    title: process.env.appName,
-    image: twice,
+  data() {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password'));
+        } else {
+          if (this.form.password_confirmation !== '') {
+            this.$refs.form.validateField('password_confirmation');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password again'));
+        } else if (value !== this.form.password) {
+          callback(new Error('Two inputs don\'t match!'));
+        } else {
+          callback();
+        }
+      };
+    return{
+      title: process.env.appName,
+      image: twice,
+      form: new Form({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation: ""
+      }),
+      rules: {
+          password: [
+            { validator: validatePass, trigger: 'blur' },
+            { min: 8, max: 80, message: 'At least 8 Characters', trigger: 'blur' }
+          ],
+          password_confirmation: [
+            { validator: validatePass2, trigger: 'blur' }
+          ],
+          first_name: [
+              { required: true, message: 'First Name required'},
+              { max: 80, trigger: 'blur' }
+          ],
+          last_name: [
+              { required: true, message: 'Last Name required'},
+              { max: 80, trigger: 'blur' }
+          ],
+          email: [
+                { required: true, message: 'Please input email address', trigger: 'blur' },
+                { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+          ]
+      }
+    }
+  },
 
-    form: new Form({
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      password_confirmation: ""
-    }),
-    remember: false
-  }),
 
   computed: mapGetters({
     authenticated: "auth/check"
@@ -170,8 +166,17 @@ export default {
     scrollToEnd() {
       this.$refs.section1.scrollIntoView()
     },
+    submitForm(){
+        this.$refs.form.validate((valid) => {
+          if (!valid) {
+            return false
+          } else {
+            console.log('register')
+            this.register()
+          }
+        });
+    },
     async register() {
-      console.log(this.form)
       // Register the user.
       const { data } = await this.form.post("/register")
 
@@ -223,7 +228,7 @@ export default {
 
 /* top left*/
 .ribbon-top-left {
-  top: -10px;
+  top: 60px;
   left: -10px;
 }
 .ribbon-top-left::before,
@@ -251,35 +256,32 @@ export default {
   top: 18px;
 }
 
+div.welcome {
+  background-image: url(background-image.png);
+  min-height: 100vh;
+}
+
+.landingpage{
+  margin-top: 4rem;
+  padding: 3rem;
+}
+
+div.title-column {
+  padding-top: 3rem;
+  text-align: center;
+}
+
 .title {
   font-size: 85px;
 }
 
-div.welcome {
-  background-image: url(background-image.png);
-  min-height: 100%;
-}
-
-div.landingpage-content {
-  padding-top: 10rem;
-}
-
-div.landingpage-column {
-  margin-bottom: 10rem;
-  /* margin-bottom: 50vh; */
-}
-
-div.title-column {
-  padding-top: 9rem;
-  text-align: center;
+.subtitle {
 }
 
 div.sign-up-box {
   border: rgb(197, 197, 197) solid 1px;
   background: rgb(247, 247, 247, 0.8);
-}
-
-div.terms-of-service-field {
   padding: 1rem;
 }
+
 </style>

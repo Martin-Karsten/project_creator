@@ -1,8 +1,6 @@
 <template>
-  <el-container class="layout">
-    <el-header>
-      <navbar />
-    </el-header>
+  <el-container direction="vertical">
+    <navbar />
     <nuxt />
   </el-container>
 </template>

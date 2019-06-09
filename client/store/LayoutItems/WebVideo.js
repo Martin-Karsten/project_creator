@@ -1,7 +1,8 @@
 import Vue from "vue"
 
 export const state = () => ({
-  web_videos: ""
+  web_videos: "",
+  projectId: ""
 })
 
 export const getters = {
@@ -10,7 +11,7 @@ export const getters = {
 
 export const mutations = {
   SET_PROJECT_ID(state, payload) {
-    state.project_id = payload
+    state.projectId = payload
   },
   
   SET_WEB_VIDEOS(state, payload) {
@@ -50,7 +51,7 @@ export const mutations = {
 
 export const actions = {
   initialize({ state, commit, rootGetters }, payload) {
-    commit("SET_PROJECT_ID", state.projectId = rootGetters['Layout/getProjectId'])
+    commit("SET_PROJECT_ID", rootGetters['Layout/getProjectId'])
     commit("SET_WEB_VIDEOS", payload)
   },
 

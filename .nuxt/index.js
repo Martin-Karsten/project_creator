@@ -22,6 +22,7 @@ import nuxt_plugin_vuescrollto_15afb874 from 'nuxt_plugin_vuescrollto_15afb874' 
 import nuxt_plugin_colorpicker_dc745d86 from 'nuxt_plugin_colorpicker_dc745d86' // Source: ../client/plugins/color-picker (mode: 'client')
 import nuxt_plugin_vueecharts_06f390fb from 'nuxt_plugin_vueecharts_06f390fb' // Source: ../client/plugins/vue-echarts.js (mode: 'client')
 import nuxt_plugin_vuexpersist_13f465a2 from 'nuxt_plugin_vuexpersist_13f465a2' // Source: ../client/plugins/vuex-persist (mode: 'client')
+import nuxt_plugin_infiniteloading_e0576c0e from 'nuxt_plugin_infiniteloading_e0576c0e' // Source: ../client/plugins/infinite-loading (mode: 'client')
 
 // Component: <NoSsr>
 Vue.component(NoSsr.name, NoSsr)
@@ -203,6 +204,10 @@ async function createApp(ssrContext) {
 
   if (process.client && typeof nuxt_plugin_vuexpersist_13f465a2 === 'function') {
     await nuxt_plugin_vuexpersist_13f465a2(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_infiniteloading_e0576c0e === 'function') {
+    await nuxt_plugin_infiniteloading_e0576c0e(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

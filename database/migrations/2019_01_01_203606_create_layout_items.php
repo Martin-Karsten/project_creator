@@ -19,8 +19,8 @@ class CreateLayoutItems extends Migration
             $table->timestamps();
 
             $table->foreign('project_id')
-            ->references('project_id')
-            ->on('project_layouts')
+            ->references('id')
+            ->on('projects')
             ->onDelete('cascade');
         });
     }
