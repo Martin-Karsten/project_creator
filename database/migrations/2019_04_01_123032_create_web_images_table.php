@@ -17,6 +17,7 @@ class CreateWebImagesTable extends Migration
             $table->string('id')->primary();
             $table->string('layout_item_id');
             $table->string('name')->default('picture.jpeg');
+            $table->string('project_id');
             $table->string('url')->nullable();
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);

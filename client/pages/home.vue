@@ -62,8 +62,7 @@
             @mouseover="showEditable(index)"
             @mouseleave="hideEditable(index)"
           >
-            <img src="./default-project-image.png" alt="" style="height: 215px"/>
-            <!-- <img :src="image" alt="" /> -->
+            <img :id="project.id" :src="getImage(index)" alt="" style="height: 215px"/>
             <el-checkbox
               v-show="project.editable || project.selected"
               class="home-column-checkbox"
@@ -139,9 +138,14 @@ export default {
   },
   async mounted() {
     await this.$store.dispatch("Project/fetchProjects")
-
   },
   methods: {
+    getImage(index){
+        if(this.projects[index].image == undefined)
+          return 'http://localhost:8000/storage//images/default-project-image.png'
+        else
+          return 'http://localhost:8000/storage/' + this.projects[index].image
+    },
     showEditable(index) {
       this.$store.commit("Project/SHOW_EDITABLE", index)
     },
@@ -183,10 +187,12 @@ export default {
 
         case 'delete':
           this.deleteProject()
+          this.projectName = ''
           break;
         
         case 'deleteMultiple':
           this.deleteProjects()
+          this.projectName = ''
           break;
       }
     },
@@ -262,6 +268,10 @@ export default {
       this.projectsClicked.forEach((i) => this.deleteMultipleForm.projects.push(this.projects[i].id))
       try{
         await this.deleteMultipleForm.post('user/projects/delete')
+        this.$message({
+          message: 'Projects Deleted',
+          type: 'success'
+        });
       } catch (e) {
           console.log(e)
           this.$message({

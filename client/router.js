@@ -16,7 +16,7 @@ const PasswordRequest = () =>
 
 const Settings = () =>
   import("~/pages/settings/index").then(m => m.default || m)
-// const SettingsProfile = () => import('~/pages/settings/profile').then(m => m.default || m)
+const SettingsProfile = () => import('~/pages/settings/profile').then(m => m.default || m)
 const SettingsPassword = () =>
   import("~/pages/settings/password").then(m => m.default || m)
 
@@ -45,8 +45,8 @@ const routes = [
     path: "/settings",
     component: Settings,
     children: [
-      // { path: '', redirect: { name: 'settings.profile' } },
-      // { path: 'profile', name: 'settings.profile', component: SettingsProfile },
+      { path: '', redirect: { name: 'settings.profile' } },
+      { path: 'profile', name: 'settings.profile', component: SettingsProfile },
       {
         path: "password",
         name: "settings.password",

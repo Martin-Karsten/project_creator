@@ -115,9 +115,11 @@ export default {
       this.$store.commit("PresentationMode/SET_EDIT_MODE")
     },
     activateTextfieldIcon() {
+      this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
       this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
     },
     activateWebImageIcon() {
+      this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "WebImageContainer",
         layoutId: this.currentLayout,
@@ -125,6 +127,7 @@ export default {
       })
     },
     activateChartIcon() {
+      this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
       this.$store.commit("EditContainer/OPEN_EDIT_CONTAINER", {
         name: "ChartContainer",
         layoutId: this.currentLayout,
@@ -142,6 +145,7 @@ export default {
       })
     },
     activateShapesIcon() {
+      this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
       this.shapePickerActivated = !this.shapePickerActivated
     },
     startPresentationMode() {

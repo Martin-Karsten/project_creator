@@ -21,7 +21,10 @@ Route::group(['middleware' => 'auth:api'], function () {
         return $request->user();
     });
 
+    Route::resource('users', 'UsersController');
+
     Route::patch('settings/profile', 'Settings\ProfileController@update');
+    Route::post('settings/avatar', 'Settings\AvatarController@store');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
     //Project Settings
@@ -34,6 +37,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('user/project/{id}/updateLayout', 'Project\ProjectsController@updateLayout');
     Route::delete('user/project/{id}/delete', 'Project\ProjectsController@delete');
     Route::post('user/projects/delete', 'Project\ProjectsController@deleteMultiple');   //post multiple projects and delete them
+
+    Route::put('projectimage/{project}', 'Project\ProjectImageController@update');
 
     //Project Components
         //Textfields

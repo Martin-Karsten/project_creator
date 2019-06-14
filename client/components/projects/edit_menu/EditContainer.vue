@@ -39,7 +39,7 @@ div.edit-container {
   width: 55rem;
   height: 39.5rem;
   position: fixed;
-  top: 33%;
+  top: 31%;
   left: 42%;
   margin-top: -100px;
   margin-left: -150px;

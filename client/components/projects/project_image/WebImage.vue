@@ -1,26 +1,39 @@
 <template>
-  <img
-    class="web-image"
-    :style="{ zIndex: row, borderRadius: radius + 'px', opacity: opacity }"
-    :src="url"
-    @contextmenu.prevent="openContextMenu"
-    @click="setCurrentItem"
-  >
+  <div>
+    <img
+      class="web-image"
+      :style="{ zIndex: row, borderRadius: radius + 'px', opacity: opacity }"
+      :src="url"
+      @contextmenu.prevent="openContextMenu"
+      @click="setCurrentItem"
+    >
+    <a :href="url" target="_blank" class="image-url">{{shortUrl}}</a>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex"
 export default {
   components: {},
-  props: ["id", "layoutId", "url", "radius", "opacity", "layoutRow", "row"],
+  props: ["id", "layoutId", "url","radius", "opacity", "layoutRow", "row"],
   data() {
     return {
       image: "",
-      selected: false
+      selected: false,
+      shortUrl: ''
     }
   },
 
+  mounted(){
+    this.shortUrl = this.getUrl()
+  },
   methods: {
+    getUrl(){
+      var u = this.url;
+      var hostname = (new URL(u)).hostname;
+
+      return hostname
+    },
     setCurrentItem() {
       let payload = {
         id: this.id,
@@ -64,5 +77,15 @@ img.web-image {
   height: 100%;
   display: table-row;
   position: absolute;
+}
+
+a.image-url{
+  color: rgb(48, 49, 57, 0.5);
+  font-size: 15px;
+  background: transparent;
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  top: 98%;
 }
 </style>

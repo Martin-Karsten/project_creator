@@ -1,7 +1,6 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
-      {{currentItem}}
       <el-col :span="24"
       >
         <div 
@@ -21,9 +20,8 @@
             :id="'item' + element.id"
           >
 
-            <el-row class="toolbox"
-            v-show="element.isEmpty"
-            >
+            <template v-if="element.isEmpty">
+            <el-row class="toolbox">
               <el-tooltip class="tooltip-item" effect="dark" content="Text" placement="top-start">
                 <el-col :span="4">
                   <fa class="tooltip-icon" icon="font" @click="toTextfield(index, element.id)" />
@@ -67,6 +65,7 @@
                 </el-popover>
               </el-tooltip>
             </el-row>
+            </template>
 
             <vue-draggable-resizable
               v-for="(textfield, textfieldIndex) in layoutTextfields(element)" :key="textfieldIndex+'t'"
@@ -79,6 +78,7 @@
               @resizing="containerResizing"
               @dragging="containerDragging"
             >
+              {{textfield}}
               <textfield-editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layout-row="index" :row="textfieldIndex" :layout-id="element.id" />
             </vue-draggable-resizable>
 

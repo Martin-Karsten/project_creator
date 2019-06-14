@@ -7,15 +7,61 @@
 <script>
 import { mapGetters } from "vuex"
 import { mapMutations } from "vuex"
+import axios from 'axios'
+import domtoimage from 'dom-to-image';
 export default {
   data: function() {
     return {}
   },
+  computed: {
+    ...mapGetters({
+      projectId: "Layout/getProjectId",
+    }),
+    layout: {
+      get() {
+        return this.$store.getters["Layout/getLayoutList"]
+      },
+    }
+  },
   methods: {
     handleSelect(key, path){
+      const that = this
       switch(key){
         case 'save':
+        this.layout.forEach(function (l, i){
+          let element = document.getElementById('item' + l)
+          domtoimage.toPng(element)
+          .then(function (dataUrl) {
+            if(i === 0){
+              that.$store.commit('Project/SET_PROJECT_IMAGE', {id: that.projectId, image: dataUrl})
+              axios({
+                method: 'put',
+                url: 'projectimage/project',
+                data: {
+                  id: that.projectId,
+                  image: dataUrl
+                }
+              })
+            }
+            that.$store.commit('Layout/SET_LAYOUT_SCROLL_IMAGES', {id: l, scrollImage: dataUrl})
+          })
+          .catch(function (error) {
+              console.error('domtoimage error!', error);
+          });
+        })
         this.$store.dispatch('Layout/saveToDB')
+        .then(function (response){
+          that.$message({
+            message: 'Project Saved',
+            type: 'success'
+          });
+        })
+          .catch(function (error) {
+          that.$message({
+            message: 'Project could not be saved',
+            type: 'error'
+          });
+          });
       }
     }
   }

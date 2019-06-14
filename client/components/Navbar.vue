@@ -1,5 +1,6 @@
 <template>
-  <el-menu :router="true"
+  <el-menu 
+    :router="true"
     :default-active="activeIndex"
     mode="horizontal"
     background-color="#e6e6e6"
@@ -7,22 +8,22 @@
     active-text-color="#ffd04b"
     @select="handleSelect"
   >
-    <el-menu-item index="1">
+    <el-menu-item index="home" :route="getHomeRoute()">
       Processing Center
     </el-menu-item>
 
 
     <el-submenu v-if="user" index="3" style="float: right;">
       <template slot="title">
-        <i class="el-icon-menu" />
+        <img class="navbar-profile-image" :src="'http://localhost:8000/storage/' + this.user.avatar" alt="">
       </template>
-      <el-menu-item index="3-1">
+      <el-menu-item :route="{name: 'home'}" index="settings">
+        <i class="el-icon-document-copy" /> Projects
+      </el-menu-item>
+      <el-menu-item index="settings">
         <i class="el-icon-setting" /> Settings
       </el-menu-item>
-      <el-menu-item index="3-2">
-        <i class="el-icon-information" /> About
-      </el-menu-item>
-      <el-menu-item index="logout">
+      <el-menu-item :route="{name: 'login'}" index="logout">
         <i class="el-icon-circle-close" /> Logout
       </el-menu-item>
     </el-submenu>
@@ -35,21 +36,6 @@
       <el-menu-item index="login" :route="{name: 'login'}" style="float: right;">
         {{ $t("login") }}      
       </el-menu-item>
-
-      <!-- <router-link
-        :to="{ name: 'login' }"
-        class="navbar-item"
-        active-class="active"
-      >
-        {{ $t("login") }}
-      </router-link>
-      <router-link
-        :to="{ name: 'register' }"
-        class="navbar-item"
-        active-class="active"
-      >
-        {{ $t("register") }}
-      </router-link> -->
     </template>
   </el-menu>
 </template>
@@ -74,6 +60,12 @@ export default {
   }),
 
   methods: {
+    getHomeRoute(){
+      if(this.user)
+        return {name: 'home'}
+      else
+        return {name: '/'}
+    },
     handleSelect(key, keyPath) {
       switch(key){
         case 'logout':
@@ -92,20 +84,17 @@ export default {
 </script>
 
 <style>
-/* .el-menu--horizontal .el-submenu > .el-menu {
-  left: initial !important;
-  right: 0;
-} */
 
 .navbar-right-dropdown {
   margin-left: 35rem;
 }
 
-.profile-photo-nav {
-  width: 2rem;
+img.navbar-profile-image {
+  width: 2.5rem;
   height: 2.5rem;
-  border-radius: 15px;
-  margin-right: 0.5rem;
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  border-radius: 22px;
 }
 
 div.is-right {

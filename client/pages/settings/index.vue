@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="tabs">
+    <!-- <div class="tabs">
       <ul>
         <li class="is-active">
           <router-link :to="{ name: 'settings.profile' }">
@@ -10,7 +10,7 @@
         <li><a>Projects</a></li>
         <li><a>General</a></li>
       </ul>
-    </div>
+    </div> -->
 
     <div>
       <transition name="fade" mode="out-in">

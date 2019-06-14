@@ -2,38 +2,32 @@
   <div>
     <el-header class="project-navbar">
       <el-menu
+        :router="true"
         class="el-menu-demo"
         mode="horizontal"
         background-color="#edeeef"
         text-color="#303139"
         active-text-color="black"
       >
-        <el-menu-item index="1">
+        <el-menu-item index="1" :route="{name: 'home'}">
           START
         </el-menu-item>
 
-        <el-menu-item index="2">
-          ANIMATIONS
-        </el-menu-item>
-
-        <el-submenu v-if="user" index="4" style="float: right;">
+        <el-submenu v-if="user" index="3" style="float: right;">
           <template slot="title">
-            <img
-              :src="user.photo_url"
-              class="rounded-circle profile-photo-nav"
-            >
-            {{ user.first_name }}
+            <img class="navbar-profile-image" :src="'http://localhost:8000/storage/' + this.user.avatar" alt="">
           </template>
-          <el-menu-item index="4-1">
+          <el-menu-item :route="{name: 'home'}" index="settings">
+            <i class="el-icon-document-copy" /> Projects
+          </el-menu-item>
+          <el-menu-item :route="{name: 'settings'}" index="settings">
             <i class="el-icon-setting" /> Settings
           </el-menu-item>
-          <el-menu-item index="4-2">
-            <i class="el-icon-information" /> About
-          </el-menu-item>
-          <el-menu-item index="4-3">
+          <el-menu-item :route="{name: 'login'}" index="logout">
             <i class="el-icon-circle-close" /> Logout
           </el-menu-item>
         </el-submenu>
+
       </el-menu>
     </el-header>
 
@@ -84,12 +78,6 @@ export default {
 <style>
 .project-navbar {
   padding: 0 !important;
-}
-.profile-photo-nav {
-  width: 2rem;
-  height: 2.5rem;
-  border-radius: 15px;
-  margin-right: 0.5rem;
 }
 
 nav.component-navigation {

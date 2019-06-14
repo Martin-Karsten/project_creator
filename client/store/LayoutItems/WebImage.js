@@ -47,6 +47,7 @@ export const mutations = {
 
     // update web_image state
     Vue.set(state.web_images, payload.id, obj[payload.layoutId])
+    console.log(state.web_images)
   },
   SET_SIZE(state, payload) {
     payload.currentItem.width = payload.width

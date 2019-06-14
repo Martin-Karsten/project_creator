@@ -33,8 +33,9 @@ export const mutations = {
     state.token = null
   },
 
-  UPDATE_USER(state, { user }) {
-    state.user = user
+  UPDATE_USER(state, payload) {
+    console.log(payload, 'payload')
+    state.user = payload
   }
 }
 
@@ -59,7 +60,7 @@ export const actions = {
   },
 
   updateUser({ commit }, payload) {
-    commit("UPDATE_USER", payload)
+    commit("UPDATE_USER", payload.user)
   },
 
   async logout({ commit }) {

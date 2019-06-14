@@ -9,7 +9,7 @@
          />
     </form>
 
-    <el-row class="t-row">
+    <el-row>
       <el-col class="web-image-search-column" :span="6"
         v-for="(image, index) in images"
         :key="index"
@@ -21,12 +21,12 @@
           />
       </el-col>
     </el-row>
-
       <el-pagination class="web-search-pagination"
         layout="prev, next"
         :hide-on-single-page="true"
         @prev-click="previousPage"
         @next-click="nextPage"
+        :total="12"
       />
 
   </div>
@@ -53,7 +53,8 @@ export default {
           "05e0b36ff66aa670e542c3add98313480711d40e1c0264f35534c8c92e1f9dd0"
       }),
       searchInput: "",
-      images: "",
+      images: {},
+      total: 0,
       page: 1,
       disabled: false
     }
@@ -61,12 +62,14 @@ export default {
 
   methods: {
     searchImage() {
+      let that = this
       this.unsplash.search
         .photos(this.searchInput, this.page, 12)
         .then(toJson)
         .then(json => {
-          this.images = json.results
+          that.images = json.results
         })
+
     },
     selectImage(url) {
       let payload = {

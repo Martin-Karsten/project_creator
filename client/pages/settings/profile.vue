@@ -1,167 +1,150 @@
 <template>
-<div>
+  <div>
+    <el-main class="profile-container">
+        <h3>Profile</h3>
+      <el-row class="profile-items">
+        <el-col :span="13" :offset="4">
+          Profile Picture
+        </el-col>
+        <el-col :span="12">
+          <el-row class="profile-items-inner">
+            <el-col :span="4" :offset="1"> 
+              <img :src="'http://localhost:8000/storage/' + this.user.avatar" class="profile-photo">
+            </el-col>
+            <el-col :span="12">
+              <el-button class="profile-edit-button" @click="showModal('imageModal')">Edit</el-button>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
 
-  <p class="title is-3">Profile</p>
+      <el-row class="profile-items">
+        <el-col :span="13" :offset="4">
+          Name
+        </el-col>
+        <el-col :span="12">
+          <el-row class="profile-items-inner">
+            <el-col :span="5">
+              {{user.first_name}} {{user.last_name}}
+            </el-col>
+            <el-col :span="12">
+              <el-button class="profile-edit-button" @click="showModal('nameModal')">Edit</el-button>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
 
-  <div class="level">
-  <!-- Left side -->
-  <div class="level-left">
-    <div class="level-item">
-      <p class="subtitle is-5">
-        <strong>Picture</strong>
-      </p>
-    </div>
-  </div>
+      <el-row class="profile-items">
+        <el-col :span="13" :offset="4">
+          Email Address
+        </el-col>
+        <el-col :span="12">
+          <el-row class="profile-items-inner">
+            <el-col :span="4" :offset="1"> 
+              {{user.email}}
+            </el-col>
+            <el-col :span="12">
+              <el-button class="profile-edit-button" @click="showModal('emailModal')">Edit</el-button>
+            </el-col>
+          </el-row>
+        </el-col>
+      </el-row>
+    </el-main>
 
-  <!-- Right side -->
-  <div class="level-right">
-    <div class="level-item">
-      <img :src="user.photo_url" class="profile-photo">
-    </div>
-    <div class="level-item">
-      <div class="field has-addons">
-        <p class="control">
-          <button class="button" @click="showModal = true, currentModal = 'pictureModal'">
-            Edit
-          </button>
-        </p>
+    <modal v-if="modalName === 'imageModal'"
+      v-show="isModalVisible"
+      @close="closeModal"
+    >
+      <template v-slot:header>
+        <h3>Edit Your Profile Image</h3>
+      </template>
+
+      <template v-slot:body>
+        <el-upload
+          class="avatar-uploader"
+          action="`http://localhost:8000/users/1`"
+          :show-file-list="false"
+          :before-upload="beforeAvatarUpload"
+          :drag="true"
+          :auto-upload="true"
+          :http-request="updateImage"
+          >
+          <img :src="getProfileImage()" class="modal-avatar-photo">
+        </el-upload>
+      </template>
+    </modal>
+
+    <modal v-else-if="modalName === 'nameModal'"
+      v-show="isModalVisible"
+      @close="closeModal"
+      @showModal="showModal"
+    >
+      <template v-slot:header>
+        <h3>Edit you Username</h3>
+      </template>
+
+      <template v-slot:body>
+        <el-form class="modal-buttons" @submit.prevent="updateName"
+        >
+        <el-form-item
+        >
+          <el-input v-model="form.first_name" :placeholder="user.first_name" />
+        </el-form-item>
+        <el-form-item
+          class="last-name-modal-input"
+        >
+          <el-input v-model="form.last_name" :placeholder="user.last_name" />    
+        </el-form-item>
+        </el-form>
+      </template>
+
+    <template v-slot:footer>
+      <div>
+
       </div>
-    </div>
+      <el-button type="success" @click="updateName">Submit</el-button>
+      <el-button type="danger" @click="closeModal">Cancel</el-button>
+    </template>
+    </modal>
+
+    <modal v-else-if="modalName === 'emailModal'"
+      v-show="isModalVisible"
+      @close="closeModal"
+      @showModal="showModal"
+    >
+      <template v-slot:header>
+        <h3>Edit you Email Address</h3>
+      </template>
+
+      <template v-slot:body>
+        <el-form @submit.prevent="updateEmail" class="modal-buttons"
+        >
+        <el-form-item
+        >
+          <el-input v-model="form.email"></el-input>
+        </el-form-item>
+        </el-form>
+      </template>
+
+      <template v-slot:footer>
+        <el-button type="success" @click="updateName">Submit</el-button>
+        <el-button type="danger" @click="closeModal">Cancel</el-button>
+      </template>
+    </modal>
+    
+
   </div>
-  </div>
-
-  <hr>
-
-  <div class="level">
-  <!-- Left side -->
-  <div class="level-left">
-    <div class="level-item">
-      <p class="subtitle is-5">
-        <strong>Name</strong>
-      </p>
-    </div>
-  </div>
-
-  <!-- Right side -->
-  <div class="level-right">
-    <div class="level-item">
-      <p class="subtitle is-5"><strong>{{user.first_name}} {{user.last_name}}</strong></p>
-    </div>
-    <div class="level-item">
-      <div class="field has-addons">
-        <p class="control">
-          <button class="button" @click="showModal = true, currentModal = 'nameModal'">
-            Edit
-          </button>
-        </p>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <hr>
-
-  <div class="level">
-  <!-- Left side -->
-  <div class="level-left">
-    <div class="level-item">
-      <p class="subtitle is-5">
-        <strong>E-Mail</strong>
-      </p>
-    </div>
-  </div>
-
-  <!-- Right side -->
-  <div class="level-right">
-    <div class="level-item">
-      <p class="subtitle is-5"><strong>{{user.email}}</strong></p>
-    </div>
-    <div class="level-item">
-      <div class="field has-addons">
-        <p class="control">
-          <button class="button" @click="showModal = true, currentModal = 'emailModal' ">
-            Edit
-          </button>
-        </p>
-      </div>
-    </div>
-  </div>
-  </div>
-
-  <modal v-if="showModal" @close="showModal = false, currentModal = '', file = '', backgroundColor.old = 'white', backgroundColor.changed = false">
-
-    <div v-if="currentModal == 'pictureModal' " slot="form-container">
-      <h3 class="title is-3 modal-card-head" slot="header">Edit Profile Picture</h3>
-
-      <div slot="body">
-        <div class="file-drop-area" v-bind:style="{ backgroundColor: backgroundColor.old }">
-          <div v-if="file == ''">
-            <span class="fake-btn">Choose file</span>
-            <span v-if="file == ''" class="file-msg">or drag and drop file here</span>
-          </div>
-
-          <span v-else class="name" >{{file.name}}</span>
-          <input class="file-input" type="file" @dragenter="onDragEnter" @dragleave="onDragLeave" @change="onInputChange">
-        </div>
-      </div>
-    </div>
-
-    <div v-else-if="currentModal == 'nameModal' " slot="form-container">
-      
-      <h3 class="title is-3 modal-card-head" slot="header">Edit your Name</h3>
-
-      <div slot="body">
-        <div class="field">
-          <div class="control">
-            <input class="input is-medium modal-input-1" type="text" placeholder="First Name" style="width: 495px">
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <input class="input is-medium modal-input-2" type="text" placeholder="Last Name" style="width: 495px">
-          </div>
-        </div>     
-      </div>
-    </div>
-  
-    <div v-else-if="currentModal == 'emailModal' " slot="form-container">
-      <h3 class="title is-3 modal-card-head" slot="header">Edit {{user.email}}</h3>
-
-      <div slot="body">
-        <div class="field">
-          <div class="control">
-            <input class="input is-medium modal-input-1" type="email" placeholder="New Email address" style="width: 495px">
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <input class="input is-medium modal-input-2" type="email" placeholder="Confirm Email address" style="width: 495px">
-          </div>
-        </div>
-
-        <div class="field">
-          <div class="control">
-            <input class="input is-medium modal-input-2" type="email" placeholder="Password" style="width: 495px">
-          </div>
-        </div>       
-      </div>
-    </div>
-
-  </modal>
-
-</div>
 </template>
 
 <script>
 import  Modal from '../../components/global/Modal.vue'
 import Form from 'vform'
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
-    'modal': Modal,
+    Modal
     },
   scrollToTop: false,
 
@@ -170,22 +153,16 @@ export default {
   },
 
   data: () => ({
-    currentModal: '',
-    showModal: false,
-    dropActive: false,
-    file: '',
-    backgroundColor: {old: 'white', new: 'lightgray', temp: '', changed: false},
-    pictureForm: new Form({
-      newPhoto: ''
+    isModalVisible: false,
+    modalName: 'imageModal',
+    avatar: '',
+    profileImage: '',
+    form: new Form({
+      first_name: '',
+      last_name: '',
+      email: '',
+      avatar: ''
     }),
-    nameForm: new Form({
-      name: '',
-    }),
-    // emailForm: new Form({
-    //   oldEmail: '',
-    //   newEmail: '',
-    //   password: ''
-    // })
   }),
 
   computed: mapGetters({
@@ -194,37 +171,76 @@ export default {
 
   created () {
     // Fill the form with user data.
-    this.pictureForm.keys().forEach(key => {
-      this.pictureForm[key] = this.user[key]
+    this.form.keys().forEach(key => {
+      this.form[key] = this.user[key]
     })
   },
 
   methods: {
-    acivateNameModal(){
-      this.showModal = true
-      this.currentModal = 'userNameModal'
+    showModal(name) {
+      this.isModalVisible = true;
+      switch(name){
+        case 'imageModal':
+          this.modalName = name
+          return;
+        case 'nameModal':
+          this.modalName = name
+          return;
+        case 'emailModal':
+          this.modalName = name
+          return;
+      }
     },
-    onDragEnter(){
-      this.backgroundColor.temp = this.backgroundColor.old
-      this.backgroundColor.old = this.backgroundColor.new
-      this.dropActive = true
+    closeModal() {
+      this.isModalVisible = false;
+      this.modalName = ''
     },
-    onDragLeave(){
-      if(!this.backgroundColor.changed)
-        this.backgroundColor.old = this.backgroundColor.temp
+      getProfileImage(){
+        console.log(this.user, 'upateProfile')
+        return 'http://localhost:8000/storage/' + this.user.avatar
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isPNG = file.type === 'image/png';
+        const isLt2M = file.size / 1024 / 1024 < 2;
 
-      this.dropActive = false
-    },
-    onInputChange(event){
-      this.backgroundColor.changed = true
-      this.backgroundColor.old = this.backgroundColor.new;
-      this.file = event.target.files[0]
-      console.log(this.file)
-    },
-    async update () {
-      const { data } = await this.form.patch('/settings/profile')
+        if (!isJPG && !isPNG) {
+          this.$message.error('Avatar picture must be JPG or PNG format!');
+        }
+        if (!isLt2M) {
+          this.$message.error('Avatar picture size can not exceed 2MB!');
+        }
+        this.avatar = file
+      },
+      updateImage () {
+        let that = this
+        var myFormData = new FormData()
+        myFormData.append('image', this.avatar, this.avatar.name)
+        axios({
+            method: 'post',
+            url: '/settings/avatar',
+            data: myFormData,
+            config: { headers: {'Content-Type': 'application/json' }},
+        }).then(function (response) {
+          that.$store.dispatch('auth/updateUser', { user: response.data })
+        });
 
-      this.$store.dispatch('auth/updateUser', { user: data })
+        this.closeModal()
+    },
+
+    async updateName(){
+      try{
+        const { data }  = await this.form.patch(`users/${this.user.id}`)
+        this.$store.commit('auth/UPDATE_USER', data)
+      }
+      catch(e){
+      }
+      this.isModalVisible = false
+      this.modalName = ''
+    },
+
+    async updateEmail(){
+
     }
   }
 }
@@ -233,68 +249,65 @@ export default {
 </script>
 
 <style>
+.profile-container{
+  margin-left: 12rem;
+  margin-right: 12rem;
+}
+
+.profile-items{
+    display: flex;
+    align-items: center;
+    height: 10rem;
+}
+
+.profile-items:nth-child(odd){
+  background-color: #f4f5f5;
+}
+
+.profile-items:nth-child(even){
+  background-color: #e6e6e6;
+}
+
+.profile-items-inner{
+    display: flex;
+    align-items: center;
+}
+
 img.profile-photo{
   width: 75px;
   height: 75px;
-  border-radius: 25px;
+  border-radius: 30px;
 }
 
-input.modal-input-1{
-  margin: 20px 20px 10px 20px;
+.modal-inputs{
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
-input.modal-input-2{
-  margin: 10px 20px 10px 20px;
+.last-name-modal-input{
+  margin-bottom: 0!important;
 }
 
-.file-drop-area {
-  margin-left: 24px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 500px;
-  max-width: 100%;
-  padding: 50px;
-  border: 1.2px dashed black;
-  border-radius: 3px;
-  transition: 0.2s;
-}
-.file-drop-area.is-active {
-  background-color: rgba(255, 255, 255, 0.05);
-}
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: table;
+    margin: 0 auto;
+  }
 
-.fake-btn {
-  flex-shrink: 0;
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 3px;
-  padding: 8px 0px;
-  margin-right: 10px;
-  font-size: 12px;
-  text-transform: uppercase;
-}
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
 
-.file-msg {
-  font-size: small;
-  font-weight: 300;
-  line-height: 1.4;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  .modal-avatar-photo {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
 
-.file-input {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  cursor: pointer;
-  opacity: 0;
-}
-.file-input:focus {
-  outline: none;
-}
 
 </style>
 

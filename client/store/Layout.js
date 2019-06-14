@@ -171,7 +171,6 @@ export const mutations = {
   },
 
   UPDATE_LAYOUT_SCROLL_IMAGE(state, payload){
-    console.log(payload)
     state.realLayout[payload.id].scrollImage = payload.scrollImage
   },
 
@@ -352,21 +351,21 @@ export const mutations = {
   },
 
   RESET_LAYOUT(state){
-    // state.realLayout= "",
-    // state.layoutList= [],
-    // state.projectId = ''
-    // state.currentLayout= ''
-    // state.currentItem= {}
-    // state.currentSelectedItem= {}
-    // state.projectId= ""
-    // state.textfields= ""
-    // state.images= ""
-    // state.web_images= ""
-    // state.web_videos=""
-    // state.tables=""
-    // state.charts=""
-    // state.shapes= ""
-    // state.deletedLayoutItems={textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []}
+    state.realLayout= "",
+    state.layoutList= [],
+    state.projectId = ''
+    state.currentLayout= ''
+    state.currentItem= {}
+    state.currentSelectedItem= {}
+    state.projectId= ""
+    state.textfields= ""
+    state.images= ""
+    state.web_images= ""
+    state.web_videos=""
+    state.tables=""
+    state.charts=""
+    state.shapes= ""
+    state.deletedLayoutItems={textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []}
   },
 
   RESET_ANIMATOIN(state, payload) {},
@@ -409,7 +408,7 @@ export const actions = {
   async initialize(
     { state, commit, dispatch, rootGetters, rootState }, payload) {
     let id = payload.id
-    if (state.projectId != id) {
+    // if (state.projectId != id) {
       commit("SET_PROJECT_ID", id)
       try {
         const { data } = await axios.get(`/user/project/${id}`)
@@ -417,7 +416,7 @@ export const actions = {
       } catch (e) {
         console.log(e)
       }
-    }
+    // }
 
     this.dispatch("LayoutItems/Textfield/initialize", state.textfields)
     this.dispatch("LayoutItems/WebImage/initialize", state.web_images)
@@ -426,6 +425,8 @@ export const actions = {
     this.dispatch("LayoutItems/Shapes/initialize", state.shapes)
     this.dispatch("LayoutItems/WebVideo/initialize", state.web_videos)
 
+    console.log(state.textfields);
+    return state.layoutList
   },
 
   async saveToDB({ state, commit }, payload) {

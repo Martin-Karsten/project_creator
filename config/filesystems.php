@@ -50,7 +50,12 @@ return [
 
         'images' => [
             'driver' => 'local',
-            'root'  => storage_path('app/images'),
+            'root'  => storage_path('images'),
+        ],
+
+        'avatars' => [
+            'driver' => 'local',
+            'root' => storage_path('avatars')
         ],
 
         'public' => [

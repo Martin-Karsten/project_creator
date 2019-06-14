@@ -52,6 +52,7 @@ export const mutations = {
         project_name: project.project_name,
         created_at: project.created_at,
         updated_at: project.updated_at,
+        image : project.image,
         clicked: false,
         editable: false,
         rename: false,
@@ -69,6 +70,7 @@ export const mutations = {
       return {
         id: project.id,
         project_name: project.project_name,
+        image: project.image,
         created_at: project.created_at,
         updated_at: project.updated_at,
         clicked: false,
@@ -77,6 +79,15 @@ export const mutations = {
       }
     })
     state.projects.push(...newP)
+  },
+
+  SET_PROJECT_IMAGE(state, payload){
+    for(let i=0; i<state.projects.length; i++){
+      if(state.projects[i].id === payload.id){
+        state.projects[i].image = payload.image
+        return
+      }
+    }
   },
 
   PAGINATE_FETCH_PROJECTS_FAILURE(state, payload){

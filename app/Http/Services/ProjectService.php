@@ -64,6 +64,7 @@ class ProjectService {
         }
 
         foreach($arr as $field){
+            print_r($field);
             WebImage::updateOrCreate(
                 ['id'=> $field['id']],
                 [

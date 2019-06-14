@@ -35,7 +35,9 @@ import {
   Form,
   FormItem,
   Notification,
-  Message
+  Message,
+  Dialog,
+  Upload
 } from "element-ui"
 
 Vue.component(Container.name, Container)
@@ -72,6 +74,8 @@ Vue.component(Popover.name, Popover)
 Vue.component(Tree.name, Tree)
 Vue.component(Form.name, Form)
 Vue.component(FormItem.name, FormItem)
+Vue.component(Upload.name, Upload)
+Vue.component(Dialog.name, Dialog)
 
 // Vue.prototype.$loading = Loading.service;
 // Vue.prototype.$msgbox = MessageBox;

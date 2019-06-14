@@ -22,6 +22,7 @@
 
 <script>
 import ScrollTo from '~/plugins/vue-scrollto'
+import axios from 'axios'
 import draggable from "vuedraggable"
 import domtoimage from 'dom-to-image';
 import { mapGetters } from "vuex"
@@ -43,6 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      projectId: "Layout/getProjectId",
       layoutSet: "Layout/getLayoutSet"
     }),
     layout: {
@@ -51,23 +53,25 @@ export default {
       },
       set(value) {
         this.$store.commit("Layout/UPDATE_LAYOUT", value)
-        console.log(this.layout.indexOf(value))
       }
     }
   },
   async mounted (){
-    await this.$store.dispatch("Layout/initialize", this.$route.params)
-    let that = this
-      for(let l of this.layout){
-        let element = document.getElementById('item' + l)
-        domtoimage.toPng(element)
-        .then(function (dataUrl) {
-          that.$store.commit('Layout/SET_LAYOUT_SCROLL_IMAGES', {id: l, scrollImage: dataUrl})
-        })
-        .catch(function (error) {
-            console.error('oops, something went wrong!', error);
-        });
-      }
+      let that = this
+      await this.$store.dispatch("Layout/initialize", this.$route.params)
+      .then((response) =>{
+        for(let l of response){
+          let element = document.getElementById('item' + l)
+          domtoimage.toPng(element)
+          .then(function (dataUrl) {
+            that.$store.commit('Layout/SET_LAYOUT_SCROLL_IMAGES', {id: l, scrollImage: dataUrl})
+          })
+          .catch(function (error) {
+              console.error('domtoimage error!', error);
+          });
+        }
+      })
+
     this.$store.subscribe((mutation, state) => {
       switch(mutation.type){
         case 'Layout/ADD_ITEM' :
@@ -80,16 +84,16 @@ export default {
       this.$store.commit('Layout/SET_CURRENT_LAYOUT', el)
 
       let that = this
-      let element = document.getElementById('item' + el)
-      console.log(element)
-      domtoimage.toPng(element)
-      .then(function (dataUrl) {
-        that.updateImage = dataUrl
-      })
-      .catch(function (error) {
-          console.error('oops, something went wrong!', error);
-      });
-      that.$store.commit('Layout/UPDATE_LAYOUT_SCROLL_IMAGE', {id: el, scrollImage: this.updateImage})
+      for(let l of this.layout){
+        let element = document.getElementById('item' + l)
+        domtoimage.toPng(element)
+        .then(function (dataUrl) {
+          that.$store.commit('Layout/SET_LAYOUT_SCROLL_IMAGES', {id: l, scrollImage: dataUrl})
+        })
+        .catch(function (error) {
+            console.error('domtoimage error!', error);
+        });
+      }
     },
     openContextMenu(element){
       let payload = {

@@ -1,33 +1,47 @@
-<template>
-  <transition name="modal">
-    <div class="modal-mask" :class="{ 'is-active': showModal }">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-          <slot name="form-container">
-            <div class="modal-card-head">
-              <slot name="header">
-                default header
-              </slot>
-            </div>
+ <template>
+  <transition name="modal-fade">
+    <div class="modal-backdrop">
+      <div class="modal"
+        role="dialog"
+        aria-labelledby="modalTitle"
+        aria-describedby="modalDescription"
+      >
+        <header
+          class="modal-header"
+          id="modalTitle"
+        >
+          <slot name="header">
+            This is the default tile!
 
-            <div class="modal-card-body">
-              <slot name="body">
-                default body
-              </slot>
-            </div>
+            <button
+              type="button"
+              class="btn-close"
+              @click="close"
+              aria-label="Close modal"
+            >
+              x
+            </button>
           </slot>
-
+        </header>
+        <section
+          class="modal-body"
+          id="modalDescription"
+        >
+          <slot name="body">
+            I'm the default body!
+          </slot>
+        </section>
+        <footer class="modal-footer">
           <slot name="footer">
-            <footer class="modal-card-foot">
-              <button class="button is-success" @click="$emit('close')">
-                Save changes
-              </button>
-              <button class="button is-danger" @click="$emit('close')">
-                {{ $t("cancel") }}
-              </button>
-            </footer>
+            <el-button
+              type="danger"
+              @click="close"
+              aria-label="Close modal"
+            >
+              Cancel
+            </el-button>
           </slot>
-        </div>
+        </footer>
       </div>
     </div>
   </transition>
@@ -36,73 +50,79 @@
 <script>
 export default {
   name: "Modal",
-  props: {
-    showModal: { type: Boolean, default: null }
+  methods: {
+    close() {
+      this.$emit('close');
+    },
+    open(){
+      this.$emit('open')
+    }
   }
 }
 </script>
 
 <style>
-.modal-mask {
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: table;
-  transition: opacity 0.3s ease;
-}
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.modal-wrapper {
-  display: table-cell;
-  vertical-align: middle;
-}
+  .modal {
+    background: #FFFFFF;
+    box-shadow: 2px 2px 20px 1px;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+  }
 
-.modal-container {
-  width: 550px;
-  margin: 0px auto;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
-}
+  .modal-header{
+    padding: 2px 0 2px 15px;
+    display: flex;
+  }
 
-.modal-card-head {
-  font-size: 20px;
-  margin-top: 0;
-  background: hsl(0, 0%, 96%);
-}
+  .modal-footer {
+    padding: 15px;
+    display: flex;
+  }
 
-.modal-card-body {
-}
+  .modal-header {
+    background-color: #f4f5f5;
+    border-bottom: 1px solid #eeeeee;
+    justify-content: space-between;
+  }
 
-.modal-card-foot {
-  margin-top: 30px;
-}
+  .modal-footer {
+    background-color: #f4f5f5;
+    border-top: 1px solid #eeeeee;
+  }
 
-/*
- * The following styles are auto-applied to elements with
- * transition="modal" when their visibility is toggled
- * by Vue.js.
- *
- * You can easily play with the modal transition by editing
- * these styles.
- */
+  .modal-body {
+    position: relative;
+    padding: 20px 10px;
+    width: 400px;
+  }
 
-.modal-enter {
-  opacity: 0;
-}
+  .btn-close {
+    border: none;
+    font-size: 20px;
+    padding: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #4AAE9B;
+    background: transparent;
+  }
 
-.modal-leave-active {
-  opacity: 0;
-}
-
-.modal-enter .modal-container,
-.modal-leave-active .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
-}
+  .btn-green {
+    color: white;
+    background: #4AAE9B;
+    border: 1px solid #4AAE9B;
+    border-radius: 2px;
+  }
 </style>

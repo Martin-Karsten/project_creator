@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Services\ProjectService;
 
@@ -43,12 +44,34 @@ class ProjectsController extends Controller
     {
         $validated = $request->validated();
 
-        $project = Project::create([
+        $project = Project::where('project_name',$request->project_name)->first();
+        if(!$project){
+            $project = Project::create([
                 'project_name' => $request->project_name,
                 'user_id' => $request->user_id,
                 'private' => $request->private
             ]);
-        
+        }
+        // Name already exists, append new number until name does not exist
+        else{
+            $found = false;
+            $str = $request->project_name;
+            $num = 1;
+            while(!$found){
+                if (Project::where('project_name', $str .' (' . $num . ')'  )->exists()) {
+                    $num += 1;
+                }
+                else{
+                    $project = Project::create([
+                        'project_name' => $str .' (' . $num . ')',
+                        'user_id' => $request->user_id,
+                        'private' => $request->private
+                    ]);
+                    $found = true;
+                }
+            }
+        }
+
        return LayoutItem::create([
             'id' => (string) Str::uuid(),
             'project_id' => $project->id
@@ -92,21 +115,21 @@ class ProjectsController extends Controller
             $this->projectService->editTextfields($textfields, $deletedLayoutItems['textfields']);
         }
 
-        // if(!empty($web_images) || !empty($deletedLayoutItems['web_images'])){
-        //     $this->projectService->editWebImages($web_images, $deletedLayoutItems['web_images']);
-        // }
+        if(!empty($web_images) || !empty($deletedLayoutItems['web_images'])){
+            $this->projectService->editWebImages($web_images, $deletedLayoutItems['web_images']);
+        }
 
-        // if(!empty($tables || !empty($deletedLayoutItems['tables']))){
-        //     $this->projectService->editTables($tables, $deletedLayoutItems['tables']);
-        // }
+        if(!empty($tables || !empty($deletedLayoutItems['tables']))){
+            $this->projectService->editTables($tables, $deletedLayoutItems['tables']);
+        }
 
-        // if(!empty($web_videos || !empty($deletedLayoutItems['web_videos']))){
-        //     $this->projectService->editWebVideos($web_videos, $deletedLayoutItems['web_videos']);
-        // }
+        if(!empty($web_videos || !empty($deletedLayoutItems['web_videos']))){
+            $this->projectService->editWebVideos($web_videos, $deletedLayoutItems['web_videos']);
+        }
 
-        // if(!empty($shapes) || !empty($deletedLayoutItems['shapes'])){
-        //     $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
-        // }
+        if(!empty($shapes) || !empty($deletedLayoutItems['shapes'])){
+            $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
+        }
 
 
         if(!empty($charts) || !empty($deletedLayoutItems['charts'])){
@@ -122,6 +145,14 @@ class ProjectsController extends Controller
     }
 
     protected function delete($id) {
+        //delete the coresponding project thumbnail image as well
+        $project = Project::find($id);
+        $shortPath = $project->image;
+        $path = Storage::disk('public')->path($project->image);
+        
+        if($shortPath =! null && $shortPath != '/images/default-project-image.png'){
+            unlink($path);
+        }
         Project::destroy($id);
     }
 
@@ -130,8 +161,15 @@ class ProjectsController extends Controller
             return 'empty array';
         }
 
-        foreach($request->projects as $project){
-            Project::destroy($project);
+        foreach($request->projects as $p){
+            $project = Project::find($p);
+            $shortPath = $project->image;
+            $path = Storage::disk('public')->path($project->image);
+            
+            if($shortPath =! null && $shortPath != '/images/default-project-image.png'){
+                unlink($path);
+            }
+            Project::destroy($p);
         }
 
         return 'success';
