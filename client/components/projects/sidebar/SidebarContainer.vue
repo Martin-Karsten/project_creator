@@ -11,8 +11,11 @@
       class="sidebar-tab"
       :label="item.name"
       :name="item.name"
+      :disabled="isDisabled"
     >
-      <span slot="label">
+      <span slot="label"
+      :class="tabsLable"
+      >
         <fa v-if="item.icon != 'sidebar-tab-image'" :icon="item.icon" />
         <img
           v-else
@@ -55,7 +58,6 @@ export default {
   },
   data() {
     return {
-      test: "font",
       activeName: "first",
       currentComponent: "sidebar-default",
       tabItems: [
@@ -74,6 +76,18 @@ export default {
     ...mapGetters({
       currentItem: "Layout/getCurrentItem"
     }),
+    isDisabled: function() {
+      if(this.currentItem === '')
+        return true
+      else
+        return false
+    },
+    tabsLable: function() {
+      if(this.currentItem === '')
+        return 'sidebar-tabs-disabled'
+      else
+        return 'sidebar-tabs'
+    },
     iconClass: function(obj) {
       switch (obj.name) {
         case "font":
@@ -86,18 +100,6 @@ export default {
   watch: {
     currentItem: function(newVal) {
       switch (newVal.itemName || newVal.item) {
-        // case 'textfields':
-        // if(this.tabItems[1].icon === 'fill-drip'){
-        //     this.tabItems.splice(1, 0,{name: 'textfield', componentName: 'SidebarTextfield', icon: 'font'})
-        //     break;
-        // }
-        // //tab item already exists -> replace with current item
-        // else{
-        //     this.$set(this.tabItems, 1,{name: 'textfield', componentName: 'SidebarTextfield', icon: 'font'})
-        //     break;
-        // }
-        // break;
-
         case "charts":
           if (this.tabItems[1].icon === "fill-drip") {
             this.tabItems.splice(1, 0, {
@@ -150,7 +152,7 @@ export default {
         this.$refs.showScrollerChevron.style.transform = "rotate(45deg)"
       else this.$refs.showScrollerChevron.style.transform = "rotate(0deg)"
       this.$store.commit("Sidebar/ACTIVATE_SCROLLER")
-    }
+    },
   }
 }
 </script>
@@ -162,6 +164,13 @@ export default {
 .sidebar-tabs {
   border-right: 1px solid black;
   background: #f4f5f5;
+  cursor: pointer;
+}
+
+.sidebar-tabs-disabled {
+    border-right: 1px solid black;
+    background: #f4f5f5;
+    cursor: not-allowed !important;
 }
 
 .el-tabs__nav-scroll {

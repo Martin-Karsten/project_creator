@@ -111,7 +111,6 @@ export default {
 
 <style>
 .component-scroller {
-  /* margin-top: 1rem; */
   border-right: 1px solid black;
 }
 
@@ -120,7 +119,6 @@ div.scroll-group {
 }
 
 a.scroll-item {
-  /* background: lightgray; */
   height: 22%;
   margin-top: 1rem;
   margin-bottom: 1rem;
@@ -131,7 +129,6 @@ a.scroll-item {
 }
 
 a.scroll-item-active {
-  /* background: lightgray; */
   height: 22%;
   margin-top: 1rem;
   margin-bottom: 1rem;

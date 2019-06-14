@@ -100,9 +100,13 @@ export const mutations = {
 
     Vue.delete(state.layoutList, index)
 
-    state.currentLayout = state.layoutList[index-1]
+    if(index -1 < 0)
+      state.currentLayout = state.layoutList[0]
+    else
+      state.currentLayout = state.layoutList[index-1]
     state.realLayout[state.currentLayout].active = true
 
+    state.currentItem = ''
   },
 
   CREATE_LAYOUT(state, payload){
@@ -425,7 +429,6 @@ export const actions = {
     this.dispatch("LayoutItems/Shapes/initialize", state.shapes)
     this.dispatch("LayoutItems/WebVideo/initialize", state.web_videos)
 
-    console.log(state.textfields);
     return state.layoutList
   },
 

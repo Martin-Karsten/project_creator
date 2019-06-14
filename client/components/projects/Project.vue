@@ -78,7 +78,7 @@
               @resizing="containerResizing"
               @dragging="containerDragging"
             >
-              {{textfield}}
+              <!-- {{textfield}} -->
               <textfield-editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layout-row="index" :row="textfieldIndex" :layout-id="element.id" />
             </vue-draggable-resizable>
 
@@ -255,10 +255,11 @@ export default {
   },
   async beforeCreate(){
   },
-  mounted() {
+  async mounted() {
+    // await this.$store.dispatch("Layout/initialize", this.$route.params)
   },
   beforeDestroy() {
-    // this.$store.commit("Layout/RESET_LAYOUT")
+    this.$store.commit("Layout/RESET_LAYOUT")
   },
   destroyed(){
   },

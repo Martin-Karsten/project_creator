@@ -62,6 +62,7 @@ export default {
   },
 
   mounted() {
+    console.log(this.text, 'new')
     // this.$store.commit("StartMenus/StartMenuDefault/SET_EDITOR", this.ed);
   },
   methods: {
