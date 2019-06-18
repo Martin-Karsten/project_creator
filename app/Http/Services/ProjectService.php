@@ -12,6 +12,7 @@ use App\Models\Items\WebVideo;
 use App\Models\Items\Shape;
 use App\Models\Items\Chart;
 use App\Models\Items\ChartSettings;
+use App\Models\Items\Interact\Button;
 use Auth;
 
 class ProjectService {
@@ -32,13 +33,12 @@ class ProjectService {
                 'name' => $field['name'],
                 'project_id' => $field['project_id'],
                 'layout_item_id' => $field['layout_item_id'],
+                'itemName' => $field['itemName'],
                 'text' => $field['text'],
                 'row' => $field['row'],
                 'font_size' => $field['font_size'],
                 'font' => $field['font'],
                 'color' => $field['color'],
-                // 'animation_name' => $field['animation_name'],
-                // 'animated' => $field['animated'],
                 'background_image' => $field['background_image'],
                 'background_color' => $field['background_color'],
                 'border_color' => $field['border_color'],
@@ -107,11 +107,8 @@ class ProjectService {
                 'project_id' => $field['project_id'],
                 'layout_item_id' => $field['layout_item_id'],
                 'text' => $field['text'],
-                // 'row' => $field['row'],
                 // 'animation_name' => $field['animation_name'],
                 // 'animated' => $field['animated'],
-                'rows' => $field['rows'],
-                'columns' => $field['columns'],
                 'border_color' => $field['border_color'],
                 'border_style' => $field['border_style'],
                 'border_width' => $field['border_width'],
@@ -227,6 +224,29 @@ class ProjectService {
                     'chart_id' => $field['id'],       
                     'chart_settings' => $field['chart_settings']
                 ]);
+        }
+    }
+
+    public function editButtons(Array $arr, Array $delitedItems){
+        foreach($arr as $field){
+            Button::updateOrCreate(
+                ['id'=> $field['id']],
+                [
+                'id' => $field['id'],
+                'name' => $field['name'],
+                'project_id' => $field['project_id'],
+                'layout_item_id' => $field['layout_item_id'],
+                'function' => $field['function'],
+                'function_items' => $field['function_items'],
+                'color' => $field['color'],
+                'sidebarColor' => $field['sidebarColor'],
+                'opacity' => $field['opacity'],
+                'top' => $field['top'],
+                'left' => $field['left'],
+                'width' => $field['width'],
+                'height' => $field['height'],
+                'z_index' => $field['z_index'],
+            ]);  
         }
     }
 }

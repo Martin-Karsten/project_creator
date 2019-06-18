@@ -18,10 +18,9 @@ class CreateTablesTable extends Migration
             $table->string('name', 100)->default('default');
             $table->string('project_id');
             $table->string('layout_item_id');
+            $table->string('class')->nullable();
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);
-            $table->unsignedTinyInteger('row')->default(0);
-            $table->unsignedTinyInteger('rows')->default(2);
             $table->unsignedTinyInteger('columns')->default(3);
             $table->text('text');
             $table->unsignedSmallInteger('top')->default(1);

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WebImage extends Model
 {
+    public $incrementing = false;
     protected $table = 'web_images';
 
     protected $fillable = [

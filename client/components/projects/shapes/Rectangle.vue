@@ -3,7 +3,7 @@
     :style="{
       width: width + 'px',
       height: height + 'px',
-      backgroundColor: 'red'
+      backgroundColor: 'black'
     }"
     @click="setCurrentItem"
     @contextmenu.prevent="openContextMenu"
@@ -15,6 +15,9 @@ export default {
   props: {
     layoutId: {},
     id: {},
+    addToSomethingActivated: {
+      required: true
+    },
     color: {
       type: String,
       default: "white", // green, green--outline, white
@@ -43,7 +46,16 @@ export default {
         layoutId: this.layoutId,
         itemName: "shapes"
       }
-      this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
+      if(this.addToSomethingActivated.action === 'add'){
+        this.$store.commit('Layout/ADD_LAYOUT_ITEM_TO_BUTTON', payload)
+      }
+
+      else if(this.addToSomethingActivated.action === 'delete'){
+        this.$store.commit('Layout/DELETE_LAYOUT_ITEM_FROM_BUTTON', payload)
+      }
+
+      else 
+        this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
     },
     openContextMenu() {
       let payload = {

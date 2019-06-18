@@ -42,6 +42,7 @@ export const mutations = {
         project_id: state.projectId,
         layout_item_id: payload.layoutId,
         name: "chart",
+        class: "",
         background_color: "none",
         border_color: "black",
         border_style: "solid",

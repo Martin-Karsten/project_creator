@@ -32,31 +32,19 @@ export default {
   methods: {
     addRectangle() {
       this.$emit("clicked")
-      this.$store.dispatch("LayoutItems/Shapes/addShape", {
-        layoutId: this.currentLayout,
-        shape: "rectangle"
-      })
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/rectangle-icon.png), auto', item: 'rectangle'})
     },
     addCircle() {
       this.$emit("clicked")
-      this.$store.dispatch("LayoutItems/Shapes/addShape", {
-        layoutId: this.currentLayout,
-        shape: "circle"
-      })
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/ellipse-icon.png), auto', item: 'circle'})
     },
     addTriangle() {
       this.$emit("clicked")
-      this.$store.dispatch("LayoutItems/Shapes/addShape", {
-        layoutId: this.currentLayout,
-        shape: "triangle"
-      })
+      // this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/triangle-icon.png), auto', item: 'rectangle'})
     },
     addLine() {
       this.$emit("clicked")
-      this.$store.dispatch("LayoutItems/Shapes/addShape", {
-        layoutId: this.currentLayout,
-        shape: "line"
-      })
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/line-icon.png), auto', item: 'line'})
     }
   }
 }

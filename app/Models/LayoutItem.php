@@ -39,4 +39,7 @@ class LayoutItem extends Model
     public function shapes() {
         return $this->hasMany('App\Models\Items\Shape');
     }
+    public function buttons() {
+        return $this->hasMany('App\Models\Items\Interact\Button');
+    }
 }

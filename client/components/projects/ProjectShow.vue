@@ -1,6 +1,7 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
+      {{currentItem}}
       <el-col :span="24">
         <draggable
           :disabled="true"
@@ -16,6 +17,9 @@
               v-for="(textfield, textfieldIndex) in layoutTextfields(element)" :key="textfieldIndex+'t'"
               :w="textfield.width * facWidth" :h="textfield.height * facHeight"
               :x="textfield.left * facLeft" :y="textfield.top * facTop" :z="textfield.z_index"
+              :class="textfield.class"
+              :resizable="false"
+              :draggable="false"
               :parent="true" :grid="[5,5]"
               class-name="project-textfield-container"
               :style="{borderStyle: textfield.border_style, borderColor: textfield.border_color, borderWidth: textfield.border_width + 'px', 
@@ -25,22 +29,14 @@
               <textfield-editor :id="textfield.id" :text="textfield.text" :opacity="textfield.opacity" :layout-row="index" :row="textfieldIndex" :layout-id="element.id" />
             </vue-draggable-resizable>
 
-            <!-- <vue-draggable-resizable
-                    v-for="(image, imageIndex) in layoutImages(element)" :key="imageIndex + 'I'"
-                    :w="image.width * facWidth" :h="image.height * facHeight"
-                    :x="image.left * facLeft" :y="image.top * facTop" :z="textfield.z_index"
-                    :parent="true" :grid="[5,5]" :lock-aspect-ratio="true" 
-                    class-name-active="selected" 
-                    :style="{borderStyle: image.border_style, borderColor: image.border_color, borderWidth: image.border_width + 'px', borderRadius: image.border_radius + 'px'}"
-                >
-                    <project-image :id="image.id" :imageData="imageData" />
-                </vue-draggable-resizable> -->
-
             <vue-draggable-resizable
               v-for="(web_image, webImageIndex) in layoutWebImages(element)" :key="webImageIndex+'wE'"
               :w="web_image.width * facWidth" :h="web_image.height * facHeight" :x="web_image.left * facLeft" :y="web_image.top * facTop"
               :z="webImageIndex"
+              :resizable="false"
+              :draggable="false"
               :parent="true"
+              :class="web_image.class"
               class-name="project-web-image-container"
               class-name-active="selected"
               :style="{borderStyle: web_image.border_style, borderColor: web_image.border_color, borderWidth: web_image.border_width + 'px',
@@ -57,10 +53,13 @@
             <vue-draggable-resizable
               v-for="(table, tableIndex) in layoutTables(element)"
               :key="tableIndex+'table'" class-name="project-table-container"
-              :w="table.width * facWidth" :h="table.height  * 0.85" :x="table.left * facLeft" :y="table.top * 2"
+              :w="table.width * facWidth" :h="table.height * facHeight" :x="table.left * facLeft" :y="table.top * facTop"
               :z="tableIndex"
+              :class="table.class"
+              :resizable="false"
+              :draggable="false"
               :parent="true"
-              :style="{borderStyle: table.border_style, borderColor: table.border_color, borderWidth: table.border_width + 'px',
+              :style="{borderStyle: 'none', borderColor: table.border_color, borderWidth: table.border_width + 'px',
                        borderRadius: table.border_radius + 'px',}" 
               :handles="['ml', 'mr']"     
               @resizing="containerResizing"
@@ -73,6 +72,9 @@
               v-for="(web_video, webVideoIndex) in layoutWebVideos(element)" :key="webVideoIndex + 'wV'"
               :w="web_video.width * facWidth" :h="web_video.height * facHeight" :x="web_video.left * facLeft" :y="web_video.top * facTop" :z="web_video.z_index"
               :parent="true" :grid="[5,5]" :lock-aspect-ratio="true"
+              :resizable="false"
+              :draggable="false"
+              :class="web_video.class"
               class-name-active="selected" 
               :style="{borderStyle: web_video.border_style, borderColor: web_video.border_color, borderWidth: web_video.border_width + 'px',
                        borderRadius: web_video.border_radius + 'px', backgroundColor: web_video.background_color}"
@@ -84,27 +86,44 @@
               v-for="(chart, chartIndex) in layoutCharts(element)"
               :key="chartIndex+'chart'" class-name="project-table-container"
               :w="chart.width * facWidth" :h="chart.height * facHeight" :x="chart.left * facLeft" :y="chart.top * facTop" :z="chart.z_index"
+              :class="chart.class"
+              :resizable="false"
+              :draggable="false"
               :parent="true" :grid="[5,5]" 
               class-name-active="selected" 
               :style="{borderStyle: chart.border_style, borderColor: chart.border_color, borderWidth: chart.border_width + 'px',
                        borderRadius: chart.border_radius + 'px', backgroundColor: chart.background_color, right: '100px'}"
               
-              :draggable="isDraggable"
               @resizing="chartResizing"
               @contextmenu="openContextMenu"
             >
-              <!-- Echarts needs an extra container to set the current element and to resize the table to the size of its parent, 
-                    thats why we set the currentItem by clicking the container here, instead of doing it inside the component
-                 -->
               <div class="cont" @click="chartClicked(element.id, chart.id)" @contextmenu.prevent="openContextMenu(index, chartIndex)">
                 <chart :id="chart.id" :width="chart.width" :height="chart.height" :settings="chart.chart_settings" :layout-id="element.id" />
               </div>
             </vue-draggable-resizable>
 
             <vue-draggable-resizable
+              v-for="(button, buttonIndex) in layoutButtons(element)"
+              :key="buttonIndex + 'b'" class-name="project-shape-container"
+              :w="button.width * facWidth" :h="button.height * facHeight" :x="button.left * facLeft" :y="button.top * facTop" :z="button.z"
+              :class="button.class"
+              :resizable="false"
+              :draggable="false"
+              :parent="true" :grid="[5,5]"
+              :min-height="1"
+              @resizing="containerResizing"
+              @dragging="containerDragging"
+              @contextmenu="openContextMenu"
+            >
+              <interact-button :id="button.id" :width="button.width" :height="button.height" :layout-id="element.id" />
+            </vue-draggable-resizable>
+
+            <vue-draggable-resizable
               v-for="(shape, shapeIndex) in layoutShapes(element)"
               :key="shapeIndex + 'c'" class-name="project-shape-container"
               :w="shape.width * facWidth" :h="shape.height * facHeight" :x="shape.left * facLeft" :y="shape.top * facTop" :z="shape.z"
+              :resizable="false"
+              :draggable="false"
               :parent="true" :grid="[5,5]"
               :max-height="maxWidthForLineShape(shape)"
               :min-height="1"
@@ -126,14 +145,14 @@
 import { mapGetters, mapState } from "vuex"
 import debounce from "../../Helper/Project/LayoutHelper.js"
 //Items
-import TextfieldEditor from "./textfield/TipTapEditor"
-import TableEditor from "./table/Table"
+import TextfieldEditor from "./textfield/TipTapEditorShow"
+import TableEditor from "./table/TableShow"
 import ProjectImage from "./project_image/Image"
-import WebImage from "./project_image/WebImage"
-import Chart from "./chart/Chart"
-import WebVideo from "./video/WebVideo"
-import Shapes from "./shapes/Shapes"
-import Rectangle from "./shapes/Rectangle"
+import WebImage from "./project_image/WebImageShow"
+import Chart from "./chart/ChartShow"
+import WebVideo from "./video/WebVideoShow"
+import Shapes from "./shapes/ShapesShow"
+import InteractButton from "./interact/ButtonShow"
 //General
 import UrlInput from "./general/UrlInput"
 import ContextMenu from "../../components/projects/context_menu/ContextMenu"
@@ -157,10 +176,10 @@ export default {
         WebVideo,
         Chart,
         Shapes,
-        Rectangle,
         UrlInput,
         ShapePicker,
-        ContextMenu
+        ContextMenu,
+        InteractButton
     },
     props: ['editMode'],
   data() {
@@ -168,7 +187,6 @@ export default {
       isEmpty: true,
       dragging: false,
       imageData: "",
-      isDraggable: true,
       facWidth: 1.42,
       facHeight: 1.28,
       facTop: 1.28,
@@ -191,11 +209,12 @@ export default {
       tableObj: state => state.Layout.tables,
       chartObj: state => state.Layout.charts,
       shapesObj: state => state.Layout.shapes,
-      webVideoObj: state => state.Layout.web_videos
+      webVideoObj: state => state.Layout.web_videos,
+      buttonObj: state => state.Layout.buttons
     })
   },
   async mounted() {
-    // await this.$store.dispatch("Layout/initialize", this.$route.params)
+    await this.$store.dispatch("Layout/initialize", this.$route.params)
   },
   beforeDestroy() {
     this.$store.dispatch("Layout/resetLayout")
@@ -215,6 +234,9 @@ export default {
     },
     layoutWebVideos(layout) {
       return layout.web_videos.map(id => this.webVideoObj[id])
+    },
+    layoutButtons(layout) {
+      return layout.buttons.map(id => this.buttonObj[id])
     },
     layoutShapes(layout) {
       return layout.shapes.map(id => this.shapesObj[id])

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ChartSettings extends Model
 {
+    public $incrementing = false;
     protected $table = 'chart_settings';
 
     protected $fillable = [

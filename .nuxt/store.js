@@ -35,6 +35,7 @@ void (function updateModules() {
   resolveStoreModules(require('../client/store/Sidebar.js'), 'Sidebar.js')
   resolveStoreModules(require('../client/store/LayoutItems/Chart.js'), 'LayoutItems/Chart.js')
   resolveStoreModules(require('../client/store/StartMenus/StartMenuDefault.js'), 'StartMenus/StartMenuDefault.js')
+  resolveStoreModules(require('../client/store/LayoutItems/Shapes.js'), 'LayoutItems/Shapes.js')
   resolveStoreModules(require('../client/store/LayoutItems/Table.js'), 'LayoutItems/Table.js')
   resolveStoreModules(require('../client/store/LayoutItems/Textfield.js'), 'LayoutItems/Textfield.js')
   resolveStoreModules(require('../client/store/LayoutItems/WebImage.js'), 'LayoutItems/WebImage.js')
@@ -44,12 +45,12 @@ void (function updateModules() {
   resolveStoreModules(require('../client/store/StartMenus/StartMenuTable.js'), 'StartMenus/StartMenuTable.js')
   resolveStoreModules(require('../client/store/ContextMenus/ContextMenu.js'), 'ContextMenus/ContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/SidebarScrollerContextMenu.js'), 'ContextMenus/SidebarScrollerContextMenu.js')
-  resolveStoreModules(require('../client/store/LayoutItems/Shapes.js'), 'LayoutItems/Shapes.js')
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/WebVideoContextMenu.js'), 'ContextMenus/LayoutItems/WebVideoContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/WebImageContextMenu.js'), 'ContextMenus/LayoutItems/WebImageContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/TextfieldContextMenu.js'), 'ContextMenus/LayoutItems/TextfieldContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/TableContextMenu.js'), 'ContextMenus/LayoutItems/TableContextMenu.js')
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/ChartContextMenu.js'), 'ContextMenus/LayoutItems/ChartContextMenu.js')
+  resolveStoreModules(require('../client/store/LayoutItems/Interact/Button.js'), 'LayoutItems/Interact/Button.js')
 
   // If the environment supports hot reloading...
 
@@ -73,6 +74,7 @@ void (function updateModules() {
       '../client/store/Sidebar.js',
       '../client/store/LayoutItems/Chart.js',
       '../client/store/StartMenus/StartMenuDefault.js',
+      '../client/store/LayoutItems/Shapes.js',
       '../client/store/LayoutItems/Table.js',
       '../client/store/LayoutItems/Textfield.js',
       '../client/store/LayoutItems/WebImage.js',
@@ -82,12 +84,12 @@ void (function updateModules() {
       '../client/store/StartMenus/StartMenuTable.js',
       '../client/store/ContextMenus/ContextMenu.js',
       '../client/store/ContextMenus/SidebarScrollerContextMenu.js',
-      '../client/store/LayoutItems/Shapes.js',
       '../client/store/ContextMenus/LayoutItems/WebVideoContextMenu.js',
       '../client/store/ContextMenus/LayoutItems/WebImageContextMenu.js',
       '../client/store/ContextMenus/LayoutItems/TextfieldContextMenu.js',
       '../client/store/ContextMenus/LayoutItems/TableContextMenu.js',
       '../client/store/ContextMenus/LayoutItems/ChartContextMenu.js',
+      '../client/store/LayoutItems/Interact/Button.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

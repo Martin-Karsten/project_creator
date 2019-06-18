@@ -22,15 +22,16 @@ export const mutations = {
       [payload.layoutId]: {
         id: payload.id,
         project_id: state.projectId,
-        name: "textfield",
+        name: "Textfield " + (Object.keys(state.textfields).length + 1),
         itemName: "textfields",
-        text: "333333333333",
+        text: "",
         font: "Calibri",
         font_size: 18,
         color: "red",
         layout_item_id: payload.layoutId,
         row: length,
-        background_color: "none",
+        class: '',
+        background_color: "transparent",
         background_image: "none",
         border_color: "black",
         border_style: "solid",
@@ -38,14 +39,13 @@ export const mutations = {
         border_width: 1,
         border_radius: 0,
         opacity: 1.0,
-        top: 0,
-        left: 0,
+        top: payload.y,
+        left: payload.x,
         width: 100,
-        height: 25,
-        z_index: 1
+        height: 15,
+        z_index: 0
       }
     }
-
     // update textfields state
     Vue.set(state.textfields, payload.id, obj[payload.layoutId])
   }

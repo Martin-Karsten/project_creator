@@ -17,6 +17,7 @@ class CreateChartsTable extends Migration
             $table->string('id')->primary();
             $table->string('project_id');
             $table->string('name')->default('default');
+            $table->string('class')->nullable();
             $table->string('layout_item_id');
             $table->string('animation_name', 25)->nullable();
             $table->boolean('animated')->default(false);

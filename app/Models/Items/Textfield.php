@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Textfield extends Model
 {
+    public $incrementing = false;
     protected $fillable = [
-        'id', 'name', 'project_id', 'layout_item_id', 'text', 'row', 'font', 'color', 'animation_name', 'animated',
+        'id', 'name', 'project_id', 'layout_item_id', 'itemName', 'text', 'row', 'font', 'color', 'animation_name', 'animated',
         'background_image', 'background_color', 'border_color', 'border_width', 'border_style', 'border_radius', 'opacity',
         'font_size', 'top', 'left', 'width', 'height', 'z_index'
     ];
@@ -20,7 +21,4 @@ class Textfield extends Model
         return $this->hasOne('App\Models\Animations\TextfieldAnimation');
     }
 
-    public function scopeUpdate($textfields){
-        print_r($textfields);
-    }
 }

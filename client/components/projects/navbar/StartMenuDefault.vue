@@ -12,7 +12,7 @@
     </el-col>
     <el-col class="start-menu-column" :span="6" :offset="6">
       <el-row class="start-menu-icon-columns">
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-0"
             class="start-menu-icon"
@@ -21,7 +21,7 @@
             @click="activateTextfieldIcon"
           />
         </el-col>
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-1"
             class="start-menu-icon"
@@ -30,7 +30,7 @@
             @click="activateWebImageIcon"
           />
         </el-col>
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-2"
             class="start-menu-icon"
@@ -39,7 +39,7 @@
             @click="activateChartIcon"
           />
         </el-col>
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-0"
             class="start-menu-icon"
@@ -50,7 +50,7 @@
           <!-- <table-size-picker v-show="tableSizePickerActivated" /> -->
           <!-- <table-size-picker-input v-show="tableSizePickerActivated"  @clicked="tableSizePickerActivated = false"/> -->
         </el-col>
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-1"
             class="start-menu-icon"
@@ -59,7 +59,16 @@
             @click="activateWebVideoIcon"
           />
         </el-col>
-        <el-col class="start-menu-icon-column" :span="4">
+        <el-col class="start-menu-icon-column" :span="3">
+          <i class="el-icon-receiving start-menu-icon" 
+              @click="activateInteractIcon" />
+          <interact-picker
+            v-show="interactPickerActivated"
+            @clicked="interactPickerActivated = !interactPickerActivated"
+            :currentLayout="currentLayout"
+          />
+        </el-col>
+        <el-col class="start-menu-icon-column" :span="3">
           <fa
             id="menu-icon-2"
             class="start-menu-icon"
@@ -84,6 +93,7 @@ import { Heading, Bold, Italic, Underline } from "tiptap-extensions"
 import { mapGetters } from "vuex"
 import TableSizePicker from "./table/TableSizePicker"
 import TableSizePickerInput from "./table/TableSizePickerInput"
+import InteractPicker from './interact/InteractPicker'
 import ShapePicker from "./shapes/ShapePicker"
 import UrlInput from "./general/UrlInput"
 export default {
@@ -91,6 +101,7 @@ export default {
     EditorMenuBar,
     TableSizePicker,
     TableSizePickerInput,
+    InteractPicker,
     ShapePicker,
     UrlInput
   },
@@ -100,6 +111,7 @@ export default {
       creatorActivated: false,
       fieldActivated: false,
       tableSizePickerActivated: false,
+      interactPickerActivated: false,
       shapePickerActivated: false
     }
   },
@@ -116,7 +128,8 @@ export default {
     },
     activateTextfieldIcon() {
       this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
-      this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/font-icon.png), auto', item: 'textfield'})
+      // this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
     },
     activateWebImageIcon() {
       this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
@@ -144,6 +157,10 @@ export default {
         id: ''
       })
     },
+    activateInteractIcon(){
+      this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
+      this.interactPickerActivated = !this.interactPickerActivated
+    },
     activateShapesIcon() {
       this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
       this.shapePickerActivated = !this.shapePickerActivated
@@ -170,7 +187,7 @@ div.start-menu {
 }
 
 .start-menu-icon-columns {
-  padding: 1.4rem 0.5rem 0.5rem 1.8rem;
+  padding: 1.4rem 0rem 0.5rem 2.8rem;
 }
 
 .start-menu-column {

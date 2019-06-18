@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class WebVideo extends Model
 {
+    public $incrementing = false;
     protected $table = 'web_videos'; 
     
     protected $fillable = [

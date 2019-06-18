@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Table extends Model
     {
+        public $incrementing = false;
         protected $fillable = [
             'id', 'name', 'project_id', 'layout_item_id', 'text', 'row', 'font', 'color', 'animation_name', 'animated',
             'background_image', 'background_color', 'border_color', 'border_width', 'border_style', 'border_radius', 'opacity',

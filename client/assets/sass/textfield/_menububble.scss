@@ -1,10 +1,10 @@
 .menububble {
     position: absolute;
-    // display: flex;
+    display: flex;
     z-index: 20;
-    background: lightblue;
+    background: black;
     border-radius: 5px;
-    padding: 0.3rem;
+    padding: 0.2rem;
     margin-bottom: 0.5rem;
     transform: translateX(-50%);
     visibility: hidden;
@@ -12,7 +12,7 @@
     transition: opacity 0.2s, visibility 0.2s;
   
     &.is-act {
-      opacity: 1;
+      opacity: 0.85;
       visibility: visible;
     }
   

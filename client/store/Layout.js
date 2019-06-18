@@ -11,6 +11,7 @@ export const state = () => ({
   currentItem: {},
   currentSelectedItem: {},
   projectId: "",
+  itemCreator: "",
   textfields: "",
   images: "",
   web_images: "",
@@ -18,7 +19,10 @@ export const state = () => ({
   tables: "",
   charts: "",
   shapes: "",
-  deletedLayoutItems:{textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []},
+  buttons: "",
+  cursorIcon: "auto",
+  addToSomethingActivated: {action: '', current: ''},
+  deletedLayoutItems:{textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], buttons: [], layouts: []},
 })
 
 export const getters = {
@@ -27,10 +31,14 @@ export const getters = {
   getCurrentSelectedItem: state => state.currentSelectedItem,
   getProjectId: state => state.projectId,
   getAnimated: state => state.animated,
-  getColor: state => state.color,
+  getItemCreator: state => state.itemCreator,
 
   getLayoutList: state => state.layoutList,
-  getLayoutSet: state => state.layoutList.map(id => state.realLayout[id])
+  getLayoutSet: state => state.layoutList.map(id => state.realLayout[id]),
+
+  getCursorIcon: state => state.cursorIcon,
+  getAddToSomethingActivated: state => state.addToSomethingActivated,
+  getAddToSomethingList: state => state.addToSomethingList
 }
 
 export const mutations = {
@@ -159,6 +167,7 @@ export const mutations = {
     state.tables = temp.entities.tables
     state.charts =  temp.entities.charts
     state.shapes = temp.entities.shapes
+    state.buttons = temp.entities.buttons
 
     state.textfields = state.textfields !== undefined ? state.textfields : {}
     state.images = state.images !== undefined ? state.images : {}
@@ -167,6 +176,17 @@ export const mutations = {
     state.charts = state.charts !== undefined ? state.charts : {}
     state.tables = state.tables !== undefined ? state.tables : {}
     state.shapes = state.shapes !== undefined ? state.shapes : {}
+    state.buttons = state.buttons !== undefined ? state.buttons : {}
+
+    for (const [key, value] of Object.entries(state.buttons)) {
+      for(let i=0; i<value.function_items.length; i++){
+        value.function_items.splice(i, 1, state[value.function_items[i].itemName][value.function_items[i].id])
+      }
+      // value.function_items.forEach(x => {
+      //   x = 'o'
+      //   console.log(x)
+      // })
+  }
 
   },
 
@@ -176,6 +196,55 @@ export const mutations = {
 
   UPDATE_LAYOUT_SCROLL_IMAGE(state, payload){
     state.realLayout[payload.id].scrollImage = payload.scrollImage
+  },
+
+  SET_ADD_TO_SOMETHING_ANIMATION(state, payload) {
+    state.addToSomethingActivated.action = payload.action
+    state.addToSomethingActivated.current = payload.current
+    for (const [key, value] of Object.entries(state.textfields)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+
+    for (const [key, value] of Object.entries(state.web_images)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+
+    for (const [key, value] of Object.entries(state.web_videos)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+
+    for (const [key, value] of Object.entries(state.tables)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+    
+    for (const [key, value] of Object.entries(state.charts)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+
+    for (const [key, value] of Object.entries(state.shapes)) {
+      if(value.layout_item_id = state.currentLayout)
+        value.class = payload.class
+    }
+  },
+
+  ADD_LAYOUT_ITEM_TO_BUTTON(state, payload) {
+    if(!state.buttons[state.currentItem.id].function_items.includes(state[payload.itemName][payload.id]))
+      state.buttons[state.currentItem.id].function_items.push(state[payload.itemName][payload.id])
+  },
+
+  DELETE_LAYOUT_ITEM_FROM_BUTTON(state, payload) {
+    for (const [key, value] of Object.entries(state.buttons)) {
+      value.function_items.forEach(x =>{
+        if(x.id == payload.id){
+          value.function_items.splice(x.id, 1)
+        }
+      })
+  }
   },
 
   HIDE_TOOLBAR(state, payload){
@@ -205,39 +274,6 @@ export const mutations = {
   UPDATE_TEXTFIELD(state, payload) {
     state.currentItem.text = payload
   },
-
-  //////// IMAGE SETTINGS
-  // ADD_IMAGE(state, payload) {
-  //   state.layout[payload.row].isEmpty = false
-  //   state.layout[payload.row].images.push({
-  //     id: Date.now(),
-  //     project_id: state.projectId,
-  //     name: payload.name,
-  //     file: payload.file,
-  //     url: payload.url,
-  //     animated: false,
-  //     row: payload.row,
-  //     top: 0,
-  //     left: 0,
-  //     width: 200,
-  //     height: 100
-  //   })
-
-  //   state.images.push({
-  //     id: Date.now(),
-  //     project_id: state.projectId,
-  //     name: payload.name,
-  //     file: payload.file,
-  //     row: payload.row,
-  //     top: 0,
-  //     left: 0,
-  //     width: 200,
-  //     height: 100
-  //   })
-
-  //   state.imagesForm = new FormData()
-  //   state.imagesForm.append("images[]", payload.file, payload.file.name)
-  // },
 
   ADD_WEB_IMAGE(state, payload) {
     // push obj key to web_images ids array
@@ -299,6 +335,17 @@ export const mutations = {
     // state.currentItem.selected = true
   },
 
+  /////////////INTERACTIVE LAYOUT ITEMS
+
+  ADD_BUTTON(state, payload) {
+    state.realLayout[payload.layoutId]['buttons'].push(payload.id)
+  },
+
+  SET_CURSOR_ICON(state, payload) {
+    state.cursorIcon = payload.cursor
+    state.itemCreator = payload.item
+  },
+
   UPDATE_LAYOUT(state, payload) {
     state.layoutList = payload
   },
@@ -350,8 +397,6 @@ export const mutations = {
     state.layout[state.currentItem.row][state.currentItem.itemName][
       state.currentItem.itemRow
     ].animations.animation_order = payload.animation_order
-
-    // setTimeout(function(){ state.layout[state.currentSelectedItem[0].row][state.currentSelectedItem[0].itemName][0].animated = false; }, 1000);
   },
 
   RESET_LAYOUT(state){
@@ -369,12 +414,18 @@ export const mutations = {
     state.tables=""
     state.charts=""
     state.shapes= ""
+    state.buttons= ""
     state.deletedLayoutItems={textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []}
   },
 
   RESET_ANIMATOIN(state, payload) {},
 
   ///////////// FORMATING ///////////////////
+
+  //////// CLASS
+  UPDATE_ITEM_CLASS(state, payload) {
+    payload.currentItem.class = payload.event
+  },
 
   //////// COLOR
   UPDATE_BACKGROUND_COLOR(state, payload) {
@@ -421,13 +472,13 @@ export const actions = {
         console.log(e)
       }
     // }
-
     this.dispatch("LayoutItems/Textfield/initialize", state.textfields)
     this.dispatch("LayoutItems/WebImage/initialize", state.web_images)
     this.dispatch("LayoutItems/Table/initialize", state.tables)
     this.dispatch("LayoutItems/Chart/initialize", state.charts)
     this.dispatch("LayoutItems/Shapes/initialize", state.shapes)
     this.dispatch("LayoutItems/WebVideo/initialize", state.web_videos)
+    this.dispatch("LayoutItems/Interact/Button/initialize", state.buttons)
 
     return state.layoutList
   },
@@ -443,6 +494,7 @@ export const actions = {
         web_videos: state.web_videos,
         charts: state.charts,
         shapes: state.shapes,
+        buttons: state.buttons,
         deletedLayoutItems: state.deletedLayoutItems
       }
     })

@@ -16,6 +16,7 @@ class CreateShapesTable extends Migration
         Schema::create('shapes', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name', 140)->default('default');
+            $table->string('class')->nullable();
             $table->string('shape_name', 140);
             $table->string('project_id');
             $table->string('layout_item_id');

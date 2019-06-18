@@ -19,6 +19,7 @@ import {
   Cascader,
   Pagination,
   Checkbox,
+  CheckboxGroup,
   RadioButton,
   RadioGroup,
   Tabs,
@@ -57,6 +58,7 @@ Vue.component(Row.name, Row)
 Vue.component(Col.name, Col)
 Vue.component(Pagination.name, Pagination)
 Vue.component(Checkbox.name, Checkbox)
+Vue.component(CheckboxGroup.name, CheckboxGroup)
 Vue.component(RadioButton.name, RadioButton)
 Vue.component(RadioGroup.name, RadioGroup)
 Vue.component(Tabs.name, Tabs)

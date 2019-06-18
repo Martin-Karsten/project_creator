@@ -18,7 +18,9 @@ class CreateTextfieldsTable extends Migration
             $table->string('name', 100)->default('default');
             $table->string('project_id');
             $table->string('layout_item_id');
+            $table->string('itemName');
             $table->unsignedTinyInteger('row')->default(0);
+            $table->string('class')->nullable();
             $table->text('text')->nullable();
             $table->string('font', 225)->default('Calibri');
             $table->string('color', 225)->default('Black');

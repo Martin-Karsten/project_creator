@@ -25,6 +25,7 @@ export const mutations = {
       [payload.layoutId]: {
         id: payload.id,
         project_id: state.projectId,
+        class: "",
         name: "web_video",
         itemName: "web_videos",
         video_id: payload.video_id,

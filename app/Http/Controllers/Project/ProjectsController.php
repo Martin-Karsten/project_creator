@@ -38,7 +38,8 @@ class ProjectsController extends Controller
     {
         return LayoutItem::where('project_id',$id)->with('textfields')->with('images')->with('webImages')->with('tables')
         ->with(['charts', 'charts.chartSettings'])
-        ->with('webVideos')->with('shapes')->get();
+        ->with('webVideos')->with('shapes')
+        ->with('buttons')->get();
     }
     protected function create(ProjectStoreRequest $request)
     {
@@ -85,6 +86,7 @@ class ProjectsController extends Controller
         $charts = $request->data['charts'];
         $web_videos = $request->data['web_videos'];
         $shapes = $request->data['shapes'];
+        $buttons = $request->data['buttons'];
         $deletedLayoutItems = $request->data['deletedLayoutItems'];
 
         $layouts = $request->data['layouts'];
@@ -131,9 +133,12 @@ class ProjectsController extends Controller
             $this->projectService->editShapes($shapes, $deletedLayoutItems['shapes']);
         }
 
-
         if(!empty($charts) || !empty($deletedLayoutItems['charts'])){
             $this->projectService->editCharts($charts, $deletedLayoutItems['charts']);
+        }
+
+        if(!empty($buttons) || !empty($deletedLayoutItems['buttons'])){
+            $this->projectService->editButtons($buttons, $buttons);
         }
 
         Project::where('id', $id)->update(['updated_at' => Carbon::now()->toDateTimeString()]);

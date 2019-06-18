@@ -192,6 +192,7 @@ export default {
             this.editor.getHTML()
           )
         },
+        editable: false,
         content: `
 					${this.text}
 					`

@@ -8,6 +8,7 @@ const image = new schema.Entity("images")
 const webVideo = new schema.Entity("web_videos")
 const shapes = new schema.Entity("shapes")
 const charts = new schema.Entity("charts")
+const buttons = new schema.Entity("buttons")
 
 const layout = new schema.Entity("layouts", {
   images: [image],
@@ -16,7 +17,8 @@ const layout = new schema.Entity("layouts", {
   web_images: [webImage],
   web_videos: [webVideo],
   shapes: [shapes],
-  charts: [charts]
+  charts: [charts],
+  buttons: [buttons]
 
 })
 

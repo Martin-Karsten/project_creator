@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
+    public $incrementing = false;
     protected $fillable = [
         'id', 'name', 'project_id', 'url', 'row', 'font_size', 'color', 'top', 'left', 'width', 'height'
     ];

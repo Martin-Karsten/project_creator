@@ -56,7 +56,7 @@ export default {
           new Code(),
           new CodeBlock()
         ],
-        // editable: false,
+        editable: false,
         onUpdate: ({ getJSON, getHTML }) => {},
         onFocus: () => {
           this.setCurrentItem()

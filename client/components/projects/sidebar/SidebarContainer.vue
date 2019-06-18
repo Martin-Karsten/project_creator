@@ -46,6 +46,7 @@ import EditColor from "./format/EditColor"
 import EditLines from "./format/EditLines"
 import SidebarAnimation from "./animation/SidebarAnimation"
 import SidebarChart from "./items/SidebarChart"
+import SidebarButton from "./items/interact/SidebarButton"
 
 export default {
   components: {
@@ -54,7 +55,8 @@ export default {
     "edit-color": EditColor,
     "edit-lines": EditLines,
     "sidebar-animation": SidebarAnimation,
-    "sidebar-chart": SidebarChart
+    "sidebar-chart": SidebarChart,
+    "sidebar-button": SidebarButton
   },
   data() {
     return {
@@ -94,6 +96,8 @@ export default {
           return obj.name
         case "chart-bar":
           return obj.name
+        case "el-icon-circle-plus-outline":
+          return obj.name
       }
     }
   },
@@ -104,7 +108,7 @@ export default {
           if (this.tabItems[1].icon === "fill-drip") {
             this.tabItems.splice(1, 0, {
               name: "chart",
-              componentName: "ChartdSidebar",
+              componentName: "ChartSidebar",
               icon: "chart-bar"
             })
             this.activeName = "chart"
@@ -113,13 +117,34 @@ export default {
           } else {
             this.$set(this.tabItems, 1, {
               name: "chart",
-              componentName: "ChartdSidebar",
+              componentName: "ChartSidebar",
               icon: "chart-bar"
             })
             this.activeName = "chart"
             this.currentComponent = "sidebar-chart"
             break
           }
+          case "buttons":
+          if (this.tabItems[1].icon === "fill-drip") {
+            this.tabItems.splice(1, 0, {
+              name: "button",
+              componentName: "ButtonSidebar",
+              icon: "image"
+            })
+            this.activeName = "button"
+            this.currentComponent = "sidebar-button"
+            break
+          } else {
+            this.$set(this.tabItems, 1, {
+              name: "button",
+              componentName: "ButtonSidebar",
+              icon: "image"
+            })
+            this.activeName = "button"
+            this.currentComponent = "sidebar-button"
+            break
+          }
+
         default:
           this.activeName = "first"
           this.currentComponent = "sidebar-default"
@@ -144,6 +169,9 @@ export default {
         case "chart":
           this.currentComponent = "sidebar-chart"
           break
+        
+        case "button":
+          this.currentComponent = "sidebar-button"
       }
     },
     showScroller() {
