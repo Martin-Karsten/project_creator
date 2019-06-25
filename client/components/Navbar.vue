@@ -12,7 +12,7 @@
 
     <el-submenu v-if="user" index="3" style="float: right;">
       <template slot="title">
-        <img class="navbar-profile-image" :src="'http://localhost:8000/storage/' + this.user.avatar" alt="">
+        <img class="navbar-profile-image" :src="apiStorage + this.user.avatar" alt="">
       </template>
       <el-menu-item :route="{name: 'home'}" index="settings">
         <i class="el-icon-document-copy" /> Projects
@@ -36,7 +36,7 @@
     </template>
 
     <el-menu-item index="home" :route="getHomeRoute()">
-      <img class="navbar-logo" src="http://localhost:8000/storage/images/logo.png" >
+      <img class="navbar-logo" :src="apiStorage + 'images/logoV2.png'" >
     </el-menu-item>
     <el-menu-item index="bugReport" :route="{name: 'bugReport'}" style="float: right;">
         Bug Report
@@ -57,6 +57,7 @@ export default {
   },
 
   data: () => ({
+    apiStorage: process.env.apiUrl + '/storage/',
     activeIndex: "1",
     appName: process.env.appName
   }),

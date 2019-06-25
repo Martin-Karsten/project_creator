@@ -9,7 +9,7 @@
         <el-col :span="12">
           <el-row class="profile-items-inner">
             <el-col :span="4" :offset="1"> 
-              <img :src="'http://localhost:8000/storage/' + this.user.avatar" class="profile-photo">
+              <img :src="this.apiUrl + '/storage/' + this.user.avatar" class="profile-photo">
             </el-col>
             <el-col :span="12">
               <el-button class="profile-edit-button" @click="showModal('imageModal')">Edit</el-button>
@@ -153,6 +153,7 @@ export default {
   },
 
   data: () => ({
+    apiUrl: process.env.apiUrl,
     isModalVisible: false,
     modalName: 'imageModal',
     avatar: '',
@@ -197,7 +198,7 @@ export default {
     },
       getProfileImage(){
         console.log(this.user, 'upateProfile')
-        return 'http://localhost:8000/storage/' + this.user.avatar
+        return this.apiUrl + '/storage/' + this.user.avatar
       },
       beforeAvatarUpload(file) {
         const isJPG = file.type === 'image/jpeg';

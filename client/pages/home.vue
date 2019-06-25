@@ -101,7 +101,6 @@
 import axios from 'axios'
 import { mapGetters } from "vuex"
 import Form from "vform"
-import twice from "/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg"
 
 export default {
   layout: "default",
@@ -114,7 +113,7 @@ export default {
     return { title: this.$t("home") }
   },
   data: () => ({
-    image: twice,
+    apiUrl: process.env.apiUrl,
     checked: false,
     projectsClicked: [],
     editable: false,
@@ -142,9 +141,9 @@ export default {
   methods: {
     getImage(index){
         if(this.projects[index].image == undefined)
-          return 'http://localhost:8000/storage//images/default-project-image.png'
+          return this.apiUrl + '/storage//images/default-project-image.png'
         else
-          return 'http://localhost:8000/storage/' + this.projects[index].image
+          return this.apiUrl + '/storage/' + this.projects[index].image
     },
     showEditable(index) {
       this.$store.commit("Project/SHOW_EDITABLE", index)

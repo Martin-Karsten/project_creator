@@ -107,6 +107,7 @@ export default {
   },
   data() {
     return {
+      apiUrl: process.env.apiUrl,
       menuItemActivated: "menu-section-activated",
       creatorActivated: false,
       fieldActivated: false,
@@ -128,7 +129,7 @@ export default {
     },
     activateTextfieldIcon() {
       this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/font-icon.png), auto', item: 'textfield'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + '/storage/images/font-icon.png), auto', item: 'textfield'})
       // this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
     },
     activateWebImageIcon() {

@@ -15,7 +15,7 @@
 
         <el-submenu v-if="user" index="3" style="float: right;">
           <template slot="title">
-            <img class="navbar-profile-image" :src="'http://localhost:8000/storage/' + this.user.avatar" alt="">
+            <img class="navbar-profile-image" :src="apiUrl + this.user.avatar" alt="">
           </template>
           <el-menu-item :route="{name: 'home'}" index="settings">
             <i class="el-icon-document-copy" /> Projects
@@ -48,6 +48,7 @@ export default {
   data() {
     return {
       appName: process.env.appName,
+      apiUrl: process.env.apiUrl + '/storage/',
       showStartMenu: true
     }
   },

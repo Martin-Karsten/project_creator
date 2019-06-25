@@ -3,7 +3,6 @@
     <div class="ribbon ribbon-top-left">
       <span> ALPHA </span>
     </div>
-
     <div class="landingpage">
       <div class="landingpage-first">
       <el-row>
@@ -75,16 +74,16 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item
-                  label="Confirm Password"
                   prop="password_confirmation"
                 >
+                  <span>Confirm Password</span>
                   <el-input v-model="form.password_confirmation" 
                     type="password"
                   />
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="submitForm">Register</el-button>
+            <el-button type="primary" @click="submitForm('form')">Register</el-button>
           </el-form>
         </el-col>
       </el-row>
@@ -92,15 +91,15 @@
       <div class="landingpage-gif-container">
         <el-row class="landingpage-row">
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/text.gif" alt="">
+            <img class="landingpage-gif" :src="apiStorage + 'gifs/text.gif'" alt="">
             <h3 class="landingpage-gif-text">Create draggable and resizable objects</h3>
           </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-              <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/image.gif" alt="">
+              <img class="landingpage-gif" :src="apiStorage + 'gifs/image.gif'" alt="">
               <h3 class="landingpage-gif-text">Search for images</h3>
             </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-              <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/chart.gif" alt="">
+              <img class="landingpage-gif" :src="apiStorage + 'gifs/chart.gif'" alt="">
               <h3 class="landingpage-gif-text">Create complex data objects</h3>
             </el-col>
         </el-row>
@@ -116,45 +115,49 @@
             <p></p>
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/color.gif" alt="">
+            <img class="landingpage-gif" :src="apiStorage + 'gifs/color.gif'" alt="">
             <h3 class="landingpage-gif-text">Modify objects</h3>
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/delete.gif" alt="">
+            <img class="landingpage-gif" :src="apiStorage + 'gifs/delete.gif'" alt="">
             <h3 class="landingpage-gif-text">Easily delete created objects</h3>
           </el-col>
         </el-row>
       </div>
 
         <div class="landingpage-bottom-register-background">
-          <el-form class="landingpage-bottom-register">
+          <el-form class="landingpage-bottom-register" ref="formBottom" :rules="rulesBottom">
             <el-row :gutter="12">
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
-                <el-form-item>
+                <el-form-item
+                prop="first_name_bottom">
                   <span>First Name</span>
-                  <el-input placeholder="First Name"></el-input>
+                  <el-input v-model="formBottom.first_name" placeholder="First Name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
-                <el-form-item>
+                <el-form-item
+                prop="last_name_bottom">
                   <span>Last Name</span>
-                  <el-input placeholder="Last Name"></el-input>
+                  <el-input v-model="formBottom.last_name" placeholder="Last Name"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
-                <el-form-item>
-                  <span>Password</span>
-                  <el-input placeholder="Email"></el-input>
+                <el-form-item
+                prop="email_bottom">
+                  <span>Email</span>
+                  <el-input v-model="formBottom.email" type="email" placeholder="Email"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
-                <el-form-item>
+                <el-form-item
+                prop="password_bottom">
                   <span>Password</span>
-                  <el-input placeholder="Password"></el-input>
+                  <el-input v-model="formBottom.password" type="password" placeholder="Password"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-              <el-button class="register-button-bottom" type="success">Sign up now</el-button>
+              <el-button class="register-button-bottom" type="success" @click="submitFormBottom('formBottom')">Sign up now</el-button>
           </el-form>
         </div>
     </div>
@@ -193,7 +196,17 @@ export default {
           callback();
         }
       };
+      var validatePass2Bottom = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('Please input the password again'));
+        } else if (value !== this.formBottom.password) {
+          callback(new Error('Two inputs don\'t match!'));
+        } else {
+          callback();
+        }
+      };
     return{
+      apiStorage: process.env.apiUrl + '/storage/',
       title: process.env.appName,
       image: twice,
       form: new Form({
@@ -202,6 +215,13 @@ export default {
         email: "",
         password: "",
         password_confirmation: ""
+      }),
+      formBottom: new Form({
+        first_name: "",
+        last_name: "",
+        email: "",
+        password: "",
+        password_confirmation:""
       }),
       rules: {
           password: [
@@ -223,10 +243,27 @@ export default {
                 { required: true, message: 'Please input email address', trigger: 'blur' },
                 { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
           ]
-      }
+      },
+      rulesBottom: {
+          password_bottom: [
+            { validator: validatePass, trigger: 'blur' },
+            { min: 8, max: 80, message: 'At least 8 Characters', trigger: 'blur' }
+          ],
+          first_name_bottom: [
+              { required: true, message: 'First Name required'},
+              { max: 80, trigger: 'blur' }
+          ],
+          last_name_bottom: [
+              { required: true, message: 'Last Name required'},
+              { max: 80, trigger: 'blur' }
+          ],
+          email_bottom: [
+                { required: true, message: 'Please input email address', trigger: 'blur' },
+                { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+          ]
+      },
     }
   },
-
 
   computed: mapGetters({
     authenticated: "auth/check"
@@ -236,8 +273,8 @@ export default {
     scrollToEnd() {
       this.$refs.section1.scrollIntoView()
     },
-    submitForm(){
-        this.$refs.form.validate((valid) => {
+    submitForm(form){
+        this.$refs[form].validate((valid) => {
           if (!valid) {
             return false
           } else {
@@ -245,7 +282,20 @@ export default {
           }
         });
     },
+    submitFormBottom(form){
+          console.log(this.formBottom, 'hi')
+        this.$refs.formBottom.validate((valid) => {
+          if (!valid) {
+            return false
+          } else {
+            this.formBottom.password_confirmation = this.formBottom.password
+            this.register()
+          }
+        });
+    },
     async register() {
+      if(this.user)
+        return
       // Register the user.
       const { data } = await this.form.post("/register")
 
@@ -262,7 +312,7 @@ export default {
 
       // Redirect home.
       this.$router.push({ name: "home" })
-    }
+    },
   }
 }
 </script>

@@ -12,7 +12,7 @@ export default {
     props: ['currentLayout'],
     data(){
         return {
-            cursor: 'url(' + 'http://localhost:8000/storage/images/button-icon.png), auto'
+            cursor: 'url(' + process.env.apiUrl + 'storage/images/button-icon.png), auto'
         }
     },
   computed: {

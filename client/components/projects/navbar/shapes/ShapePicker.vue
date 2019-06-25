@@ -27,24 +27,26 @@
 export default {
   props: ['currentLayout'],
   data() {
-    return {}
+    return {
+      apiUrl: process.env.apiUrl + '/storage/'
+    }
   },
   methods: {
     addRectangle() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/rectangle-icon.png), auto', item: 'rectangle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/rectangle-icon.png), auto', item: 'rectangle'})
     },
     addCircle() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/ellipse-icon.png), auto', item: 'circle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' +  this.apiUrl + 'images/ellipse-icon.png), auto', item: 'circle'})
     },
     addTriangle() {
       this.$emit("clicked")
-      // this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/triangle-icon.png), auto', item: 'rectangle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/triangle-icon.png), auto', item: 'triangle'})
     },
     addLine() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + 'http://localhost:8000/storage/images/line-icon.png), auto', item: 'line'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/line-icon.png), auto', item: 'line'})
     }
   }
 }
