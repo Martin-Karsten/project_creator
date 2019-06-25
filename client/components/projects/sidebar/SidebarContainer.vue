@@ -187,7 +187,7 @@ export default {
 
 <style lang="scss">
 .el-menu-vertical-demo {
-  height: 77.1vh;
+  height: 80vh;
 }
 .sidebar-tabs {
   border-right: 1px solid black;

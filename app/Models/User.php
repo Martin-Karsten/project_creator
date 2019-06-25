@@ -40,6 +40,10 @@ class User extends Authenticatable implements JWTSubject
         'photo_url',
     ];
 
+    public function bugReports(){
+        return $this->hasMany('App/Models/General/BugReport');
+    }
+
     /**
      * Get the profile photo URL attribute.
      *

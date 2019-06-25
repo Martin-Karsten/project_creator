@@ -4,13 +4,10 @@
     :default-active="activeIndex"
     mode="horizontal"
     background-color="#e6e6e6"
-    text-color="#fff"
-    active-text-color="#ffd04b"
+    text-color="#303133"
+    active-text-color="rgb(247, 247, 247, 1)"
     @select="handleSelect"
   >
-    <el-menu-item index="home" :route="getHomeRoute()">
-      Processing Center
-    </el-menu-item>
 
 
     <el-submenu v-if="user" index="3" style="float: right;">
@@ -37,6 +34,16 @@
         {{ $t("login") }}      
       </el-menu-item>
     </template>
+
+    <el-menu-item index="home" :route="getHomeRoute()">
+      <img class="navbar-logo" src="http://localhost:8000/storage/images/logo.png" >
+    </el-menu-item>
+    <el-menu-item index="bugReport" :route="{name: 'bugReport'}" style="float: right;">
+        Bug Report
+    </el-menu-item>
+    <el-menu-item index="about" :route="{name: 'about'}" style="float: right;">
+      About
+    </el-menu-item>
   </el-menu>
 </template>
 
@@ -64,7 +71,7 @@ export default {
       if(this.user)
         return {name: 'home'}
       else
-        return {name: '/'}
+        return {name: 'welcome'}
     },
     handleSelect(key, keyPath) {
       switch(key){
@@ -89,12 +96,22 @@ export default {
   margin-left: 35rem;
 }
 
+img.navbar-logo{
+  box-sizing: border-box;
+  width: 4rem;
+  height: 100%;
+  max-width: 4rem;
+  max-height: 100%;
+  border-radius: 25px;
+}
+
 img.navbar-profile-image {
   width: 2.5rem;
   height: 2.5rem;
   max-width: 2.5rem;
   max-height: 2.5rem;
-  border-radius: 22px;
+  border-radius: 25px;
+
 }
 
 div.is-right {

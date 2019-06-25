@@ -1,33 +1,5 @@
 <template>
   <div class="editor-textfield" @contextmenu.prevent="openContextMenu">
-    <editor-menu-bubble :editor="ed">
-      <div
-        slot-scope="{ commands, isActive, menu }"
-        class="menububble"
-        :class="{ 'is-act': menu.isActive }"
-        :style="`left: ${menu.left}px; bottom: ${menu.bottom}px;`"
-      >
-        <button :class="{ 'is-act': isActive.bold() }" @click="commands.bold">
-          <fa icon="bold"></fa>
-        </button>
-        <button :class="{ 'is-act': isActive.bold() }" @click="commands.italic">
-          <fa icon="italic"></fa>
-        </button>
-
-        <button
-          :class="{ 'is-act': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >
-          H1
-        </button>
-        <button
-          :class="{ 'is-act': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >
-          H2
-        </button>
-      </div>
-    </editor-menu-bubble>
     <editor-content class="textfield editor__content" :editor="ed" />
   </div>
 </template>
@@ -48,26 +20,7 @@ export default {
     return {
       ed: new Editor({
         content: this.text,
-        extensions: [
-           new Heading({ levels: [1, 2] }),
-          new Bold(),
-          new Italic(),
-          new Underline(),
-          new Code(),
-          new CodeBlock()
-        ],
         editable: false,
-        onUpdate: ({ getJSON, getHTML }) => {},
-        onFocus: () => {
-          this.setCurrentItem()
-          this.clicked()
-        },
-        onBlur: ({ event, state, view }) => {
-          this.$store.commit(
-            "Layout/UPDATE_TEXTFIELD",
-            this.ed.getHTML()
-          )
-        },
       })
     }
   },

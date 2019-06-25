@@ -34,7 +34,6 @@ export const mutations = {
   },
 
   UPDATE_USER(state, payload) {
-    console.log(payload, 'payload')
     state.user = payload
   }
 }

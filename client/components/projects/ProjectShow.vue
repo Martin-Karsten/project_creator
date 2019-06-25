@@ -1,7 +1,6 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
-      {{currentItem}}
       <el-col :span="24">
         <draggable
           :disabled="true"
@@ -214,7 +213,7 @@ export default {
     })
   },
   async mounted() {
-    await this.$store.dispatch("Layout/initialize", this.$route.params)
+    // await this.$store.dispatch("Layout/initialize", this.$route.params)
   },
   beforeDestroy() {
     this.$store.dispatch("Layout/resetLayout")

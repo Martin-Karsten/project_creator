@@ -88,12 +88,22 @@ export const mutations = {
     let index = 0;
     if(state.realLayout[state.currentItem.layout_item_id][state.currentItem.itemName].includes(state.currentItem.id))
       index = state.realLayout[state.currentItem.layout_item_id][state.currentItem.itemName].indexOf(state.currentItem.id)
+    else 
+      return
+
+    for (const [key, value] of Object.entries(state.buttons)) {
+      for(let i=0; i<value.function_items.length; i++){
+        if(value.function_items[i].id == state.currentItem.id)
+          value.function_items.splice(i, 1)
+      }
+    }
 
     Vue.delete(state.realLayout[state.currentItem.layout_item_id][state.currentItem.itemName], index) //from arr
     Vue.delete(state[state.currentItem.itemName], state.currentItem.id)
 
     state.deletedLayoutItems[state.currentItem['itemName']].push(state.currentItem)
     state.currentItem = ''
+
   },
 
   DELETE_LAYOUT_ITEM(state, payload) {
@@ -364,6 +374,7 @@ export const mutations = {
         charts: [],
         tables: [],
         shapes: [],
+        buttons: [],
         isEmpty: true,
         active: false
       }
@@ -415,7 +426,7 @@ export const mutations = {
     state.charts=""
     state.shapes= ""
     state.buttons= ""
-    state.deletedLayoutItems={textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], layouts: []}
+    state.deletedLayoutItems={textfields: [], web_images: [], tables: [], charts: [], web_videos: [], shapes: [], buttons: [], layouts: []}
   },
 
   RESET_ANIMATOIN(state, payload) {},

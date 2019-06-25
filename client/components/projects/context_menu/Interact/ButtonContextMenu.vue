@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div
+  >
     <el-menu-item @click="copyItem" class="contextmenu-item" index="copy">
       <div>Copy</div>
     </el-menu-item>
@@ -28,7 +29,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      contextMenu: "ContextMenus/LayoutItems/TableContextMenu/getContextMenu"
+      contextMenu: "ContextMenus/LayoutItems/Interact/ButtonContextMenu/getContextMenu"
     })
   },
   methods: {

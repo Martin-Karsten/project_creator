@@ -61,7 +61,6 @@ export default {
     })
   },
   mounted() {
-    // this.dis = 'none'
   },
   methods: {
     onClickChild() {},

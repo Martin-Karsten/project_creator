@@ -4,25 +4,26 @@
       <span> ALPHA </span>
     </div>
 
-    <el-main class="landingpage">
+    <div class="landingpage">
+      <div class="landingpage-first">
       <el-row>
-        <el-col :span="12" class="title-column">
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
           <h1 class="title">
-            Create Beautfil Presentations
+            Create Beautiful Presentations
           </h1>
           <h2 class="subtitle">
             <a @click="scrollToEnd">Learn More</a>
           </h2>
         </el-col>
 
-        <el-col :span="12" class="sign-up-box">
+        <el-col :sm="24" :md="12" :lg="12" :xl="12" class="sign-up-box">
           <el-form label-position="top" ref="form" :rules="rules" :model="form">
             <el-row :gutter="12">
               <el-col :span="12">
                 <el-form-item
-                  label="First Name"
                   prop="first_name"
                 >
+                  <span>First Name</span>
                   <el-input 
                     v-model="form.first_name"
                     :class="{ 'is-invalid': form.errors.has('name') }"
@@ -35,9 +36,9 @@
               </el-col>
               <el-col :span="12">
                 <el-form-item
-                  label="Last Name"
                   prop="last_name"
                 >
+                  <span>Last Name</span>
                   <el-input 
                     v-model="form.last_name"
                     :class="{ 'is-invalid': form.errors.has('name') }"
@@ -52,9 +53,9 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item
-                  label="EMail Address"
                   prop="email"
                 >
+                  <span>Email</span>
                   <el-input v-model="form.email" type="email" autocomplete="on"/>
                 </el-form-item>
               </el-col>
@@ -62,9 +63,9 @@
             <el-row>
               <el-col :span="24">
                 <el-form-item
-                  label="Password"
                   prop="password"
                 >
+                  <span>Password</span>
                   <el-input v-model="form.password" 
                     type="password"
                   />
@@ -87,7 +88,76 @@
           </el-form>
         </el-col>
       </el-row>
-    </el-main>
+      </div>
+      <div class="landingpage-gif-container">
+        <el-row class="landingpage-row">
+          <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
+            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/text.gif" alt="">
+            <h3 class="landingpage-gif-text">Create draggable and resizable objects</h3>
+          </el-col>
+            <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
+              <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/image.gif" alt="">
+              <h3 class="landingpage-gif-text">Search for images</h3>
+            </el-col>
+            <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
+              <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/chart.gif" alt="">
+              <h3 class="landingpage-gif-text">Create complex data objects</h3>
+            </el-col>
+        </el-row>
+        
+        <el-row>
+          <el-col class="hidden-sm-only hidden-xs-only" :sm="24" :md="24" :lg="24" :xl="24">
+            <br>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col class="hidden-sm-only hidden-xs-only" :sm="4" :md="4" :lg="4" :xl="4">
+            <p></p>
+          </el-col>
+          <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
+            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/color.gif" alt="">
+            <h3 class="landingpage-gif-text">Modify objects</h3>
+          </el-col>
+          <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
+            <img class="landingpage-gif" src="http://localhost:8000/storage/gifs/delete.gif" alt="">
+            <h3 class="landingpage-gif-text">Easily delete created objects</h3>
+          </el-col>
+        </el-row>
+      </div>
+
+        <div class="landingpage-bottom-register-background">
+          <el-form class="landingpage-bottom-register">
+            <el-row :gutter="12">
+              <el-col :sm="24" :md="6" :lg="6" :xl="6">
+                <el-form-item>
+                  <span>First Name</span>
+                  <el-input placeholder="First Name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :sm="24" :md="6" :lg="6" :xl="6">
+                <el-form-item>
+                  <span>Last Name</span>
+                  <el-input placeholder="Last Name"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :sm="24" :md="6" :lg="6" :xl="6">
+                <el-form-item>
+                  <span>Password</span>
+                  <el-input placeholder="Email"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :sm="24" :md="6" :lg="6" :xl="6">
+                <el-form-item>
+                  <span>Password</span>
+                  <el-input placeholder="Password"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+              <el-button class="register-button-bottom" type="success">Sign up now</el-button>
+          </el-form>
+        </div>
+    </div>
   </div>
 </template>
 
@@ -171,7 +241,6 @@ export default {
           if (!valid) {
             return false
           } else {
-            console.log('register')
             this.register()
           }
         });
@@ -257,31 +326,109 @@ export default {
 }
 
 div.welcome {
-  background-image: url(background-image.png);
-  min-height: 100vh;
+  background: url(background-image.png), rgb(247, 247, 247, 0.8);
+  background-size: 100% 86vh;
+  background-repeat: no-repeat;
+  min-height: 100%;
 }
 
 .landingpage{
-  margin-top: 4rem;
-  padding: 3rem;
+  max-width: 1600px;
+  width: calc(100vw - 2em);
+  margin: 0 auto;
 }
 
-div.title-column {
-  padding-top: 3rem;
+.landingpage-first{
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  min-height: 90vh;
+  margin-bottom: 2rem;
+}
+
+div.landingpage-gif-container{
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+img.landingpage-gif{
+  width: 90%;
+  height: 100%;
+  display: table;
+  margin: 0 auto;
+}
+
+.landingpage-gif-text{
   text-align: center;
 }
 
-.title {
-  font-size: 85px;
+div.title-column {
+  text-align: center;
 }
 
-.subtitle {
+.title{
+  font-size: 4vw;
+}
+.subtitle{
+  font-size: 3vw;
 }
 
 div.sign-up-box {
   border: rgb(197, 197, 197) solid 1px;
   background: rgb(247, 247, 247, 0.8);
-  padding: 1rem;
+  padding: 0rem 1rem 1rem 1rem;
+}
+
+.landingpage-bottom-register-background{
+  width: 100vw;
+  height: 220px;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background-color: white;
+}
+
+.landingpage-bottom-register{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.register-button-bottom{
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+/* Mobile */
+
+@media (max-width: 768){
+
+}
+
+@media (max-width: 990px){
+    div.welcome {
+    background: url(background-image.png), rgb(247, 247, 247, 0.8);
+    background-size: 100% 88vh;
+    background-repeat: no-repeat;
+    min-height: 100%;
+  }
+
+  .landingpage-bottom-register-background{
+  width: 100vw;
+  height: 400px;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background-color: white;
+}
 }
 
 </style>

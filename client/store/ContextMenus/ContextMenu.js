@@ -72,6 +72,14 @@ export const actions = {
           let shape = rootGetters["ContextMenus/LayoutItems/TableContextMenu/getContextMenu"]
           commit("OPEN_CONTEXT_MENU", shape)
           break
+
+          case "ButtonContextMenu":
+          commit("ContextMenus/LayoutItems/Interact/ButtonContextMenu/OPEN_CONTEXT_MENU", payload, {
+            root: true
+          })
+          let button = rootGetters["ContextMenus/LayoutItems/Interact/ButtonContextMenu/getContextMenu"]
+          commit("OPEN_CONTEXT_MENU", button)
+          break
     }
   },
 

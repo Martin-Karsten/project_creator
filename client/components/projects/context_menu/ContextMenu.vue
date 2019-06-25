@@ -16,6 +16,7 @@ import ChartContextMenu from "./ChartContextMenu"
 import SidebarScrollerContextMenu from './SidebarContextMenu'
 import WebVideoContextMenu from './WebVideoContextMenu'
 import TableContextMenu from './TableContextMenu'
+import ButtonContextMenu from './Interact/ButtonContextMenu'
 
 export default {
   components: {
@@ -24,7 +25,8 @@ export default {
     ChartContextMenu,
     SidebarScrollerContextMenu,
     WebVideoContextMenu,
-    TableContextMenu
+    TableContextMenu,
+    ButtonContextMenu
   },
   data() {
     return {}

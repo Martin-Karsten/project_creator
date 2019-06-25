@@ -17,9 +17,9 @@ use Auth;
 
 class ProjectService {
 
-    public function editTextfields(Array $arr, Array $delitedItems){
+    public function editTextfields(Array $arr, Array $deletedItems){
 
-        foreach($delitedItems as $deleted){
+        foreach($deletedItems as $deleted){
             if (Textfield::where('id', '=', $deleted['id'])->exists()) {
                 Textfield::destroy($deleted['id']);
              }
@@ -55,9 +55,9 @@ class ProjectService {
         }
     }
 
-    public function editWebImages(Array $arr, Array $delitedItems){
+    public function editWebImages(Array $arr, Array $deletedItems){
 
-        foreach($delitedItems as $deleted){
+        foreach($deletedItems as $deleted){
             if (WebImage::where('id', '=', $deleted['id'])->exists()) {
                 WebImage::destroy($deleted['id']);
              }
@@ -90,9 +90,9 @@ class ProjectService {
         }
     }
 
-    public function editTables(Array $arr, Array $delitedItems){
+    public function editTables(Array $arr, Array $deletedItems){
 
-        foreach($delitedItems as $deleted){
+        foreach($deletedItems as $deleted){
             if (Table::where('id', '=', $deleted['id'])->exists()) {
                 Table::destroy($deleted['id']);
              }
@@ -101,7 +101,7 @@ class ProjectService {
         foreach($arr as $field){
             Table::updateOrCreate(
                 ['id'=> $field['id']],
-                [
+            [
                 'id' => $field['id'],
                 // 'name' => $field['name'],
                 'project_id' => $field['project_id'],
@@ -123,9 +123,9 @@ class ProjectService {
         }
     }
 
-    public function editWebVideos(Array $arr, Array $delitedItems){
+    public function editWebVideos(Array $arr, Array $deletedItems){
 
-        foreach($delitedItems as $deleted){
+        foreach($deletedItems as $deleted){
             if (WebVideo::where('id', '=', $deleted['id'])->exists()) {
                 WebVideo::destroy($deleted['id']);
              }
@@ -157,9 +157,9 @@ class ProjectService {
         }
     }
 
-    public function editShapes(Array $arr, Array $delitedItems){
+    public function editShapes(Array $arr, Array $deletedItems){
 
-        foreach($delitedItems as $deleted){
+        foreach($deletedItems as $deleted){
             if (Shape::where('id', '=', $deleted['id'])->exists()) {
                 Shape::destroy($deleted['id']);
              }
@@ -192,7 +192,7 @@ class ProjectService {
         }
     }
 
-    public function editCharts(Array $arr, Array $delitedItems){
+    public function editCharts(Array $arr, Array $deletedItems){
         foreach($arr as $field){
             Chart::updateOrCreate(
                 ['id'=> $field['id']],
@@ -227,7 +227,14 @@ class ProjectService {
         }
     }
 
-    public function editButtons(Array $arr, Array $delitedItems){
+    public function editButtons(Array $arr, Array $deletedItems){
+
+        foreach($deletedItems as $deleted){
+            if (Button::where('id', '=', $deleted['id'])->exists()) {
+                Button::destroy($deleted['id']);
+             }
+        }
+
         foreach($arr as $field){
             Button::updateOrCreate(
                 ['id'=> $field['id']],

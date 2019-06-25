@@ -1,5 +1,5 @@
 <template>
-    <div @click="setCurrentItem" :style="{zIindex: 1}">
+    <div @click="setCurrentItem" :style="{zIindex: 1}" @contextmenu.prevent="openContextMenu">
         <el-button :style="{height: height + 'px', zIndex: 1}" @click="action" class="interact-button">Button</el-button> 
     </div>
 </template>
@@ -37,6 +37,22 @@ export default {
         }
         this.$store.commit("Layout/SET_CURRENT_ITEM", payload)
         },
+    openContextMenu() {
+      let payload = {
+        name: "ButtonContextMenu",
+        x: event.pageX + "px",
+        y: event.pageY + "px",
+        row: this.row
+      }
+
+      let payload2 = {
+        id: this.id,
+        layoutId: this.layoutId,
+        itemName: "buttons"
+      }
+      this.$store.commit("Layout/SET_CURRENT_ITEM", payload2)
+      this.$store.dispatch("ContextMenus/ContextMenu/openContextMenu", payload)
+    },
         formatFunction(arr){
             arr.forEach(x => {
                 this.$store.dispatch("LayoutItems/Interact/Button/formatAction", {currentItem: x, event: this.currentItem.sidebarColor})

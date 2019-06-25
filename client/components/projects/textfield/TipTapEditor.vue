@@ -1,5 +1,5 @@
 <template>
-  <div class="editor-textfield" @contextmenu.prevent="openContextMenu">
+  <div class="editor-textfield" @mousedown="setCurrentItem" @contextmenu.prevent="openContextMenu">
     <editor-menu-bubble :editor="ed">
       <div
         slot-scope="{ commands, isActive, menu }"
@@ -102,8 +102,8 @@ export default {
     openContextMenu() {
       let payload = {
         name: "TextfieldContextMenu",
-        x: event.pageX + "px",
-        y: event.pageY + "px",
+        x: (event.pageX + 100) + "px",
+        y: (event.pageY + 100) + "px",
         row: this.row
       }
 

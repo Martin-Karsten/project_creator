@@ -1,7 +1,6 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
-      {{draggable}}
       <el-col :span="24"
       >
         <div 
@@ -540,7 +539,7 @@ div.gird {
 }
 div.grid-items {
   padding: 0;
-  height: 667px;
+  height: 80vh;
   overflow-y: scroll;
   overflow-x: hidden;
   position: relative;
@@ -549,12 +548,12 @@ div.grid-items {
 
 div.grid-items-hidden{
   padding: 0;
-  height: 673px;
+  height: 80vh;
   overflow: hidden;
   position: relative;  
 }
 div.item-container {
-  height: 657px;
+  height: 79vh;
   width: 99.8%;
   border: 1px solid black;
   position: relative;
@@ -609,7 +608,7 @@ div.animation-number {
 
 .project-web-image-container {
   display: table;
-}
+} 
 
 .project-table-container {
   display: table;

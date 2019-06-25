@@ -6,6 +6,7 @@ Vue.use(Router)
 
 const Home = () => import("~/pages/home").then(m => m.default || m)
 const Welcome = () => import("~/pages/welcome").then(m => m.default || m)
+const BugReport = () => import("~/pages/general/bug_report").then(m => m.default || m)
 
 const Login = () => import("~/pages/auth/login").then(m => m.default || m)
 const Register = () => import("~/pages/auth/register").then(m => m.default || m)
@@ -27,6 +28,7 @@ const ProjectShow = () =>
 const routes = [
   { path: "/", name: "welcome", component: Welcome },
   { path: "/home", name: "home", component: Home },
+  { path: "/bug-report", name: 'bugReport', component: BugReport},
 
   { path: "/login", name: "login", component: Login },
   { path: "/register", name: "register", component: Register },

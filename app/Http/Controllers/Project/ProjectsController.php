@@ -138,7 +138,7 @@ class ProjectsController extends Controller
         }
 
         if(!empty($buttons) || !empty($deletedLayoutItems['buttons'])){
-            $this->projectService->editButtons($buttons, $buttons);
+            $this->projectService->editButtons($buttons, $deletedLayoutItems['buttons']);
         }
 
         Project::where('id', $id)->update(['updated_at' => Carbon::now()->toDateTimeString()]);

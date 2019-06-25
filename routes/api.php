@@ -27,6 +27,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::post('settings/avatar', 'Settings\AvatarController@store');
     Route::patch('settings/password', 'Settings\PasswordController@update');
 
+    //Bug Reports
+    Route::get('bug-report');
+    Route::post('bug-report', 'General\BugReportsController@store');
+
     //Project Settings
     Route::get('/user/projects', 'Project\ProjectsController@index');
 

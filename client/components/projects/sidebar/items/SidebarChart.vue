@@ -38,7 +38,8 @@
         </h4>
       </el-col>
       <el-col :span="15">
-        <el-input placeholder="Title" @input="updateYAxisTitle" />
+        <el-input :value="currentItem.chart_settings.yAxis.name"
+        placeholder="Title" @input="updateYAxisTitle" />
       </el-col>
       <el-col :span="4">
         <el-input
@@ -58,7 +59,8 @@
         </h4>
       </el-col>
       <el-col :span="15">
-        <el-input placeholder="Title" @input="updateXAxisTitle" />
+        <el-input :value="currentItem.chart_settings.xAxis.name"
+        placeholder="Title" @input="updateXAxisTitle" />
       </el-col>
       <el-col :span="4">
         <el-input
@@ -141,13 +143,13 @@
 <script>
 import Vue from 'vue'
 import { mapGetters } from "vuex"
-import debounce from "../../../../Helper/Project/LayoutHelper.js"
+// import debounce from "../../../../Helper/Project/LayoutHelper.js"
 export default {
   data() {
     return {
       chartData: "",
       yAxisValue: "",
-      newestSeries: ""
+      newestSeries: "",
     }
   },
   computed: {
@@ -155,22 +157,24 @@ export default {
       currentItem: "Layout/getCurrentItem"
     })
   },
+  mounted(){
+  },
   methods: {
-    updateTitle: debounce(function(event) {
+    updateTitle(event){
       let payload = {
         currentItem: this.currentItem,
         text: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_TITLE", payload)
-    }, 350),
+    },
 
-    updateSubTitle: debounce(function(event) {
+    updateSubTitle(event) {
       let payload = {
         currentItem: this.currentItem,
         subtext: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_SUBTITLE", payload)
-    }, 350),
+    },
 
     showLegend() {
       let payload = {
@@ -179,39 +183,39 @@ export default {
       this.$store.commit("LayoutItems/Chart/SHOW_LEGEND", payload)
     },
 
-    updateYAxisTitle: debounce(function(event) {
+    updateYAxisTitle(event){
       let payload = {
         currentItem: this.currentItem,
         name: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_YAXIS_TITLE", payload)
-    }, 350),
+    },
 
-    updateXAxisTitle: debounce(function(event) {
+    updateXAxisTitle(event) {
       let payload = {
         currentItem: this.currentItem,
         name: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_XAXIS_TITLE", payload)
-    }, 350),
+    },
 
-    updateYAxisTitleSize: debounce(function(event) {
+    updateYAxisTitleSize(event) {
       let payload = {
         currentItem: this.currentItem,
         fontSize: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_YAXIS_TITLE_SIZE", payload)
-    }, 300),
+    },
 
-    updateXAxisTitleSize: debounce(function(event) {
+    updateXAxisTitleSize(event) {
       let payload = {
         currentItem: this.currentItem,
         fontSize: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_XAXIS_TITLE_SIZE", payload)
-    }, 300),
+    },
 
-    updateYAxisValue: debounce(function(index, yIndex, event) {
+    updateYAxisValue(index, yIndex, event) {
       let payload = {
         currentItem: this.currentItem,
         index: index,
@@ -219,16 +223,25 @@ export default {
         value: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_YAXIS_VALUE", payload)
-    }, 250),
+    },
 
-    updateXAxisValue: debounce(function(index, event) {
+    updateXAxisValue(index, event) {
       let payload = {
         currentItem: this.currentItem,
         index: index,
         value: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_XAXIS_VALUE", payload)
-    }, 250),
+    },
+
+    // updateXAxisValue: debounce(function(index, event) {
+    //   let payload = {
+    //     currentItem: this.currentItem,
+    //     index: index,
+    //     value: event
+    //   }
+    //   this.$store.commit("LayoutItems/Chart/UPDATE_XAXIS_VALUE", payload)
+    // }, 250),
 
     addSeries(index) {
       let payload = {
@@ -246,14 +259,14 @@ export default {
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_SERIES_COLOR", payload)
     },
-    updateSeriesName: debounce(function (index, event) {
+    updateSeriesName(index, event) {
       let payload = {
         index: index,
         currentItem: this.currentItem,
         name: event
       }
       this.$store.commit("LayoutItems/Chart/UPDATE_SERIES_NAME", payload)
-    },300)
+    },
   }
 }
 </script>

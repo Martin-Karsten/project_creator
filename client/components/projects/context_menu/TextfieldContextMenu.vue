@@ -1,31 +1,23 @@
 <template>
   <div>
-    <aside
-      v-show="contextMenu.activated"
-      ref="contextMenu"
-      :style="{ top: contextMenu.style.top, left: contextMenu.style.left }"
-      class="context-menu"
-    >
-      <ul class="menu-list">
-        <li>
-          <ul class="context-menu-list">
-            <li class="context-menu-item" @click="copyItem">
-              <a>Copy</a>
-            </li>
-            <li class="context-menu-item" @click="openStartMenuAnimations">
-              <a>Add Animation</a>
-            </li>
-            <li class="context-menu-item">
-              <a>Format Form</a>
-            </li>
-            <li class="context-menu-item" @click="deleteItem">
-              <a>Delete</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </aside>
+    <el-menu-item @click="copyItem" class="contextmenu-item" index="copy">
+      <div>Copy</div>
+    </el-menu-item>
+    <!-- <el-menu-item class="contextmenu-item" index="Add Animation">
+      <div>Add Animation</div>
+    </el-menu-item> -->
+    <!-- <el-menu-item @click="format">
+      <div>Format</div>
+    </el-menu-item> -->
+    <el-menu-item @click="deleteItem" class="contextmenu-item" index="delete">
+      <div>Delete</div>
+    </el-menu-item>
   </div>
+    <!-- v-show="contextMenu.activated"
+    ref="contextMenu"
+    :style="{ top: contextMenu.style.top, left: contextMenu.style.left }"
+    class="context-menu"
+  > -->
 </template>
 
 <script>
@@ -49,11 +41,16 @@ export default {
       this.$store.commit("Layout/COPY_ITEM")
     },
 
-    deleteItem() {
+    async deleteItem() {
       this.$store.commit("Layout/DELETE_ITEM")
     }
   }
 }
 </script>
 
-<style></style>
+<style>
+.contextmenu-item{
+  height: 30px;
+  line-height: 30px;
+}
+</style>
