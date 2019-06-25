@@ -12,10 +12,6 @@ void (function updateModules() {
 
   // If store is an exported method = classic mode (deprecated)
 
-  if (typeof store === 'function') {
-    return log.warn('Classic mode for store/ is deprecated and will be removed in Nuxt 3.')
-  }
-
   // Enforce store modules
   store.modules = store.modules || {}
 
@@ -54,51 +50,6 @@ void (function updateModules() {
   resolveStoreModules(require('../client/store/ContextMenus/LayoutItems/Interact/ButtonContextMenu.js'), 'ContextMenus/LayoutItems/Interact/ButtonContextMenu.js')
 
   // If the environment supports hot reloading...
-
-  if (process.client && module.hot) {
-    // Whenever any Vuex module is updated...
-    module.hot.accept([
-      '../client/store/Layout.js',
-      '../client/store/auth.js',
-      '../client/store/SidebarImage.js',
-      '../client/store/Sidebar.js',
-      '../client/store/EditContainer.js',
-      '../client/store/index.js',
-      '../client/store/lang.js',
-      '../client/store/SidebarTextfield.js',
-      '../client/store/LayoutHelpers.js',
-      '../client/store/LayoutItem.js',
-      '../client/store/ColorPicker.js',
-      '../client/store/PresentationMode.js',
-      '../client/store/Project.js',
-      '../client/store/schema.js',
-      '../client/store/sidebar-default.js',
-      '../client/store/ContextMenus/SidebarScrollerContextMenu.js',
-      '../client/store/LayoutItems/Chart.js',
-      '../client/store/StartMenus/StartMenuAnimations.js',
-      '../client/store/LayoutItems/Shapes.js',
-      '../client/store/LayoutItems/Table.js',
-      '../client/store/LayoutItems/Textfield.js',
-      '../client/store/LayoutItems/WebImage.js',
-      '../client/store/LayoutItems/WebVideo.js',
-      '../client/store/StartMenus/StartMenu.js',
-      '../client/store/StartMenus/StartMenuTable.js',
-      '../client/store/ContextMenus/ContextMenu.js',
-      '../client/store/StartMenus/StartMenuDefault.js',
-      '../client/store/ContextMenus/LayoutItems/WebVideoContextMenu.js',
-      '../client/store/ContextMenus/LayoutItems/WebImageContextMenu.js',
-      '../client/store/ContextMenus/LayoutItems/TextfieldContextMenu.js',
-      '../client/store/ContextMenus/LayoutItems/TableContextMenu.js',
-      '../client/store/ContextMenus/LayoutItems/ChartContextMenu.js',
-      '../client/store/LayoutItems/Interact/Button.js',
-      '../client/store/ContextMenus/LayoutItems/Interact/ButtonContextMenu.js',
-    ], () => {
-      // Update `root.modules` with the latest definitions.
-      updateModules()
-      // Trigger a hot update in the store.
-      window.$nuxt.$store.hotUpdate(store)
-    })
-  }
 })()
 
 // createStore
