@@ -1,15 +1,7 @@
+
 <template>
-<<<<<<< HEAD
   <div class="table-editor" @contextmenu.prevent="openContextMenu">
     <editor-menu-bubble :editor="editor">
-=======
-  <div
-   class="table-content editor"
-  :drag="true"
-  :isSnappable="false"
-  >
-    <editor-menu-bar :editor="editor">
->>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
       <div
         slot-scope="{ commands, isActive, menu }"
         class="menububble"

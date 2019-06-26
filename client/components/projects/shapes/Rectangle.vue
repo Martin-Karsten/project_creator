@@ -1,5 +1,4 @@
 <template>
-<<<<<<< HEAD
   <div
     :style="{
       width: width + 'px',
@@ -9,16 +8,10 @@
     @click="setCurrentItem"
     @contextmenu.prevent="openContextMenu"
   />
-=======
-  <div class="rectangle">
-    
-  </div>
->>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
 </template>
 
 <script>
 export default {
-<<<<<<< HEAD
   props: {
     layoutId: {},
     id: {},
@@ -45,9 +38,6 @@ export default {
       default: 300,
       required: false
     }
-=======
-  components: {
->>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
   },
   methods: {
     setCurrentItem() {

@@ -59,15 +59,11 @@ module.exports = {
     '~plugins/vform',
     '~plugins/axios',
     '~plugins/fontawesome',
-<<<<<<< HEAD
     '~plugins/vue-scrollto',
     {src: 'plugins/color-picker', ssr: false},
     { src: '~plugins/vue-echarts.js', ssr: false},
     { src: '~/plugins/vuex-persist', ssr: false },
     { src: '~/plugins/infinite-loading', ssr: false },
-=======
-    '~plugins/eCharts',
->>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
     // '~plugins/nuxt-client-init',
   ],
 
