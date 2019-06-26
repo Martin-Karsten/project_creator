@@ -1,6 +1,15 @@
 <template>
+<<<<<<< HEAD
   <div class="editor-textfield" @mousedown="setCurrentItem" @contextmenu.prevent="openContextMenu">
     <editor-menu-bubble :editor="ed">
+=======
+  <div
+   class="textfield-content editor"
+  :drag="true"
+  :isSnappable="false"
+  >
+    <editor-menu-bar :editor="editor">
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
       <div
         slot-scope="{ commands, isActive, menu }"
         class="menububble"
@@ -27,21 +36,58 @@
           H2
         </button>
       </div>
+<<<<<<< HEAD
     </editor-menu-bubble>
     <editor-content class="textfield editor__content" :editor="ed" />
+=======
+    </editor-menu-bar>
+    <editor-content class="textfield editor__content" :editor="editor"/>
+
+    <div>
+      <pre><code>{{ html }}</code></pre>
+    </div>
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
   </div>
 </template>
 
 <script>
+<<<<<<< HEAD
 import { Editor, EditorContent, EditorMenuBubble } from "tiptap"
 import { Heading, Bold, Italic, Code, CodeBlock, Underline,
           OrderedList, BulletList, 
         } from "tiptap-extensions"
 import { mapGetters } from "vuex"
+=======
+import { Editor, EditorMenuBar, EditorContent } from 'tiptap'
+import {
+  Blockquote,
+  CodeBlock,
+  HardBreak,
+  Heading,
+  OrderedList,
+  BulletList,
+  ListItem,
+  TodoItem,
+  TodoList,
+  Bold,
+  Code,
+  Italic,
+  Link,
+  Strike,
+  Underline,
+  History,
+} from 'tiptap-extensions'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
+
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
 export default {
   components: {
     EditorContent,
+<<<<<<< HEAD
     EditorMenuBubble
+=======
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
   },
   props: ["text", "opacity", "layoutRow", "row", "layoutId", "id"],
   data() {

@@ -1,6 +1,15 @@
 <template>
+<<<<<<< HEAD
   <div class="table-editor" @contextmenu.prevent="openContextMenu">
     <editor-menu-bubble :editor="editor">
+=======
+  <div
+   class="table-content editor"
+  :drag="true"
+  :isSnappable="false"
+  >
+    <editor-menu-bar :editor="editor">
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
       <div
         slot-scope="{ commands, isActive, menu }"
         class="menububble"
@@ -58,6 +67,7 @@
 						<p>Code</p>
 					</button>
 
+<<<<<<< HEAD
 					<button
 						class="menubar__button"
 						:class="{ 'is-active': isActive.code_block() }"
@@ -120,6 +130,11 @@
       </div>
     </editor-menu-bubble>
     <editor-content class="table editor__content" :editor="editor" />
+=======
+    <!-- <div>
+      <pre><code>{{ html }}</code></pre>
+    </div> -->
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
   </div>
 </template>
 
@@ -144,15 +159,25 @@ import {
   TableHeader,
   TableCell,
   TableRow,
+<<<<<<< HEAD
   Strike,
   Underline,
   History
 } from "tiptap-extensions"
+=======
+} from 'tiptap-extensions'
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
+
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
 export default {
   components: {
     EditorContent,
+<<<<<<< HEAD
     EditorMenuBar,
     EditorMenuBubble
+=======
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
   },
   props: ["text", "id", "layoutId", "row", "height"],
   data() {

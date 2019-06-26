@@ -213,6 +213,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 
 import { mapGetters, mapState } from "vuex"
 import debounce from "../../Helper/Project/LayoutHelper.js"
@@ -235,6 +236,15 @@ import ShapePicker from "./navbar/shapes/ShapePicker.vue"
 //Draggables
 import draggable from "vuedraggable"
 import VueDraggableResizable from "vue-draggable-resizable"
+=======
+import { mapGetters } from 'vuex'
+import { mapMutations } from 'vuex'
+import draggable from 'vuedraggable'
+import Editor from './textfield/TipTapEditor'
+import TableEditor from './table/Table'
+import ProjectImage from './project_image/Image'
+import VueDraggableResizable from 'vue-draggable-resizable'
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
 
 // optionally import default styles
 import "vue-draggable-resizable/dist/VueDraggableResizable.css"
@@ -245,6 +255,7 @@ export default {
         VueDraggableResizable,
         TextfieldEditor,
         TableEditor,
+<<<<<<< HEAD
         ProjectImage,
         WebImage,
         WebVideo,
@@ -264,6 +275,34 @@ export default {
       isDraggable: true,
       draggable: true,
       resizable: true
+=======
+    },
+    data () {
+        return {
+            dragging: false,
+        }
+    },
+    computed: {
+        ...mapGetters({
+            layout: 'Layout/getLayout'
+        })
+    },
+    methods: {
+        onResize: function (x, y, width, height) {
+            this.x = x
+            this.y = y
+            this.width = width
+            this.height = height
+        },
+        onDrag: function (x, y) {
+            this.x = x
+            this.y = y
+        },
+        addItem() {
+            let payload = {name: '', id: this.layout.length}
+            this.$store.commit('Layout/ADD_ITEM', payload)
+        }
+>>>>>>> 425dac3511d2a7e837f64e3ee1e448bf79d38ad6
     }
   },
   computed: {
