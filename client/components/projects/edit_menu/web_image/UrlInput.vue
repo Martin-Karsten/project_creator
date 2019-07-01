@@ -14,10 +14,10 @@
               type="text"
             />
             <el-button size="small" type="success" @click="handleSubmit">
-              Submit
+              {{ $t("submit") }}
             </el-button>
             <el-button size="small" type="danger" @click="cancelSubmit">
-              Cancel
+              {{ $t("cancel") }}
             </el-button>
           </form>
         </div>
