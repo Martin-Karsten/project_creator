@@ -1,7 +1,6 @@
 <template>
   <el-main class="project-container">
     <el-row class="grid">
-      {{textfieldObj}}
       <el-col :span="24"
       >
         <div 

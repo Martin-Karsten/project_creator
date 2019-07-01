@@ -3,7 +3,7 @@
     <el-form class="login-form" label-position="top" ref="form" :model="form" label-width="120px">
       <el-form-item 
           prop="email"
-          label="EMail Address"
+          label="Email Address"
           :rules="[
             { required: true, message: 'Please input your email address', trigger: 'blur' },
             { type: 'email', message: 'Please input a correct email address', trigger: ['blur', 'change'] }
@@ -49,8 +49,8 @@
         </el-checkbox>
       </el-form-item>
       <el-form-item>
-      <el-button type="primary" @click="submitForm">Login</el-button>
-      <router-link to="/register"> <el-button>Register</el-button> </router-link>
+      <el-button type="primary" @click="submitForm">{{ $t("login") }}</el-button>
+      <router-link to="/register"> <el-button type="primary">{{ $t("register") }}</el-button> </router-link>
     </el-form-item>
     </el-form>
   </el-col>

@@ -1,6 +1,6 @@
 <template>
   <el-menu mode="vertical" @select="handleSelect">
-    <el-menu-item index="save" style="background-color: rgba(244, 83, 66, 0.25)">Save</el-menu-item>
+    <el-menu-item index="save" style="background-color: rgba(244, 83, 66, 0.25)">{{ $t('save') }}</el-menu-item>
   </el-menu>
 </template>
 

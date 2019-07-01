@@ -7,6 +7,7 @@
   "token_expired_alert_text": "Please log in again to continue.",
   "login": "Log In",
   "register": "Register",
+  "submit": "Submit",
   "page_not_found": "Page Not Found",
   "go_home": "Go Home",
   "logout": "Logout",
@@ -34,5 +35,17 @@
   "your_projects": "Your Projects",
   "create_project": "Create Project",
   "created_at": "Created At",
-  "project_name": "Project Name"
+  "project_name": "Project Name",
+  "delete": "Delete",
+  "rename": "rename",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "welcome_showcase_1": "Create draggable and resizable Objects" ,
+  "welcome_showcase_2": "Search for images" ,
+  "welcome_showcase_3": "Create complex data objects" ,
+  "welcome_showcase_4": "Modify Objects" ,
+  "welcome_showcase_5": "Easily delete created objects",
+  "save": "Save",
+  "submit_bugs": "Submit bugs",
+  "bug_report_text": "This site is currently in alpha. Bug reports are always appreciated. Before making a bug report please keep in mind that this site is only developed by one person,that's why it might take a while for the bug to get fixed."
 }
