@@ -35,6 +35,9 @@
       </el-menu-item>
     </template>
 
+    <el-menu>
+      <locale-dropdown />
+    </el-menu>
     <el-menu-item index="home" :route="getHomeRoute()">
       <img class="navbar-logo" :src="apiStorage + 'images/logoV2.png'" >
     </el-menu-item>

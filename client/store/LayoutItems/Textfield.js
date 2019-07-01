@@ -43,7 +43,7 @@ export const mutations = {
         left: payload.x,
         width: 100,
         height: 15,
-        z_index: 0
+        z_index: 1
       }
     }
     // update textfields state

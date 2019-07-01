@@ -1,5 +1,5 @@
 <template>
-    <el-main class="bug-report-container">
+    <el-main class="general-container">
         <h1>Submit bugs</h1>
         <p></p>
         <p>This site is currently in <strong>alpha</strong>. Bug reports are always appreciated. Before making a bug report please keep in mind that this site is only developed by one person,
@@ -107,10 +107,6 @@ export default {
 </script>
 
 <style>
-.bug-report-container{
-    padding-left: 10%;
-    padding-right: 10%;
-}
 
 .bug-report-form{
     width: 100%; height: 100%;

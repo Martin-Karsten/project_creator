@@ -6,13 +6,16 @@
     <div class="landingpage">
       <div class="landingpage-first">
       <el-row>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
+        <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
           <h1 class="title">
             Create Beautiful Presentations
           </h1>
           <h2 class="subtitle">
             <a @click="scrollToEnd">Learn More</a>
           </h2>
+        </el-col> -->
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
+          <img class="landingpage-image" :src="apiStorage + 'images/MacBookEdited.png'" alt="">
         </el-col>
 
         <el-col :sm="24" :md="12" :lg="12" :xl="12" class="sign-up-box">
@@ -376,8 +379,8 @@ export default {
 }
 
 div.welcome {
-  background: url(background-image.png), rgb(247, 247, 247, 0.8);
-  background-size: 100% 86vh;
+  background: linear-gradient(to bottom, white 0%,white 34%,rgb(247, 247, 247, 0.8) 34%,rgb(247, 247, 247, 0.8) 50%, rgb(247, 247, 247, 0.8) 100%); /* W3C */
+  background-size: 100% 120%;
   background-repeat: no-repeat;
   min-height: 100%;
 }
@@ -394,6 +397,11 @@ div.welcome {
   align-items: center !important;
   min-height: 90vh;
   margin-bottom: 2rem;
+}
+
+img.landingpage-image{
+  width: 90%;
+  height: auto;
 }
 
 div.landingpage-gif-container{

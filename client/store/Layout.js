@@ -192,12 +192,7 @@ export const mutations = {
       for(let i=0; i<value.function_items.length; i++){
         value.function_items.splice(i, 1, state[value.function_items[i].itemName][value.function_items[i].id])
       }
-      // value.function_items.forEach(x => {
-      //   x = 'o'
-      //   console.log(x)
-      // })
   }
-
   },
 
   SET_LAYOUT_SCROLL_IMAGES(state, payload){
