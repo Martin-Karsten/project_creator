@@ -471,12 +471,12 @@ export const actions = {
     let id = payload.id
     // if (state.projectId != id) {
       commit("SET_PROJECT_ID", id)
-      try {
-        const { data } = await axios.get(`/user/project/${id}`)
+      // try {
+      //   const { data } = await axios.get(`/user/project/${id}`)
         commit("SET_LAYOUT", data)
-      } catch (e) {
-        console.log(e)
-      }
+      // } catch (e) {
+      //   console.log(e)
+      // }
     // }
     this.dispatch("LayoutItems/Textfield/initialize", state.textfields)
     this.dispatch("LayoutItems/WebImage/initialize", state.web_images)

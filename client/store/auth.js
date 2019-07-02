@@ -48,8 +48,8 @@ export const actions = {
 
   async fetchUser({ commit }) {
     try {
-      const { data } = await axios.get("/user")
-
+      // const { data } = await axios.get("/user")
+      let data = {id: 1, first_name: "John", last_name: "Doe", email: "xd@xd.com", password: "$2y$10$FFj5gExZMUgu..8JVOzCzOAd7f5D9GwSsgmT3RAwTYrtShc8oTTXy"}
       commit("FETCH_USER_SUCCESS", data)
     } catch (e) {
       Cookies.remove("token")

@@ -272,6 +272,13 @@ export default {
     authenticated: "auth/check"
   }),
 
+  mounted(){
+      // this.$store.dispatch("auth/saveToken", {
+      //   token: 123,
+      //   remember: false
+      // })
+  },
+
   methods: {
     scrollToEnd() {
       this.$refs.section1.scrollIntoView()

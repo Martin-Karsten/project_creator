@@ -88,12 +88,21 @@ export default {
     },
     async login() {
       // Submit the form.
-      const { data } = await this.form.post("/login")
+      // const { data } = await this.form.post("/login")
+
+      this.$store.dispatch("Project/createProject", {
+        project_id: '5945c961-e74d-478f-8afe-da53cf4189e3',
+        project_name: 'sample_project',
+        user_id: 1,
+        private: true
+      })
+
+      this.$store.dispatch('Layout/initialize', {id: '5945c961-e74d-478f-8afe-da53cf4189e3'})
 
       // Save the token.
       this.$store.dispatch("auth/saveToken", {
-        token: data.token,
-        remember: this.remember
+        token: 123,
+        remember: false
       })
 
       // Fetch the user.
@@ -114,7 +123,5 @@ export default {
   /* border: 1px solid black; */
 }
 
-.login-form{
 
-}
 </style>

@@ -91,7 +91,7 @@
         </el-col>
       </el-row>
       <no-ssr>
-        <infinite-loading @infinite="changeNumber"></infinite-loading>
+        <!-- <infinite-loading @infinite="changeNumber"></infinite-loading> -->
       </no-ssr>
     </el-main>
   </el-container>
@@ -217,16 +217,16 @@ export default {
       this.form.project_name = event.target.value
 
       let data = ''
-      try{
-        data = await this.form.post("user/project/create")
-      }
-      catch(e){
-        return
-      }
-      data = data.data
+      // try{
+      //   data = await this.form.post("user/project/create")
+      // }
+      // catch(e){
+      //   return
+      // }
+      // data = data.data
 
       this.$store.dispatch("Project/createProject", {
-        project_id: data.project_id,
+        project_id: '5945c961-e74d-478f-8afe-da53cf4189e3',
         project_name: this.form.project_name,
         user_id: this.user.id,
         private: this.form.private
