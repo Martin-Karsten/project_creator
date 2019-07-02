@@ -38,6 +38,8 @@
     <el-menu-item index="home" :route="getHomeRoute()">
       <img class="navbar-logo" :src="apiStorage + 'images/logoV2.png'" >
     </el-menu-item>
+
+    <locale-dropdown/>
     <el-menu-item index="bugReport" :route="{name: 'bugReport'}" style="float: right;">
         Bug Report
     </el-menu-item>

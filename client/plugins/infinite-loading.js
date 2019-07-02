@@ -13,5 +13,6 @@ Vue.use(InfiniteLoading, {
 	slots: {
 		noMore: 'No more Projects', // you can pass a string value
 		error: '', // you also can pass a Vue component as a slot
+		noResults: ''
 	},
 });

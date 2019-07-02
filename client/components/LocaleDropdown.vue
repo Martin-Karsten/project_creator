@@ -1,21 +1,14 @@
 <template>
-  <div class="navbar-item has-dropdown is-hoverable">
-    <a class="navbar-link">
-      {{ locales[locale] }}
-    </a>
-
-    <div class="navbar-dropdown">
-      <a
-        v-for="(value, key) in locales"
-        :key="key"
-        class="navbar-item"
-        href="#"
-        @click.prevent="setLocale(key)"
+  <el-submenu index="">
+    <template slot="title">{{ locales[locale] }}</template>
+    <el-menu-item index=""
+      v-for="(value, key) in locales"
+      :key="key"
+      @click="setLocale(key)"
       >
-        {{ value }}
-      </a>
-    </div>
-  </div>
+        {{value}}
+    </el-menu-item>
+  </el-submenu>
 </template>
 
 <script>

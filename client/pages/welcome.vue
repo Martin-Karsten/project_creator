@@ -6,13 +6,16 @@
     <div class="landingpage">
       <div class="landingpage-first">
       <el-row>
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
+        <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
           <h1 class="title">
             Create Beautiful Presentations
           </h1>
           <h2 class="subtitle">
             <a @click="scrollToEnd">Learn More</a>
           </h2>
+        </el-col> -->
+        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
+          <img class="landingpage-image" :src="apiStorage + 'images/MacBookEdited.png'" alt="">
         </el-col>
 
         <el-col :sm="24" :md="12" :lg="12" :xl="12" class="sign-up-box">
@@ -22,12 +25,12 @@
                 <el-form-item
                   prop="first_name"
                 >
-                  <span>First Name</span>
+                  <span>{{ $t("first_name") }}</span>
                   <el-input 
                     v-model="form.first_name"
                     :class="{ 'is-invalid': form.errors.has('name') }"
                     type="text"
-                    placeholder="First Name"
+                    placeholder="..."
                     name="first_name" 
                     autocomplete="on"
                   />
@@ -37,12 +40,12 @@
                 <el-form-item
                   prop="last_name"
                 >
-                  <span>Last Name</span>
+                  <span>{{ $t("last_name") }}</span>
                   <el-input 
                     v-model="form.last_name"
                     :class="{ 'is-invalid': form.errors.has('name') }"
                     type="text"
-                    placeholder="Last Name"
+                    placeholder="..."
                     name="last_name"
                     autocomplete="on"
                   />
@@ -54,7 +57,7 @@
                 <el-form-item
                   prop="email"
                 >
-                  <span>Email</span>
+                  <span>{{ $t("email") }}</span>
                   <el-input v-model="form.email" type="email" autocomplete="on"/>
                 </el-form-item>
               </el-col>
@@ -64,7 +67,7 @@
                 <el-form-item
                   prop="password"
                 >
-                  <span>Password</span>
+                  <span>{{ $t("password") }}</span>
                   <el-input v-model="form.password" 
                     type="password"
                   />
@@ -76,14 +79,14 @@
                 <el-form-item
                   prop="password_confirmation"
                 >
-                  <span>Confirm Password</span>
+                  <span>{{ $t("confirm_password") }}</span>
                   <el-input v-model="form.password_confirmation" 
                     type="password"
                   />
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="submitForm('form')">Register</el-button>
+            <el-button type="success" @click="submitForm('form')">{{ $t("register") }}</el-button>
           </el-form>
         </el-col>
       </el-row>
@@ -92,15 +95,15 @@
         <el-row class="landingpage-row">
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
             <img class="landingpage-gif" :src="apiStorage + 'gifs/text.gif'" alt="">
-            <h3 class="landingpage-gif-text">Create draggable and resizable objects</h3>
+            <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_1") }}</h3>
           </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
               <img class="landingpage-gif" :src="apiStorage + 'gifs/image.gif'" alt="">
-              <h3 class="landingpage-gif-text">Search for images</h3>
+              <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_2") }}</h3>
             </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
               <img class="landingpage-gif" :src="apiStorage + 'gifs/chart.gif'" alt="">
-              <h3 class="landingpage-gif-text">Create complex data objects</h3>
+              <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_3") }}</h3>
             </el-col>
         </el-row>
         
@@ -116,11 +119,11 @@
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
             <img class="landingpage-gif" :src="apiStorage + 'gifs/color.gif'" alt="">
-            <h3 class="landingpage-gif-text">Modify objects</h3>
+            <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_4") }}</h3>
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
             <img class="landingpage-gif" :src="apiStorage + 'gifs/delete.gif'" alt="">
-            <h3 class="landingpage-gif-text">Easily delete created objects</h3>
+            <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_5") }}</h3>
           </el-col>
         </el-row>
       </div>
@@ -131,33 +134,33 @@
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
                 <el-form-item
                 prop="first_name_bottom">
-                  <span>First Name</span>
-                  <el-input v-model="formBottom.first_name" placeholder="First Name"></el-input>
+                  <span>{{ $t("first_name") }}</span>
+                  <el-input v-model="formBottom.first_name" placeholder="..."></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
                 <el-form-item
                 prop="last_name_bottom">
-                  <span>Last Name</span>
-                  <el-input v-model="formBottom.last_name" placeholder="Last Name"></el-input>
+                  <span>{{ $t("last_name") }}</span>
+                  <el-input v-model="formBottom.last_name" placeholder="..."></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
                 <el-form-item
                 prop="email_bottom">
-                  <span>Email</span>
-                  <el-input v-model="formBottom.email" type="email" placeholder="Email"></el-input>
+                  <span>{{ $t("email") }}</span>
+                  <el-input v-model="formBottom.email" type="email" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
               <el-col :sm="24" :md="6" :lg="6" :xl="6">
                 <el-form-item
                 prop="password_bottom">
-                  <span>Password</span>
-                  <el-input v-model="formBottom.password" type="password" placeholder="Password"></el-input>
+                  <span>{{ $t("password") }}</span>
+                  <el-input v-model="formBottom.password" type="password" placeholder=""></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-              <el-button class="register-button-bottom" type="success" @click="submitFormBottom('formBottom')">Sign up now</el-button>
+              <el-button class="register-button-bottom" type="success" @click="submitFormBottom('formBottom')">{{ $t("register") }}</el-button>
           </el-form>
         </div>
     </div>
@@ -376,8 +379,8 @@ export default {
 }
 
 div.welcome {
-  background: url(background-image.png), rgb(247, 247, 247, 0.8);
-  background-size: 100% 86vh;
+  background: linear-gradient(to bottom, white 0%,white 34%,rgb(247, 247, 247, 0.8) 34%,rgb(247, 247, 247, 0.8) 50%, rgb(247, 247, 247, 0.8) 100%); /* W3C */
+  background-size: 100% 120%;
   background-repeat: no-repeat;
   min-height: 100%;
 }
@@ -394,6 +397,12 @@ div.welcome {
   align-items: center !important;
   min-height: 90vh;
   margin-bottom: 2rem;
+}
+
+img.landingpage-image{
+  width: 90%;
+  height: auto;
+  margin-top: 2rem;
 }
 
 div.landingpage-gif-container{

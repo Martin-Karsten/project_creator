@@ -13,13 +13,13 @@
           <el-submenu index="create">
             <template slot="title">
               <i class="el-icon-location"></i>
-              <span>Create Project</span>
+              <span>{{ $t("create_project") }}</span>
               </template>
                 <el-menu-item
                   index="create-input"
                 >
                   <el-input
-                  placeholder="Project Name"
+                  placeholder="Name"
                   @keyup.enter.native="createProject"
                   v-model="projectName"
                   />
@@ -30,19 +30,19 @@
           <el-menu-item
             index="rename"
           >
-          Rename
+          {{ $t('rename') }}
           </el-menu-item>
           <el-menu-item
             index="delete"
           >
-          Delete
+          {{ $t('delete') }}
           </el-menu-item>
         </template>
         <template v-else-if="projectsClicked.length > 1">
           <el-menu-item
             index="deleteMultiple"
           >
-          Delete
+          {{ $t('delete') }}
           </el-menu-item>
         </template>
       </el-menu>

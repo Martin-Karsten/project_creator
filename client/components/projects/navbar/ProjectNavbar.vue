@@ -10,8 +10,9 @@
         active-text-color="black"
       >
         <el-menu-item index="1" :route="{name: 'home'}">
-          START
+          <img class="navbar-logo" :src="apiUrl + 'images/logoV2.png'" >
         </el-menu-item>
+        <locale-dropdown/>
 
         <el-submenu v-if="user" index="3" style="float: right;">
           <template slot="title">
@@ -27,6 +28,12 @@
             <i class="el-icon-circle-close" /> Logout
           </el-menu-item>
         </el-submenu>
+        <el-menu-item index="bugReport" :route="{name: 'bugReport'}" style="float: right;">
+            Bug Report
+        </el-menu-item>
+        <el-menu-item index="about" :route="{name: 'about'}" style="float: right;">
+          About
+        </el-menu-item>
 
       </el-menu>
     </el-header>
@@ -37,13 +44,14 @@
 
 <script>
 import { mapGetters } from "vuex"
-import LocaleDropdown from "../../LocaleDropdown"
+import LocaleDropdown from "./../../LocaleDropdown"
 import StartMenuContainer from "./StartMenuContainer"
 import StartMenuAnimations from "./StartMenuAnimations"
 export default {
   components: {
     LocaleDropdown,
-    StartMenuContainer
+    StartMenuContainer,
+    LocaleDropdown
   },
   data() {
     return {

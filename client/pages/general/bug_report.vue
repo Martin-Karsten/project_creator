@@ -1,9 +1,9 @@
 <template>
-    <el-main class="bug-report-container">
-        <h1>Submit bugs</h1>
+    <el-main class="general-container">
+        <h1>{{ $t("submit_bugs") }}</h1>
         <p></p>
-        <p>This site is currently in <strong>alpha</strong>. Bug reports are always appreciated. Before making a bug report please keep in mind that this site is only developed by one person,
-            that's why it might take a while for the bug to get fixed.
+        <p>
+            {{ $t("bug_report_text") }}
         </p>
         <div style="margin: 4rem;"></div>
         <el-row>
@@ -32,7 +32,7 @@
                     v-model="form.bug_explanation"></el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="handleSubmit('bugReportForm')">Submit</el-button>
+                    <el-button type="primary" @click="handleSubmit('bugReportForm')">{{ $t("submit") }}</el-button>
                 </el-form-item>
                 </el-form>
             </el-col>
@@ -107,10 +107,6 @@ export default {
 </script>
 
 <style>
-.bug-report-container{
-    padding-left: 10%;
-    padding-right: 10%;
-}
 
 .bug-report-form{
     width: 100%; height: 100%;

@@ -67,7 +67,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-button type="primary" @click="submitForm">Register</el-button>
+      <el-button type="success" @click="submitForm">{{ $t("register") }}</el-button>
     </el-form>
   </el-col>
 </template>
