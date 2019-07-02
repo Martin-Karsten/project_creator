@@ -62,7 +62,7 @@
             @mouseover="showEditable(index)"
             @mouseleave="hideEditable(index)"
           >
-            <img :id="project.id" :src="getImage(index)" alt="" style="height: 215px"/>
+            <img :id="project.id" :src="getImage(index)" style="height: 215px"/>
             <el-checkbox
               v-show="project.editable || project.selected"
               class="home-column-checkbox"
@@ -83,7 +83,7 @@
                   <el-input :placeholder="project.project_name" v-model="projectName" @keyup.enter.native="changeProjectName($event, index)" />
                 </template>
               </div>
-              <a @click="viewProject(project.id)">
+              <a @click="viewProject(project.project_id)">
                 <fa class="fa" icon="arrow-right" />
               </a>
             </div>
@@ -100,6 +100,7 @@
 <script>
 import axios from 'axios'
 import { mapGetters } from "vuex"
+import defaultImage from './default-project-image.png'
 import Form from "vform"
 
 export default {
@@ -114,6 +115,7 @@ export default {
   },
   data: () => ({
     apiUrl: process.env.apiUrl,
+    defaultImage: defaultImage,
     checked: false,
     projectsClicked: [],
     editable: false,
@@ -136,14 +138,15 @@ export default {
     })
   },
   async mounted() {
-    await this.$store.dispatch("Project/fetchProjects")
+    // await this.$store.dispatch("Project/fetchProjects")
   },
   methods: {
     getImage(index){
-        if(this.projects[index].image == undefined)
-          return this.apiUrl + '/storage//images/default-project-image.png'
-        else
-          return this.apiUrl + '/storage/' + this.projects[index].image
+      return defaultImage
+        // if(this.projects[index].image == undefined)
+        //   return './default-project-image.png'
+        // else
+        //   return this.apiUrl + '/storage/' + this.projects[index].image
     },
     showEditable(index) {
       this.$store.commit("Project/SHOW_EDITABLE", index)
@@ -216,26 +219,24 @@ export default {
       this.form.user_id = this.user.id
       this.form.project_name = event.target.value
 
-      let data = ''
-      // try{
-      //   data = await this.form.post("user/project/create")
-      // }
-      // catch(e){
-      //   return
-      // }
-      // data = data.data
+        let dt = new Date().getTime();
+        let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = (dt + Math.random()*16)%16 | 0;
+            dt = Math.floor(dt/16);
+            return (c=='x' ? r :(r&0x3|0x8)).toString(16);
+        });
 
       this.$store.dispatch("Project/createProject", {
-        project_id: '5945c961-e74d-478f-8afe-da53cf4189e3',
+        project_id: uuid,
         project_name: this.form.project_name,
         user_id: this.user.id,
         private: this.form.private
       })
 
-      this.$store.dispatch('Layout/initialize', {id: data.project_id})
+      this.$store.dispatch('Layout/initialize', {id: uuid})
 
       // Redirect to project creation.
-      this.$router.push({ name: "project.create", params: {id: data.project_id} })
+      this.$router.push({ name: "project.create", params: {id: uuid} })
     },
     async viewProject(id) {
       // Redirect to project

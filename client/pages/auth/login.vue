@@ -1,5 +1,6 @@
 <template>
   <el-col :offset="6" class="login-form-col">
+    <h3>{{ $t("login_warning")}}</h3>
     <el-form class="login-form" label-position="top" ref="form" :model="form" label-width="120px">
       <el-form-item 
           prop="email"
@@ -90,14 +91,12 @@ export default {
       // Submit the form.
       // const { data } = await this.form.post("/login")
 
-      this.$store.dispatch("Project/createProject", {
-        project_id: '5945c961-e74d-478f-8afe-da53cf4189e3',
-        project_name: 'sample_project',
-        user_id: 1,
-        private: true
+      this.$store.commit("Project/CREATE_SAMPLE_PROJECT", {
+          project_id: '5945c961-e74d-478f-8afe-da53cf4189e3',
+          project_name: 'sample_project',
+          user_id: 1,
+          private: true
       })
-
-      this.$store.dispatch('Layout/initialize', {id: '5945c961-e74d-478f-8afe-da53cf4189e3'})
 
       // Save the token.
       this.$store.dispatch("auth/saveToken", {

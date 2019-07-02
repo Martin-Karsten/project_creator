@@ -10,7 +10,7 @@
         active-text-color="black"
       >
         <el-menu-item index="1" :route="{name: 'home'}">
-          <img class="navbar-logo" :src="apiUrl + 'images/logoV2.png'" >
+          <img class="navbar-logo" :src="logo" >
         </el-menu-item>
         <locale-dropdown/>
 
@@ -44,6 +44,7 @@
 
 <script>
 import { mapGetters } from "vuex"
+import logo from './logoV2.png'
 import LocaleDropdown from "./../../LocaleDropdown"
 import StartMenuContainer from "./StartMenuContainer"
 import StartMenuAnimations from "./StartMenuAnimations"
@@ -55,6 +56,7 @@ export default {
   },
   data() {
     return {
+      logo: logo,
       appName: process.env.appName,
       apiUrl: process.env.apiUrl + '/storage/',
       showStartMenu: true

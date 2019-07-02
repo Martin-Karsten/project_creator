@@ -24,29 +24,37 @@
 </template>
 
 <script>
+import rectangleIcon from './rectangle-icon.png'
+import ellipseIcon from './ellipse-icon.png'
+import triangleIcon from './triangle-icon.png'
+import lineIcon from './line-icon.png'
 export default {
   props: ['currentLayout'],
   data() {
     return {
+      rectangleIcon: rectangleIcon,
+      ellipseIcon: ellipseIcon,
+      triangleIcon: triangleIcon,
+      lineIcon: lineIcon,
       apiUrl: process.env.apiUrl + '/storage/'
     }
   },
   methods: {
     addRectangle() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/rectangle-icon.png), auto', item: 'rectangle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + rectangleIcon + '), auto', item: 'rectangle'})
     },
     addCircle() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' +  this.apiUrl + 'images/ellipse-icon.png), auto', item: 'circle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' +  ellipseIcon + '), auto', item: 'circle'})
     },
     addTriangle() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/triangle-icon.png), auto', item: 'triangle'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + triangleIcon + '), auto', item: 'triangle'})
     },
     addLine() {
       this.$emit("clicked")
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + 'images/line-icon.png), auto', item: 'line'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + lineIcon + 'line), auto', item: 'line'})
     }
   }
 }

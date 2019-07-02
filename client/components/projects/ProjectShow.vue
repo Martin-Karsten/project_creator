@@ -213,10 +213,14 @@ export default {
     })
   },
   async mounted() {
-    // await this.$store.dispatch("Layout/initialize", this.$route.params)
+    if(this.$route.params.id === '5945c961-e74d-478f-8afe-da53cf4189e3')
+      await this.$store.dispatch("Layout/initializeExample")
+    else
+      await this.$store.dispatch("Layout/initialize", this.$route.params)
+
   },
   beforeDestroy() {
-    this.$store.dispatch("Layout/resetLayout")
+    // this.$store.dispatch("Layout/resetLayout")
   },
   methods: {
     layoutTextfields(layout) {

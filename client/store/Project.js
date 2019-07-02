@@ -45,6 +45,11 @@ export const mutations = {
     state.projects.unshift(payload)
   },
 
+  CREATE_SAMPLE_PROJECT(state, payload){
+    if(!state.projects.some(project => project['project_id'] === '5945c961-e74d-478f-8afe-da53cf4189e3'))
+      state.projects.unshift(payload)
+  },
+
   FETCH_PROJECTS_SUCCESS(state, payload) {
     let newP = payload.data.map(function(project) {
       return {
@@ -117,8 +122,8 @@ export const actions = {
     commit("PAGINATE_FETCH_PROJECTS_SUCCESS", payload.data)
   },
 
-  async createProject({ commit }, payload) {
-    commit("CREATE_PROJECT", payload)
+  async createProject({state, commit }, payload) {
+      commit("CREATE_PROJECT", payload)
   },
 
   updateProject({ commit }, payload) {

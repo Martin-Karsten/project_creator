@@ -470,6 +470,35 @@ export const actions = {
   async initialize(
     { state, commit, dispatch, rootGetters, rootState }, payload) {
     let id = payload.id
+      commit("SET_PROJECT_ID", id)
+      let data = [
+        {buttons: [],
+        textfields: [],
+        tables: [],
+        web_images: [],
+        web_videos: [],
+        charts: [],
+        shapes: []
+      }
+      ]
+        commit("SET_LAYOUT", data)
+      // } catch (e) {
+      //   console.log(e)
+      // }
+    // }
+    this.dispatch("LayoutItems/Textfield/initialize", state.textfields)
+    this.dispatch("LayoutItems/WebImage/initialize", state.web_images)
+    this.dispatch("LayoutItems/Table/initialize", state.tables)
+    this.dispatch("LayoutItems/Chart/initialize", state.charts)
+    this.dispatch("LayoutItems/Shapes/initialize", state.shapes)
+    this.dispatch("LayoutItems/WebVideo/initialize", state.web_videos)
+    this.dispatch("LayoutItems/Interact/Button/initialize", state.buttons)
+
+    return state.layoutList
+  },
+
+  async initializeExample({ state, commit, dispatch, rootGetters, rootState }, payload) {
+    let id = '5945c961-e74d-478f-8afe-da53cf4189e3'
     // if (state.projectId != id) {
       commit("SET_PROJECT_ID", id)
       // try {
@@ -478,8 +507,92 @@ export const actions = {
         {buttons: [],
         textfields: [
           {
-
-          }
+            animated: 0,
+            animation_name: null,
+            background_color: "transparent",
+            background_image: "none",
+            border_color: "black",
+            border_radius: 0,
+            border_style: "solid",
+            border_width: 1,
+            class: null,
+            color: "red",
+            created_at: "2019-07-02 09:25:46",
+            font: "Calibri",
+            font_size: 18,
+            height: 15,
+            id: "06376e47-ab2d-4042-8766-f6fc79355508",
+            itemName: "textfields",
+            layout_item_id: "50d6f2fe-818b-4a04-9773-6ce009052733",
+            left: 83,
+            name: "Textfield 1",
+            opacity: 1,
+            project_id: "b0954b82-9b9d-4224-a691-5d459d29baae",
+            row: 0,
+            text: "<p>Drag and resize me!</p>",
+            top: 31,
+            updated_at: "2019-07-02 09:25:46",
+            width: 100,
+            z_index: 1,
+          },
+          {
+            animated: 0,
+            animation_name: null,
+            background_color: "transparent",
+            background_image: "none",
+            border_color: "black",
+            border_radius: 0,
+            border_style: "solid",
+            border_width: 1,
+            class: null,
+            color: "red",
+            created_at: "2019-07-02 09:25:46",
+            font: "Calibri",
+            font_size: 18,
+            height: 15,
+            id: "4159461b-d3e0-4a3b-89cf-470d0599dd74",
+            itemName: "textfields",
+            layout_item_id: "50d6f2fe-818b-4a04-9773-6ce009052733",
+            left: 39,
+            name: "Textfield 2",
+            opacity: 1,
+            project_id: "b0954b82-9b9d-4224-a691-5d459d29baae",
+            row: 0,
+            text: "<p><strong>CLICK SIDEBAR IMAGE </strong></p><p><strong>SCROLL TO THE SECOND SLIDE</strong></p><p><strong>&lt;----</strong></p>",
+            top: 181,
+            updated_at: "2019-07-02 09:25:46",
+            width: 314,
+            z_index: 1,      
+          },
+          {
+            animated: 0,
+            animation_name: null,
+            background_color: "transparent",
+            background_image: "none",
+            border_color: "black",
+            border_radius: 0,
+            border_style: "solid",
+            border_width: 1,
+            class: null,
+            color: "red",
+            created_at: "2019-07-02 09:25:46",
+            font: "Calibri",
+            font_size: 18,
+            height: 15,
+            id: "e75feb53-5f5a-4ec0-99d9-a5172f0dd8e5",
+            itemName: "textfields",
+            layout_item_id: "50d6f2fe-818b-4a04-9773-6ce009052733",
+            left: 536,
+            name: "Textfield 3",
+            opacity: 1,
+            project_id: "b0954b82-9b9d-4224-a691-5d459d29baae",
+            row: 0,
+            text: "<p>     Right click me</p><p>     and <strong>delete</strong> me</p>",
+            top: 203,
+            updated_at: "2019-07-02 09:25:46",
+            width: 238,
+            z_index: 1,
+            }
         ],
         tables: [],
         web_images: [],

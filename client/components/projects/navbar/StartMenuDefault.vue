@@ -96,6 +96,7 @@ import TableSizePickerInput from "./table/TableSizePickerInput"
 import InteractPicker from './interact/InteractPicker'
 import ShapePicker from "./shapes/ShapePicker"
 import UrlInput from "./general/UrlInput"
+import fontIcon from './font-icon.png'
 export default {
   components: {
     EditorMenuBar,
@@ -107,6 +108,7 @@ export default {
   },
   data() {
     return {
+      fontIcon: fontIcon,
       apiUrl: process.env.apiUrl,
       menuItemActivated: "menu-section-activated",
       creatorActivated: false,
@@ -129,7 +131,7 @@ export default {
     },
     activateTextfieldIcon() {
       this.$store.commit("Layout/HIDE_TOOLBAR", this.currentLayout)
-      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + this.apiUrl + '/storage/images/font-icon.png), auto', item: 'textfield'})
+      this.$store.commit("Layout/SET_CURSOR_ICON", {cursor: 'url(' + fontIcon + '), auto', item: 'textfield'})
       // this.$store.dispatch('LayoutItems/Textfield/addTextfield', {layoutId: this.currentLayout, id: ''})
     },
     activateWebImageIcon() {

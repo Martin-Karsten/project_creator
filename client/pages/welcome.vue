@@ -4,18 +4,15 @@
       <span> ALPHA </span>
     </div>
     <div class="landingpage">
+      <el-row>
+        <el-col>
+          <h1 :style="{color: '#ed4d45'}">{{ $t("landingpage_warning") }}</h1>
+        </el-col>
+      </el-row>
       <div class="landingpage-first">
       <el-row>
-        <!-- <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
-          <h1 class="title">
-            Create Beautiful Presentations
-          </h1>
-          <h2 class="subtitle">
-            <a @click="scrollToEnd">Learn More</a>
-          </h2>
-        </el-col> -->
         <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" class="title-column hidden-sm-only hidden-xs-only">
-          <img class="landingpage-image" :src="apiStorage + 'images/MacBookEdited.png'" alt="">
+          <img class="landingpage-image" :src="mac" alt="">
         </el-col>
 
         <el-col :sm="24" :md="12" :lg="12" :xl="12" class="sign-up-box">
@@ -94,15 +91,15 @@
       <div class="landingpage-gif-container">
         <el-row class="landingpage-row">
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" :src="apiStorage + 'gifs/text.gif'" alt="">
+            <img class="landingpage-gif" :src="text" alt="">
             <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_1") }}</h3>
           </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-              <img class="landingpage-gif" :src="apiStorage + 'gifs/image.gif'" alt="">
+              <img class="landingpage-gif" :src="image" alt="">
               <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_2") }}</h3>
             </el-col>
             <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-              <img class="landingpage-gif" :src="apiStorage + 'gifs/chart.gif'" alt="">
+              <img class="landingpage-gif" :src="ch" alt="">
               <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_3") }}</h3>
             </el-col>
         </el-row>
@@ -118,11 +115,11 @@
             <p></p>
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" :src="apiStorage + 'gifs/color.gif'" alt="">
+            <img class="landingpage-gif" :src="col" alt="">
             <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_4") }}</h3>
           </el-col>
           <el-col :sm="24" :md="8" :lg="8" :xl="8" class="landingpage-column">
-            <img class="landingpage-gif" :src="apiStorage + 'gifs/delete.gif'" alt="">
+            <img class="landingpage-gif" :src="del" alt="">
             <h3 class="landingpage-gif-text">{{ $t("welcome_showcase_5") }}</h3>
           </el-col>
         </el-row>
@@ -169,7 +166,12 @@
 
 <script>
 import { mapGetters } from "vuex"
-import twice from "/home/martin/nuxt/larvel-nuxt/storage/app/images/twice.jpg"
+import text from './text.gif'
+import image from './image.gif'
+import ch from './chart.gif'
+import col from './color.gif'
+import del from './delete.gif'
+import mac from './MacBookEdited.png'
 import Form from "vform"
 
 export default {
@@ -209,9 +211,14 @@ export default {
         }
       };
     return{
+      text: text,
+      image: image,
+      ch : ch,
+      col: col,
+      del: del,
+      mac: mac,
       apiStorage: process.env.apiUrl + '/storage/',
       title: process.env.appName,
-      image: twice,
       form: new Form({
         first_name: "",
         last_name: "",

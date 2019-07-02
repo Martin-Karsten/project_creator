@@ -15,7 +15,7 @@
         <img class="navbar-profile-image" :src="apiStorage + this.user.avatar" alt="">
       </template>
       <el-menu-item :route="{name: 'home'}" index="settings">
-        <i class="el-icon-document-copy" /> Projects
+        <i class="el-icon-document-copy" /> {{ $t('projects') }}
       </el-menu-item>
       <el-menu-item index="settings">
         <i class="el-icon-setting" /> Settings
@@ -36,7 +36,7 @@
     </template>
 
     <el-menu-item index="home" :route="getHomeRoute()">
-      <img class="navbar-logo" :src="apiStorage + 'images/logoV2.png'" >
+      <img class="navbar-logo" :src="logo" >
     </el-menu-item>
 
     <locale-dropdown/>
@@ -52,6 +52,7 @@
 <script>
 import { mapGetters } from "vuex"
 import LocaleDropdown from "./LocaleDropdown"
+import logo from './logoV2.png'
 
 export default {
   components: {
@@ -59,6 +60,7 @@ export default {
   },
 
   data: () => ({
+    logo: logo,
     apiStorage: process.env.apiUrl + '/storage/',
     activeIndex: "1",
     appName: process.env.appName
