@@ -141,6 +141,7 @@ export const mutations = {
   },
 
   SET_LAYOUT(state, payload) {
+    console.log(payload)
     let temp = normalize(payload, layoutSchema)
     state.layoutList = temp.result
 
@@ -473,6 +474,20 @@ export const actions = {
       commit("SET_PROJECT_ID", id)
       // try {
       //   const { data } = await axios.get(`/user/project/${id}`)
+      let data = [
+        {buttons: [],
+        textfields: [
+          {
+
+          }
+        ],
+        tables: [],
+        web_images: [],
+        web_videos: [],
+        charts: [],
+        shapes: []
+      }
+      ]
         commit("SET_LAYOUT", data)
       // } catch (e) {
       //   console.log(e)
