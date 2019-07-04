@@ -3,7 +3,8 @@
 This version is only a demo with no backend. This project has a fully functional backend written in PHP Laravel, which can be seen in the master branch
 
 ```diff
-- Github Pages is causing some routing issues. If you click the link and get an error message, click go to home page.
+- Github Pages is causing some routing issues. 
+- If you click the link and get an error message, click go to home page.
 ```
 https://martin-karsten.github.io/project_creator/200.html.
 
