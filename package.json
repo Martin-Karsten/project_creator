@@ -18,7 +18,7 @@
     "@fortawesome/vue-fontawesome": "^0.1.2",
     "@nuxtjs/bulma": "^1.2.1",
     "@nuxtjs/router": "^1.0.1",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-eslint": "^10.0.1",
     "default-passive-events": "^1.0.10",
     "dev": "^0.1.3",
